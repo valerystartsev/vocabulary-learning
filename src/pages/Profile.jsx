@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../lib/AuthContext';
-import { base44 } from '../api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { User, Save, CheckCircle, GraduationCap, ArrowLeft, Sun, Moon, TrendingUp } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -41,7 +40,7 @@ export default function Profile() {
     setSaving(true);
     try {
       const trimmed = displayName.trim();
-      await base44.auth.updateMe({
+      console.log('Profile save disabled in local migration mode', {
         isFinancialUniversity: Boolean(isFinancialUniversity),
         displayName: trimmed || null,
       });

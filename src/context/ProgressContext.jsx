@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
-import { base44 } from '@/api/base44Client';
 import { calculateNextReview, getDefaultCard } from '../utils/spacedRepetition';
 
 const ProgressContext = createContext();
@@ -150,25 +149,7 @@ export function ProgressProvider({ children, user, courseUnits }) {
   // Restore progress from the DB user record when localStorage has no data.
   // This handles: new device, cleared browser storage, first login after data loss.
   const hydrateFromDB = async () => {
-    try {
-      const dbUser = await base44.auth.me();
-      const dbProg = dbUser?.savedProgress;
-      if (!dbProg) return;
-      // Only restore if the DB record has meaningful data
-      const hasDBProgress =
-        (dbProg.completedExercises?.length > 0) ||
-        (dbProg.learnedWords?.length > 0) ||
-        (Object.keys(dbProg.totalTestScores || {}).length > 0) ||
-        (dbProg.completedMedia?.length > 0);
-      if (!hasDBProgress) return;
-      const restored = { ...DEFAULT_PROGRESS, ...dbProg };
-      setProgress(restored);
-      // Also persist to localStorage so subsequent loads are instant
-      const uid = currentUserIdRef.current;
-      if (uid) localStorage.setItem(storageKey(uid), JSON.stringify(restored));
-    } catch {
-      // Silently fail — DB restore is best-effort
-    }
+    // DB hydration disabled in local migration mode — progress lives in localStorage only
   };
 
   // Persist to localStorage and debounce sync to DB whenever progress changes
@@ -183,62 +164,7 @@ export function ProgressProvider({ children, user, courseUnits }) {
   }, [progress, userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const syncProgressToUser = async (prog) => {
-    try {
-      // Compute per-unit progress using the live courseUnits ref
-      const units = courseUnitsRef.current || [];
-      const u1 = units.find(u => u.id === 1);
-      const u2 = units.find(u => u.id === 2);
-      const unit1Pct = computeUnitProgress(prog, 1, u1);
-      const unit2Pct = computeUnitProgress(prog, 2, u2);
-      const overall = units.length > 0
-        ? Math.round(units.reduce((acc, u) => acc + computeUnitProgress(prog, u.id, u), 0) / units.length)
-        : 0;
-
-      await base44.auth.updateMe({
-        // Summary metrics — read by the teacher dashboard
-        progress: {
-          overallPercent: overall,
-          unit1Percent: unit1Pct,
-          unit2Percent: unit2Pct,
-          wordsLearnedCount: prog.learnedWords?.length || 0,
-          weakWordsCount: prog.weakWords?.length || 0,
-          testsDoneCount: Object.keys(prog.totalTestScores || {}).length,
-          exerciseScores: prog.exerciseScores || {},
-          exerciseBestScores: prog.exerciseBestScores || {},
-          exerciseAttempts: prog.exerciseAttempts || {},
-          completedExercisesCount: (prog.completedExercises || []).length,
-          mediaCompleted: (prog.completedMedia || []).length,
-          learnedWords: prog.learnedWords || [],
-          weakWords: prog.weakWords || [],
-          scenarioScores: prog.scenarioScores || {},
-          crosswordScores: prog.crosswordScores || {},
-          lastActiveAt: new Date().toISOString(),
-        },
-        savedProgress: {
-          learnedWords: prog.learnedWords || [],
-          weakWords: prog.weakWords || [],
-          weakWordsAddedAt: prog.weakWordsAddedAt || {},
-          completedExercises: prog.completedExercises || [],
-          exerciseScores: prog.exerciseScores || {},
-          exerciseBestScores: prog.exerciseBestScores || {},
-          exerciseAttempts: prog.exerciseAttempts || {},
-          completedSections: prog.completedSections || {},
-          totalTestScores: prog.totalTestScores || {},
-          completedMedia: prog.completedMedia || [],
-          mediaTaskScores: prog.mediaTaskScores || {},
-          vocabRadar: prog.vocabRadar || {},
-          lastOpenedUnit: prog.lastOpenedUnit || null,
-          lastOpenedSection: prog.lastOpenedSection || null,
-          scenarioScores: prog.scenarioScores || {},
-          crosswordScores: prog.crosswordScores || {},
-          mediaQuestScores: prog.mediaQuestScores || {},
-          srsData: prog.srsData || {},
-          errorLog: (prog.errorLog || []).slice(-200),
-        }
-      });
-    } catch {
-      // Silently fail — user may not be logged in or updateMe failed
-    }
+    // DB sync disabled in local migration mode — progress saved to localStorage only
   };
 
   // Keep a ref to courseUnits so syncProgressToUser can access it without stale closure
@@ -374,10 +300,7 @@ export function ProgressProvider({ children, user, courseUnits }) {
   const resetProgress = useCallback(() => {
     setProgress(DEFAULT_PROGRESS);
     if (userId) localStorage.removeItem(storageKey(userId));
-    // Also clear the DB snapshot so a new-device restore doesn't bring back old data
-    try {
-      base44.auth.updateMe({ savedProgress: null, progress: null });
-    } catch {}
+    // DB clear disabled in local migration mode
   }, [userId]);
 
   // getUnitProgress requires the unit data to compute correctly.

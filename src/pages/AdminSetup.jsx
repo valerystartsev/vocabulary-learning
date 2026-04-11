@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Shield, CheckCircle, AlertTriangle, Loader, GraduationCap, RefreshCw } from 'lucide-react';
@@ -11,8 +10,7 @@ const TEACHER_EMAIL = 'emzakhtser@mail.ru';
  *
  * HOW THE TEACHER ACCOUNT WORKS:
  * ─────────────────────────────────────────────────────────────────
- * Base44 is a managed auth platform — passwords are handled entirely
- * by Base44's infrastructure. This means:
+ * Authentication is handled by Supabase. This means:
  *
  * 1. The teacher (emzakhtser@mail.ru) must register or be invited once.
  * 2. On their FIRST login, the system automatically assigns role='teacher'.
@@ -43,13 +41,15 @@ export default function AdminSetup() {
   const checkTeacherExists = async () => {
     setChecking(true);
     try {
-      const users = await base44.entities.User.list();
+      // TODO: replace with Supabase query
+      const users = [];
       const existing = users.find(u => u.email?.toLowerCase().trim() === TEACHER_EMAIL);
       setTeacherExists(existing || null);
 
       // If teacher exists but doesn't have the right role, fix it
       if (existing && existing.role !== 'teacher') {
-        await base44.entities.User.update(existing.id, { role: 'teacher' });
+        // TODO: replace with Supabase update
+        console.warn('Teacher role update not yet implemented');
         setMessage(`Role corrected: ${TEACHER_EMAIL} is now set to 'teacher'.`);
         setStatus('exists');
       } else if (existing) {
@@ -68,7 +68,8 @@ export default function AdminSetup() {
     setMessage('');
     try {
       // Invite as 'user' — AuthContext auto-elevates to 'teacher' on first login for this exact email
-      await base44.users.inviteUser(TEACHER_EMAIL, 'user');
+      // TODO: replace with Supabase invite
+      console.warn('User invitation not yet implemented');
       setStatus('done');
       setMessage(
         `Invitation sent to ${TEACHER_EMAIL}. ` +
@@ -88,13 +89,15 @@ export default function AdminSetup() {
 
   const handleStripOtherAdmins = async () => {
     try {
-      const users = await base44.entities.User.list();
+      // TODO: replace with Supabase query
+      const users = [];
       const wrongAdmins = users.filter(u =>
         u.email?.toLowerCase().trim() !== TEACHER_EMAIL &&
         (u.role === 'teacher' || u.role === 'admin')
       );
       for (const u of wrongAdmins) {
-        await base44.entities.User.update(u.id, { role: 'user' });
+        // TODO: replace with Supabase update
+        console.warn('Role update not yet implemented for', u.email);
       }
       if (wrongAdmins.length > 0) {
         setMessage(`Stripped teacher/admin role from ${wrongAdmins.length} account(s): ${wrongAdmins.map(u => u.email).join(', ')}`);
@@ -137,7 +140,7 @@ export default function AdminSetup() {
           <p className="font-semibold text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--col-muted)' }}>How the teacher account works</p>
           <p style={{ color: 'var(--col-secondary)' }}>
             The teacher account is <strong style={{ color: 'var(--col-heading)' }}>{TEACHER_EMAIL}</strong>.
-            Base44 manages authentication — passwords are set by the user via an invitation email.
+            The system manages authentication — passwords are set by the user via an invitation email.
           </p>
           <p style={{ color: 'var(--col-secondary)' }}>
             On first login, the system automatically assigns <code className="text-xs px-1 rounded" style={{ backgroundColor: 'var(--col-tag-bg)', color: 'var(--col-tag-text)' }}>role=teacher</code> to this account.

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { GraduationCap, Users, Search, ChevronRight, ArrowLeft, BarChart3, BookOpen, Brain, AlertTriangle, LogOut, CheckCircle, Clock } from 'lucide-react';
@@ -81,7 +80,8 @@ function StudentDetail({ student, onBack, onRefreshStudent }) {
     const refresh = async () => {
       setRefreshing(true);
       try {
-        const allUsers = await base44.entities.User.list();
+        // TODO: replace with Supabase query
+        const allUsers = [];
         const fresh = allUsers.find(u => u.id === student.id);
         if (fresh && !cancelled) setLocalStudent(fresh);
       } catch {}
@@ -301,7 +301,8 @@ export default function TeacherDashboard() {
   const loadStudents = async () => {
     try {
       setLoading(true);
-      const allUsers = await base44.entities.User.list();
+      // TODO: replace with Supabase query
+      const allUsers = [];
       // Filter: only Financial University students — exclude teacher/admin accounts entirely
       const tracked = allUsers.filter(u =>
         Boolean(u.isFinancialUniversity) &&

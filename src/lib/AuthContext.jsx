@@ -1,48 +1,68 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { supabase } from './supabaseClient';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    id: 'local-dev-user',
-    email: 'local@example.com',
-    role: 'user',
-    full_name: 'Local User',
-  });
-
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(false);
-  const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(false);
-  const [authError, setAuthError] = useState(null);
-  const [appPublicSettings, setAppPublicSettings] = useState({
-    id: 'local-settings',
-    public_settings: {},
-  });
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
   useEffect(() => {
-    setIsAuthenticated(true);
-    setIsLoadingAuth(false);
-    setIsLoadingPublicSettings(false);
-    setAuthError(null);
+    let isMounted = true;
+
+    const loadUser = async () => {
+      setIsLoadingAuth(true);
+
+      const { data, error } = await supabase.auth.getUser();
+
+      if (!isMounted) return;
+
+      if (error || !data?.user) {
+        setUser(null);
+        setIsAuthenticated(false);
+      } else {
+        setUser(data.user);
+        setIsAuthenticated(true);
+      }
+
+      setIsLoadingAuth(false);
+    };
+
+    loadUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
+
+      if (session?.user) {
+        setUser(session.user);
+        setIsAuthenticated(true);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+
+      setIsLoadingAuth(false);
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const checkAppState = async () => {
-    setAuthError(null);
-    setIsAuthenticated(true);
-    setIsLoadingAuth(false);
-    setIsLoadingPublicSettings(false);
-  };
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
 
-  const refreshUser = async () => {
-    return user;
-  };
+    if (error) {
+      console.error('Logout error:', error.message);
+      return;
+    }
 
-  const logout = () => {
-  console.log('Logout disabled in local migration mode');
-};
-
-  const navigateToLogin = () => {
-    console.log('Login disabled in local migration mode');
+    setUser(null);
+    setIsAuthenticated(false);
   };
 
   return (
@@ -51,24 +71,20 @@ export const AuthProvider = ({ children }) => {
         user,
         isAuthenticated,
         isLoadingAuth,
-        isLoadingPublicSettings,
-        authError,
-        appPublicSettings,
         logout,
-        navigateToLogin,
-        checkAppState,
-        refreshUser,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
+
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useAuth must be used inside AuthProvider');
   }
+
   return context;
-};
+}

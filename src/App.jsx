@@ -24,6 +24,7 @@ import ListeningLab from './pages/ListeningLab';
 import TradeSimulator from './pages/TradeSimulator';
 import Review from './pages/Review';
 import MyMistakes from './pages/MyMistakes';
+import LoginPage from './pages/LoginPage';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin, user } = useAuth();
@@ -64,6 +65,7 @@ const AuthenticatedApp = () => {
           </Route>
           <Route path="/teacher" element={<TeacherDashboard />} />
           <Route path="/admin-setup" element={<AdminSetup />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ModeProvider>

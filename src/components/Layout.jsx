@@ -69,7 +69,7 @@ function ThemeSwitcherMini() {
 
 export default function Layout() {
   const { isTeacherMode, requestTeacherMode } = useMode();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -124,7 +124,7 @@ export default function Layout() {
           <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', color: 'rgba(176,196,220,0.45)', textTransform: 'uppercase', paddingLeft: mobile ? 0 : 7, marginBottom: 6 }}>Account</p>
           <button
             onClick={() => {
-  console.log('Login disabled in local migration mode');
+  window.location.href = '/login';
   if (mobile) setMobileOpen(false);
 }}
 
@@ -188,7 +188,7 @@ export default function Layout() {
         </Link>
         <button
           onClick={() => {
-            console.log('Logout disabled in local migration mode');
+            logout();
             if (mobile) setMobileOpen(false);
           }}
           className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all"
@@ -287,7 +287,7 @@ export default function Layout() {
           )}
           {!isAuthenticated && (
             <button
-              onClick={() => console.log('Login disabled in local migration mode')}
+              onClick={() => window.location.href = '/login'}
               className="text-xs font-semibold px-3 py-1.5 rounded-lg"
               style={{ backgroundColor: 'var(--col-accent)', color: 'white', minHeight: 36 }}
             >
@@ -389,7 +389,7 @@ export default function Layout() {
             </Link>
             <button
               onClick={() => {
-                console.log('Logout disabled in local migration mode');
+                logout();
                 setMobileOpen(false);
               }}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium"
@@ -402,7 +402,7 @@ export default function Layout() {
           <div className="p-5 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
             <button
               onClick={() => {
-                console.log('Login disabled in local migration mode');
+                window.location.href = '/login';
                 setMobileOpen(false);
               }}
               className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white mb-2"

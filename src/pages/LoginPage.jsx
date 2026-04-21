@@ -20,18 +20,19 @@ export default function LoginPage() {
 
     try {
       if (mode === 'register') {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: {
-            emailRedirectTo: window.location.origin,
-          },
         });
 
         if (error) {
           setError(error.message);
         } else {
-          setMessage('Регистрация прошла успешно. Проверь почту и открой новое письмо с подтверждением.');
+          if (data?.session) {
+            navigate('/');
+          } else {
+            setMessage('Регистрация прошла успешно. Теперь попробуй войти в аккаунт.');
+          }
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -46,15 +47,31 @@ export default function LoginPage() {
         }
       }
     } catch (err) {
-      setError('Произошла ошибка.');
+      setError('Произошла ошибка. Попробуй ещё раз.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: 24 }}>
-      <div style={{ width: '100%', maxWidth: 420, padding: 24, border: '1px solid #ddd', borderRadius: 16 }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'grid',
+        placeItems: 'center',
+        padding: 24,
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 420,
+          padding: 24,
+          border: '1px solid #ddd',
+          borderRadius: 16,
+          background: '#fff',
+        }}
+      >
         <h1 style={{ marginBottom: 16 }}>
           {mode === 'login' ? 'Вход' : 'Регистрация'}
         </h1>
@@ -66,7 +83,11 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ padding: 12, borderRadius: 10, border: '1px solid #ccc' }}
+            style={{
+              padding: 12,
+              borderRadius: 10,
+              border: '1px solid #ccc',
+            }}
           />
 
           <input
@@ -75,13 +96,22 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ padding: 12, borderRadius: 10, border: '1px solid #ccc' }}
+            style={{
+              padding: 12,
+              borderRadius: 10,
+              border: '1px solid #ccc',
+            }}
           />
 
           <button
             type="submit"
             disabled={loading}
-            style={{ padding: 12, borderRadius: 10, border: 'none', cursor: 'pointer' }}
+            style={{
+              padding: 12,
+              borderRadius: 10,
+              border: 'none',
+              cursor: loading ? 'not-allowed' : 'pointer',
+            }}
           >
             {loading
               ? 'Загрузка...'
@@ -92,11 +122,15 @@ export default function LoginPage() {
         </form>
 
         {message && (
-          <p style={{ marginTop: 12, color: 'green' }}>{message}</p>
+          <p style={{ marginTop: 12, color: 'green' }}>
+            {message}
+          </p>
         )}
 
         {error && (
-          <p style={{ marginTop: 12, color: 'crimson' }}>{error}</p>
+          <p style={{ marginTop: 12, color: 'crimson' }}>
+            {error}
+          </p>
         )}
 
         <button
@@ -112,6 +146,7 @@ export default function LoginPage() {
             border: 'none',
             cursor: 'pointer',
             textDecoration: 'underline',
+            padding: 0,
           }}
         >
           {mode === 'login'

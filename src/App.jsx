@@ -10,7 +10,6 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { ProgressProvider } from './context/ProgressContext';
 import { ModeProvider } from './context/ModeContext';
 import { ThemeProvider } from './context/ThemeContext';
-
 import { units } from './data/courseData';
 import Layout from './components/Layout';
 import Landing from './pages/Landing';
@@ -29,8 +28,8 @@ import MyMistakes from './pages/MyMistakes';
 import LoginPage from './pages/LoginPage';
 
 const AuthenticatedApp = () => {
-  // navigateToLogin убрана из useAuth() — она не работала там.
-  // Теперь используем useNavigate() прямо здесь, внутри <Router>.
+  // navigateToLogin убрана из useAuth — её там не было, из-за неё падала сборка.
+  // Теперь используем useNavigate() прямо здесь — внутри <Router>, где это работает.
   const { isLoadingAuth, isLoadingPublicSettings, authError, user } = useAuth();
   const navigate = useNavigate();
 
@@ -90,8 +89,7 @@ function App() {
         </QueryClientProvider>
       </ThemeProvider>
     </AuthProvider>
-  )
+  );
 }
 
 export default App;
-

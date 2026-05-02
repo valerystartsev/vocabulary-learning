@@ -1,17 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { units, getAllVocabulary } from '../data/courseData';
 import { useProgress, computeUnitProgress } from '../context/ProgressContext';
 import { useMode } from '../context/ModeContext';
 import { useAuth } from '../lib/AuthContext';
-import { BookOpen, ArrowRight, Brain, AlertTriangle, Trophy, BarChart3, BookText, RotateCcw, Eye, Play } from 'lucide-react';
+import { BookOpen, Brain, AlertTriangle, Trophy, BarChart3, BookText, RotateCcw, Eye, Play } from 'lucide-react';
 import WeakWordsRescue from '../components/WeakWordsRescue';
 import OnboardingTour, { shouldShowTour } from '../components/OnboardingTour';
 import { getDueWords } from '../utils/spacedRepetition';
-
-const TEACHER_EMAIL = 'emzakhtser@mail.ru';
-// Normalized comparison — prevents whitespace/case-variant exploits
-const isTeacherUser = (u) => u?.email?.toLowerCase().trim() === TEACHER_EMAIL;
 
 export default function Dashboard() {
   const { progress, getUnitProgress } = useProgress();
@@ -19,12 +15,6 @@ export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect teacher accounts to teacher dashboard
-  useEffect(() => {
-    if (user && isTeacherUser(user)) {
-      navigate('/teacher', { replace: true });
-    }
-  }, [user]);
   const allVocab = getAllVocabulary();
   const [showRescue, setShowRescue] = useState(false);
   const [showTour, setShowTour] = useState(() => shouldShowTour());

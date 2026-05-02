@@ -354,6 +354,13 @@ export default function TeacherDashboard() {
         <div className="flex items-center gap-3">
           <span className="text-xs hidden sm:block" style={{ color: 'rgba(255,255,255,0.45)' }}>{user.email}</span>
           <button
+            onClick={() => navigate('/dashboard')}
+            className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg transition-all"
+            style={{ color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.12)', minHeight: 36 }}
+          >
+            <ArrowLeft className="h-3.5 w-3.5" /> Back to Dashboard
+          </button>
+          <button
             onClick={() => logout()}
             className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg transition-all"
             style={{ color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.12)', minHeight: 36 }}

@@ -6,7 +6,7 @@ import { supabase } from './supabaseClient';
 const AuthContext = createContext(null);
 
 // Загружает данные профиля из таблицы profiles и добавляет к auth-пользователю.
-// Вызывается при каждом входе и при смене сессии.
+// Без этого Profile.jsx всегда видит пустые поля.
 async function loadProfile(authUser) {
   try {
     const { data: profile } = await supabase
@@ -15,7 +15,7 @@ async function loadProfile(authUser) {
       .eq('id', authUser.id)
       .single();
 
-    // Если email в profiles пустой — дописываем из auth (для старых аккаунтов)
+    // Если email в профиле пустой — записываем из auth (для старых аккаунтов)
     if (!profile?.email && authUser.email) {
       await supabase
         .from('profiles')
@@ -40,7 +40,8 @@ export function AuthProvider({ children }) {
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [authError, setAuthError] = useState(null);
 
-  // App.jsx использует isLoadingPublicSettings — делаем равным isLoadingAuth
+  // App.jsx использует isLoadingPublicSettings.
+  // В этом проекте нет отдельной загрузки публичных настроек — делаем равным isLoadingAuth.
   const isLoadingPublicSettings = isLoadingAuth;
 
   useEffect(() => {
@@ -61,27 +62,30 @@ export function AuthProvider({ children }) {
         setIsAuthenticated(true);
         setAuthError(null);
       }
+
       setIsLoadingAuth(false);
     };
 
     loadUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        if (!isMounted) return;
-        if (session?.user) {
-          const enriched = await loadProfile(session.user);
-          setUser(enriched);
-          setIsAuthenticated(true);
-          setAuthError(null);
-        } else {
-          setUser(null);
-          setIsAuthenticated(false);
-          setAuthError(null);
-        }
-        setIsLoadingAuth(false);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (!isMounted) return;
+
+      if (session?.user) {
+        const enriched = await loadProfile(session.user);
+        setUser(enriched);
+        setIsAuthenticated(true);
+        setAuthError(null);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+        setAuthError(null);
       }
-    );
+
+      setIsLoadingAuth(false);
+    });
 
     return () => {
       isMounted = false;
@@ -89,8 +93,8 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-  // Вызывается из Profile.jsx после нажатия Save —
-  // обновляет данные пользователя в памяти без перезагрузки страницы
+  // Вызывается из Profile.jsx после нажатия Save.
+  // Обновляет данные пользователя в памяти приложения без перезагрузки.
   const refreshUser = async () => {
     const { data } = await supabase.auth.getUser();
     if (data?.user) {
@@ -101,21 +105,26 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) { console.error('Logout error:', error.message); return; }
+    if (error) {
+      console.error('Logout error:', error.message);
+      return;
+    }
     setUser(null);
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      isAuthenticated,
-      isLoadingAuth,
-      isLoadingPublicSettings,
-      authError,
-      logout,
-      refreshUser,
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        isLoadingAuth,
+        isLoadingPublicSettings,
+        authError,
+        logout,
+        refreshUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -123,6 +132,8 @@ export function AuthProvider({ children }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used inside AuthProvider');
+  if (!context) {
+    throw new Error('useAuth must be used inside AuthProvider');
+  }
   return context;
 }

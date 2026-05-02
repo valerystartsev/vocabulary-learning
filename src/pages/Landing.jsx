@@ -1,9 +1,7 @@
-// src/pages/Landing.jsx
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { units } from '../data/courseData';
-import { ArrowRight, Lock, X } from 'lucide-react';
+import { BookOpen, Brain, Headphones, FileText, CheckCircle, ArrowRight, MessageSquare, Lock, X } from 'lucide-react';
 import { useAuth } from '../lib/AuthContext';
 
 function AuthGateModal({ onClose }) {
@@ -12,7 +10,7 @@ function AuthGateModal({ onClose }) {
       style={{ backgroundColor: 'rgba(0,0,0,0.55)' }} onClick={onClose}>
       <div className="rounded-2xl p-7 max-w-sm w-full relative"
         style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}
-        onClick={e => e.stopPropagation()}>
+        onClick={(e) => e.stopPropagation()}>
         <button onClick={onClose}
           className="absolute top-4 right-4 flex items-center justify-center rounded-lg"
           style={{ width: 32, height: 32, color: 'var(--col-muted)', backgroundColor: 'var(--col-surface-secondary)' }}>
@@ -25,9 +23,7 @@ function AuthGateModal({ onClose }) {
         <h3 className="font-bold text-lg text-center mb-1" style={{ color: 'var(--col-heading)' }}>
           Registration Required
         </h3>
-        <p className="text-xs text-center mb-1" style={{ color: 'var(--col-muted)' }}>
-          Требуется регистрация
-        </p>
+        <p className="text-xs text-center mb-1" style={{ color: 'var(--col-muted)' }}>Требуется регистрация</p>
         <p className="text-sm text-center mb-2 leading-relaxed" style={{ color: 'var(--col-body)' }}>
           To access course materials, please register or sign in.
         </p>
@@ -55,7 +51,7 @@ export default function Landing() {
   const { isAuthenticated } = useAuth();
   const [showGate, setShowGate] = useState(false);
 
-  const handleLockedClick = e => {
+  const handleLockedClick = (e) => {
     if (!isAuthenticated) { e.preventDefault(); setShowGate(true); }
   };
 
@@ -69,17 +65,14 @@ export default function Landing() {
             style={{ backgroundColor: 'rgba(94,158,137,0.18)', color: 'var(--col-accent)', border: '1px solid rgba(94,158,137,0.3)' }}>
             Level B1 · For Russian-speaking students
           </div>
-          <h1 className="font-bold text-white mb-2 leading-tight"
-            style={{ fontSize: 'clamp(30px,5vw,48px)' }}>
+          <h1 className="font-bold text-white mb-2 leading-tight" style={{ fontSize: 'clamp(30px,5vw,48px)' }}>
             Adaptation
           </h1>
           <p style={{ fontSize: 'clamp(16px,2vw,20px)', color: 'rgba(255,255,255,0.65)', marginBottom: 20 }}>
             Business English Course — Economics & Finance
           </p>
           <p className="mb-10" style={{ maxWidth: 560, lineHeight: 1.8, color: 'rgba(255,255,255,0.82)' }}>
-            This course exists because English textbooks on Economics are difficult to follow —
-            not because Economics itself is hard, but because the language in them has never been
-            made accessible enough. We changed that.
+            This course exists because English textbooks on Economics are difficult to follow — not because Economics itself is hard, but because the language in them has never been made accessible enough. We changed that.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             {isAuthenticated ? (
@@ -109,15 +102,13 @@ export default function Landing() {
 
       <section className="max-w-4xl mx-auto px-5 md:px-10 py-14">
         <div className="grid md:grid-cols-2 gap-5">
-          {units.map(unit => (
+          {units.map((unit) => (
             <div key={unit.id} className="rounded-xl p-6"
               style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>
               <h3 className="font-semibold text-lg mb-2" style={{ color: 'var(--col-heading)' }}>
                 Unit {unit.id}: {unit.title}
               </h3>
-              <p className="mb-5" style={{ color: 'var(--col-body)', lineHeight: 1.6 }}>
-                {unit.description}
-              </p>
+              <p className="mb-5" style={{ color: 'var(--col-body)', lineHeight: 1.6 }}>{unit.description}</p>
               <Link to={isAuthenticated ? `/unit/${unit.id}` : '#'} onClick={handleLockedClick}>
                 <button className="w-full h-11 rounded-lg font-semibold flex items-center justify-center gap-2"
                   style={{ border: '1px solid var(--col-accent)', color: 'var(--col-accent)' }}>

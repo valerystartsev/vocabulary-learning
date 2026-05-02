@@ -28,24 +28,26 @@ import MyMistakes from './pages/MyMistakes';
 import LoginPage from './pages/LoginPage';
 
 const AuthenticatedApp = () => {
-  // navigateToLogin убрана — её нет в AuthContext и она ломала сборку
-  // useNavigate() работает здесь потому что AuthenticatedApp находится внутри <Router>
+  // navigateToLogin убрана из useAuth — её там не было, из-за неё падала сборка.
+  // Теперь используем useNavigate() прямо здесь — внутри <Router>, где это работает.
   const { isLoadingAuth, isLoadingPublicSettings, authError, user } = useAuth();
   const navigate = useNavigate();
 
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center"
-        style={{ backgroundColor: 'var(--col-page-bg)' }}>
-        <div className="w-8 h-8 border-4 rounded-full animate-spin"
-          style={{ borderColor: 'var(--col-divider)', borderTopColor: 'var(--col-accent)' }} />
+      <div className="fixed inset-0 flex items-center justify-center" style={{ backgroundColor: 'var(--col-page-bg)' }}>
+        <div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: 'var(--col-divider)', borderTopColor: 'var(--col-accent)' }}></div>
       </div>
     );
   }
 
   if (authError) {
-    if (authError.type === 'user_not_registered') return <UserNotRegisteredError />;
-    if (authError.type === 'auth_required') { navigate('/login'); return null; }
+    if (authError.type === 'user_not_registered') {
+      return <UserNotRegisteredError />;
+    } else if (authError.type === 'auth_required') {
+      navigate('/login');
+      return null;
+    }
   }
 
   return (

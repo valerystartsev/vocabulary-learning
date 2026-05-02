@@ -1,4 +1,3 @@
-import { supabase } from '@/lib/supabaseClient';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -79,26 +78,15 @@ function StudentDetail({ student, onBack, onRefreshStudent }) {
   React.useEffect(() => {
     let cancelled = false;
     const refresh = async () => {
-  setRefreshing(true);
-  try {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('id, display_name, full_name, email, university_tracking, progress')
-      .eq('id', student.id)
-      .single();
-
-    if (profile && !cancelled) {
-      setLocalStudent({
-        id: profile.id,
-        email: profile.email || '—',
-        displayName: profile.display_name || profile.full_name || profile.email || '—',
-        isFinancialUniversity: profile.university_tracking,
-        progress: profile.progress || {},
-      });
-    }
-  } catch {}
-  if (!cancelled) setRefreshing(false);
-};
+      setRefreshing(true);
+      try {
+        // TODO: replace with Supabase query
+        const allUsers = [];
+        const fresh = allUsers.find(u => u.id === student.id);
+        if (fresh && !cancelled) setLocalStudent(fresh);
+      } catch {}
+      if (!cancelled) setRefreshing(false);
+    };
     refresh();
     return () => { cancelled = true; };
   }, [student.id]);
@@ -311,38 +299,28 @@ export default function TeacherDashboard() {
   }, [user, isLoadingAuth]);
 
   const loadStudents = async () => {
-  try {
-    setLoading(true);
-
-    const { data: profiles, error } = await supabase
-      .from('profiles')
-      .select('id, display_name, full_name, email, university_tracking, progress')
-      .eq('university_tracking', true);
-
-    if (error) throw error;
-
-    const tracked = (profiles || [])
-      .filter(p => p.email !== 'emzakhtser@mail.ru')
-      .map(p => ({
-        id: p.id,
-        email: p.email || '—',
-        displayName: p.display_name || p.full_name || p.email || '—',
-        isFinancialUniversity: p.university_tracking,
-        progress: p.progress || {},
-      }))
-      .sort((a, b) => {
+    try {
+      setLoading(true);
+      // TODO: replace with Supabase query
+      const allUsers = [];
+      // Filter: only Financial University students — exclude teacher/admin accounts entirely
+      const tracked = allUsers.filter(u =>
+        Boolean(u.isFinancialUniversity) &&
+        !isTeacherUser(u)
+      );
+      // Sort: most recently active first
+      tracked.sort((a, b) => {
         const aTime = a.progress?.lastActiveAt ? new Date(a.progress.lastActiveAt).getTime() : 0;
         const bTime = b.progress?.lastActiveAt ? new Date(b.progress.lastActiveAt).getTime() : 0;
         return bTime - aTime;
       });
-
-    setStudents(tracked);
-  } catch (e) {
-    console.error('Failed to load students:', e);
-  } finally {
-    setLoading(false);
-  }
-};
+      setStudents(tracked);
+    } catch (e) {
+      console.error('Failed to load students:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Show spinner while auth is still resolving — prevents flash of wrong content
   if (isLoadingAuth || (!user && !accessDenied)) {

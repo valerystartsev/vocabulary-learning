@@ -1,41 +1,28 @@
-// src/lib/AuthContext.jsx
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 
 const AuthContext = createContext(null);
 
-// Загружает данные профиля (имя, галочка университета) из базы Supabase.
-// Без этого Profile.jsx всегда видел бы пустые поля.
+// Вспомогательная функция: загружает профиль из таблицы profiles
 async function loadProfile(authUser) {
-  try {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('full_name, display_name, university_tracking')
-      .eq('id', authUser.id)
-      .single();
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('full_name, display_name, university_tracking')
+    .eq('id', authUser.id)
+    .single();
 
-    return {
-      ...authUser,
-      full_name: profile?.full_name || '',
-      displayName: profile?.display_name || profile?.full_name || '',
-      isFinancialUniversity: profile?.university_tracking || false,
-    };
-  } catch {
-    return authUser;
-  }
+  return {
+    ...authUser,
+    full_name: profile?.full_name || '',
+    displayName: profile?.display_name || profile?.full_name || '',
+    isFinancialUniversity: profile?.university_tracking || false,
+  };
 }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
-  const [authError, setAuthError] = useState(null);
-
-  // App.jsx проверяет isLoadingPublicSettings.
-  // В этом проекте нет отдельной загрузки настроек,
-  // поэтому делаем его равным isLoadingAuth.
-  const isLoadingPublicSettings = isLoadingAuth;
 
   useEffect(() => {
     let isMounted = true;
@@ -48,14 +35,11 @@ export function AuthProvider({ children }) {
       if (error || !data?.user) {
         setUser(null);
         setIsAuthenticated(false);
-        setAuthError(null);
       } else {
         const enriched = await loadProfile(data.user);
         setUser(enriched);
         setIsAuthenticated(true);
-        setAuthError(null);
       }
-
       setIsLoadingAuth(false);
     };
 
@@ -65,18 +49,14 @@ export function AuthProvider({ children }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (!isMounted) return;
-
       if (session?.user) {
         const enriched = await loadProfile(session.user);
         setUser(enriched);
         setIsAuthenticated(true);
-        setAuthError(null);
       } else {
         setUser(null);
         setIsAuthenticated(false);
-        setAuthError(null);
       }
-
       setIsLoadingAuth(false);
     });
 
@@ -86,8 +66,7 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-  // Вызывается из Profile.jsx после нажатия Save.
-  // Обновляет данные пользователя без перезагрузки страницы.
+  // Эта функция вызывается после сохранения профиля — обновляет данные пользователя
   const refreshUser = async () => {
     const { data } = await supabase.auth.getUser();
     if (data?.user) {
@@ -112,10 +91,8 @@ export function AuthProvider({ children }) {
         user,
         isAuthenticated,
         isLoadingAuth,
-        isLoadingPublicSettings,
-        authError,
         logout,
-        refreshUser,
+        refreshUser,   // ← теперь экспортируется
       }}
     >
       {children}

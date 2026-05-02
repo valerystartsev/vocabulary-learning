@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { GraduationCap, Users, Search, ChevronRight, ArrowLeft, BarChart3, BookOpen, Brain, AlertTriangle, LogOut, CheckCircle, Clock } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
+import { GraduationCap, Users, Search, ChevronRight, ArrowLeft, BarChart3, BookOpen, Brain, AlertTriangle, LogOut, CheckCircle } from 'lucide-react';
 
 const TEACHER_EMAIL = 'emzakhtser@mail.ru';
 // Access is granted ONLY to the exact canonical teacher email — normalized comparison prevents whitespace/case exploits
@@ -17,7 +18,7 @@ function ProgressBar({ value, color = 'var(--col-accent)' }) {
 
 // Returns the best display name for a student: custom displayName > platform full_name > email
 function getStudentName(student) {
-  return student.displayName || student.full_name || student.email;
+  return student.full_name || student.email;
 }
 
 function StudentCard({ student, onClick }) {
@@ -44,7 +45,7 @@ function StudentCard({ student, onClick }) {
           <p className="text-xs truncate mt-0.5" style={{ color: 'var(--col-muted)' }}>{student.email}</p>
           <div className="flex flex-wrap gap-2 mt-0.5">
             <p className="text-xs" style={{ color: 'var(--col-tertiary)' }}>
-              Joined {student.created_date ? new Date(student.created_date).toLocaleDateString('ru-RU') : '—'}
+              Joined {student.created_at ? new Date(student.created_at).toLocaleDateString('ru-RU') : '—'}
             </p>
             {lastActive && (
               <p className="text-xs" style={{ color: 'var(--col-tertiary)' }}>
@@ -70,30 +71,8 @@ function StudentCard({ student, onClick }) {
   );
 }
 
-function StudentDetail({ student, onBack, onRefreshStudent }) {
-  const [localStudent, setLocalStudent] = React.useState(student);
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  // On mount, immediately fetch the freshest DB record for this student
-  React.useEffect(() => {
-    let cancelled = false;
-    const refresh = async () => {
-      setRefreshing(true);
-      try {
-        // TODO: replace with Supabase query
-        const allUsers = [];
-        const fresh = allUsers.find(u => u.id === student.id);
-        if (fresh && !cancelled) setLocalStudent(fresh);
-      } catch {}
-      if (!cancelled) setRefreshing(false);
-    };
-    refresh();
-    return () => { cancelled = true; };
-  }, [student.id]);
-
-  // Use live-fetched data
-  const s = localStudent;
-  const prog = s.progress || {};
+function StudentDetail({ student, onBack }) {
+  const prog = student.progress || {};
   const overall = prog.overallPercent || 0;
   const unit1 = prog.unit1Percent || 0;
   const unit2 = prog.unit2Percent || 0;
@@ -120,25 +99,19 @@ function StudentDetail({ student, onBack, onRefreshStudent }) {
         >
           <ArrowLeft className="h-4 w-4" /> Back to Roster
         </button>
-        {refreshing && (
-          <span className="text-xs flex items-center gap-1.5" style={{ color: 'var(--col-muted)' }}>
-            <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
-            Refreshing data...
-          </span>
-        )}
       </div>
 
       <div className="rounded-2xl p-5 mb-5" style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>
         <div className="flex items-start justify-between gap-3 mb-4">
           <div>
-            <h2 className="font-bold text-lg" style={{ color: 'var(--col-heading)' }}>{getStudentName(s)}</h2>
-            <p className="text-sm" style={{ color: 'var(--col-muted)' }}>{s.email}</p>
+            <h2 className="font-bold text-lg" style={{ color: 'var(--col-heading)' }}>{getStudentName(student)}</h2>
+            <p className="text-sm" style={{ color: 'var(--col-muted)' }}>{student.email}</p>
             <p className="text-xs mt-1" style={{ color: 'var(--col-tertiary)' }}>
-              Registered: {s.created_date ? new Date(s.created_date).toLocaleDateString('ru-RU') : '—'}
+              Registered: {student.created_at ? new Date(student.created_at).toLocaleDateString('ru-RU') : '—'}
               {prog.lastActiveAt && ` · Last active: ${new Date(prog.lastActiveAt).toLocaleString('ru-RU')}`}
             </p>
           </div>
-          {s.isFinancialUniversity && (
+          {student.is_financial_university && (
             <span className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: 'var(--col-accent-light)', color: 'var(--col-accent-text)', border: '1px solid var(--col-divider)' }}>
               ФинУниверситет
             </span>
@@ -301,22 +274,23 @@ export default function TeacherDashboard() {
   const loadStudents = async () => {
     try {
       setLoading(true);
-      // TODO: replace with Supabase query
-      const allUsers = [];
-      // Filter: only Financial University students — exclude teacher/admin accounts entirely
-      const tracked = allUsers.filter(u =>
-        Boolean(u.isFinancialUniversity) &&
-        !isTeacherUser(u)
-      );
-      // Sort: most recently active first
-      tracked.sort((a, b) => {
-        const aTime = a.progress?.lastActiveAt ? new Date(a.progress.lastActiveAt).getTime() : 0;
-        const bTime = b.progress?.lastActiveAt ? new Date(b.progress.lastActiveAt).getTime() : 0;
-        return bTime - aTime;
-      });
-      setStudents(tracked);
+      // Fetch students from profiles table who are from Financial University
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('is_financial_university', true)
+        .neq('email', TEACHER_EMAIL)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Failed to load students:', error);
+        setStudents([]);
+      } else {
+        setStudents(data || []);
+      }
     } catch (e) {
       console.error('Failed to load students:', e);
+      setStudents([]);
     } finally {
       setLoading(false);
     }
@@ -352,11 +326,9 @@ export default function TeacherDashboard() {
 
   const filtered = students.filter(st => {
     const q = search.toLowerCase();
-    return (
-      (st.displayName || '').toLowerCase().includes(q) ||
-      (st.full_name || '').toLowerCase().includes(q) ||
-      (st.email || '').toLowerCase().includes(q)
-    );
+    const name = (st.full_name || '').toLowerCase();
+    const email = (st.email || '').toLowerCase();
+    return name.includes(q) || email.includes(q);
   });
 
   const avgProgress = students.length > 0

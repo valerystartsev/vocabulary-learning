@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { calculateNextReview, getDefaultCard } from '../utils/spacedRepetition';
+import { supabase } from '../lib/supabaseClient';
 
-const ProgressContext = createContext();
+const ProgressContext = createContext(null);
 
 const TEACHER_EMAIL = 'emzakhtser@mail.ru'; // canonical — used for normalized comparison
 
@@ -149,10 +150,30 @@ export function ProgressProvider({ children, user, courseUnits }) {
   // Restore progress from the DB user record when localStorage has no data.
   // This handles: new device, cleared browser storage, first login after data loss.
   const hydrateFromDB = async () => {
-    // DB hydration disabled in local migration mode — progress lives in localStorage only
+    if (!userId || !user?.id) return;
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('progress')
+        .eq('id', user.id)
+        .single();
+
+      if (error) {
+        console.error('Failed to hydrate progress from DB:', error);
+        return;
+      }
+
+      if (data?.progress) {
+        const dbProgress = { ...DEFAULT_PROGRESS, ...data.progress };
+        setProgress(dbProgress);
+        localStorage.setItem(storageKey(userId), JSON.stringify(dbProgress));
+      }
+    } catch (e) {
+      console.error('Failed to hydrate progress from DB:', e);
+    }
   };
 
-  // Persist to localStorage and debounce sync to DB whenever progress changes
+  // Persist to localStorage and sync to DB whenever progress changes
   useEffect(() => {
     if (!userId) return;
     localStorage.setItem(storageKey(userId), JSON.stringify(progress));
@@ -164,7 +185,22 @@ export function ProgressProvider({ children, user, courseUnits }) {
   }, [progress, userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const syncProgressToUser = async (prog) => {
-    // DB sync disabled in local migration mode — progress saved to localStorage only
+    if (!user?.id) return;
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ 
+          progress: prog,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id);
+
+      if (error) {
+        console.error('Failed to sync progress to DB:', error);
+      }
+    } catch (e) {
+      console.error('Failed to sync progress to DB:', e);
+    }
   };
 
   // Keep a ref to courseUnits so syncProgressToUser can access it without stale closure
@@ -300,8 +336,15 @@ export function ProgressProvider({ children, user, courseUnits }) {
   const resetProgress = useCallback(() => {
     setProgress(DEFAULT_PROGRESS);
     if (userId) localStorage.removeItem(storageKey(userId));
-    // DB clear disabled in local migration mode
-  }, [userId]);
+    // Also clear from DB
+    if (user?.id) {
+      supabase
+        .from('profiles')
+        .update({ progress: DEFAULT_PROGRESS })
+        .eq('id', user.id)
+        .then(() => {}, () => {});
+    }
+  }, [userId, user]);
 
   // getUnitProgress requires the unit data to compute correctly.
   // Components that call this must also pass the unit object.
@@ -311,13 +354,23 @@ export function ProgressProvider({ children, user, courseUnits }) {
     return computeUnitProgress(progress, unitId, unit);
   }, [progress]);
 
+  // Compute overall progress
+  const getOverallProgress = useCallback(() => {
+    const units = courseUnitsRef.current || [];
+    if (units.length === 0) return 0;
+    const total = units.reduce((acc, unit) => {
+      return acc + computeUnitProgress(progress, unit.id, unit);
+    }, 0);
+    return Math.round(total / units.length);
+  }, [progress]);
+
   return (
     <ProgressContext.Provider value={{
       progress, markWordLearned, markWordWeak, addWeakWordsFromExercise,
       markExerciseComplete, markSectionComplete, saveTotalTestScore,
       markMediaComplete, setLastOpened, resetProgress, getUnitProgress,
       updateVocabRadar, saveScenarioScore, saveCrosswordScore, saveMediaQuestScore,
-      updateSRS, logError,
+      updateSRS, logError, getOverallProgress,
     }}>
       {children}
     </ProgressContext.Provider>

@@ -65,6 +65,36 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false);
   };
 
+  const updateUser = async (userMetadata) => {
+    const { data, error } = await supabase.auth.updateUser({
+      data: userMetadata,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    if (data?.user) {
+      setUser(data.user);
+    }
+
+    return data;
+  };
+
+  const refreshUser = async () => {
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error) {
+      throw error;
+    }
+
+    if (data?.user) {
+      setUser(data.user);
+    }
+
+    return data;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -72,6 +102,8 @@ export function AuthProvider({ children }) {
         isAuthenticated,
         isLoadingAuth,
         logout,
+        updateUser,
+        refreshUser,
       }}
     >
       {children}

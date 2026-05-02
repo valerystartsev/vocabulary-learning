@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../lib/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 import { User, Save, CheckCircle, GraduationCap, ArrowLeft, Sun, Moon, TrendingUp } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 export default function Profile() {
-  const { user, refreshUser } = useAuth();
+  const { user, refreshUser, updateUser } = useAuth();
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
 
@@ -17,8 +18,9 @@ export default function Profile() {
 
   useEffect(() => {
     if (user) {
-      setDisplayName(user.displayName || user.full_name || '');
-      setIsFinancialUniversity(!!user.isFinancialUniversity);
+      const metadata = user.user_metadata || {};
+      setDisplayName(metadata.full_name || user.full_name || '');
+      setIsFinancialUniversity(!!metadata.isFinancialUniversity);
     }
   }, [user]);
 
@@ -40,10 +42,27 @@ export default function Profile() {
     setSaving(true);
     try {
       const trimmed = displayName.trim();
-      console.log('Profile save disabled in local migration mode', {
+      
+      // Update auth metadata
+      await updateUser({
+        full_name: trimmed || null,
         isFinancialUniversity: Boolean(isFinancialUniversity),
-        displayName: trimmed || null,
       });
+
+      // Also update profiles table directly for teacher dashboard queries
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ 
+          full_name: trimmed || null,
+          is_financial_university: Boolean(isFinancialUniversity),
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id);
+
+      if (profileError) {
+        console.error('Failed to update profile table:', profileError);
+      }
+
       await refreshUser();
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);

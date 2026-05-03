@@ -212,7 +212,16 @@ function DuringStage({ item, onFinished }) {
   return (
     <div className="space-y-4">
       {/* Media access */}
-      {item.type === 'video' && item.embedId ? (
+      {item.type === 'video' && item.localSrc ? (
+        <video
+          controls
+          controlsList="nodownload"
+          style={{ width: '100%', borderRadius: '12px', display: 'block', backgroundColor: '#000' }}
+          src={item.localSrc}
+        >
+          Ваш браузер не поддерживает видео.
+        </video>
+      ) : item.type === 'video' && item.embedId ? (
         <EmbedPlayer embedId={item.embedId} title={item.title} url={item.url} />
       ) : item.type === 'audio' || item.audioFile ? (
         <div

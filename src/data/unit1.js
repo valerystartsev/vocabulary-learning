@@ -557,39 +557,6 @@ export const unit1 = {
       ]
     },
     {
-      id: "ex1_match_b",
-      type: "match",
-      title: "Match the Word with the Translation — B: Business operations vocabulary / Деловые операции",
-      instruction: "Connect each English word with its Russian translation.",
-      pairs: [
-        { en: "purchase", ru: "покупать / покупка" },
-        { en: "cancel", ru: "аннулировать" },
-        { en: "refund", ru: "возврат денег" },
-        { en: "deal", ru: "сделка" },
-        { en: "obtain", ru: "получать" },
-        { en: "authorize", ru: "уполномочивать" },
-        { en: "permit", ru: "разрешать" },
-        { en: "negotiate", ru: "вести переговоры" },
-        { en: "procedure", ru: "процедура" }
-      ]
-    },
-    {
-      id: "ex1_match_c",
-      type: "match",
-      title: "Match the Word with the Translation — C: Formal and descriptive vocabulary / Формальная и описательная лексика",
-      instruction: "Connect each English word with its Russian translation.",
-      pairs: [
-        { en: "circumstances", ru: "обстоятельства" },
-        { en: "overheads", ru: "накладные расходы" },
-        { en: "fluctuate", ru: "колебаться" },
-        { en: "fluctuation", ru: "колебание" },
-        { en: "prevail", ru: "преобладать" },
-        { en: "restrict", ru: "ограничивать" },
-        { en: "subject (to)", ru: "подвергать" },
-        { en: "undesirable", ru: "нежелательный" }
-      ]
-    },
-    {
       id: "ex1_tf",
       type: "trueFalse",
       title: "True or False?",
@@ -607,6 +574,23 @@ export const unit1 = {
         { statement: "A permit is an official document giving permission.", answer: true, explanation: "A permit allows you to legally do something (open a business, build, etc.)." },
         { statement: "To damage something means to improve it.", answer: false, explanation: "Damage = to harm or break something. The opposite of improving." },
         { statement: "Prices subject to change means they may change at any time.", answer: true, explanation: "Subject to = under the condition of. Prices can change." }
+      ]
+    },
+    {
+      id: "ex1_match_b",
+      type: "match",
+      title: "Match the Word with the Translation — B: Business operations vocabulary / Деловые операции",
+      instruction: "Connect each English word with its Russian translation.",
+      pairs: [
+        { en: "purchase", ru: "покупать / покупка" },
+        { en: "cancel", ru: "аннулировать" },
+        { en: "refund", ru: "возврат денег" },
+        { en: "deal", ru: "сделка" },
+        { en: "obtain", ru: "получать" },
+        { en: "authorize", ru: "уполномочивать" },
+        { en: "permit", ru: "разрешать" },
+        { en: "negotiate", ru: "вести переговоры" },
+        { en: "procedure", ru: "процедура" }
       ]
     },
     {
@@ -634,6 +618,22 @@ export const unit1 = {
         { sentence: "Poor management can ______ a company to lose customers.", answer: "cause", explanation: "Cause = to make something happen." },
         { sentence: "You need a ______ to open a restaurant in this area.", answer: "permit", explanation: "Permit = official document giving permission." },
         { sentence: "The two companies made a ______ to share their warehouses.", answer: "deal", explanation: "Deal = a business agreement." }
+      ]
+    },
+    {
+      id: "ex1_match_c",
+      type: "match",
+      title: "Match the Word with the Translation — C: Formal and descriptive vocabulary / Формальная и описательная лексика",
+      instruction: "Connect each English word with its Russian translation.",
+      pairs: [
+        { en: "circumstances", ru: "обстоятельства" },
+        { en: "overheads", ru: "накладные расходы" },
+        { en: "fluctuate", ru: "колебаться" },
+        { en: "fluctuation", ru: "колебание" },
+        { en: "prevail", ru: "преобладать" },
+        { en: "restrict", ru: "ограничивать" },
+        { en: "subject (to)", ru: "подвергать" },
+        { en: "undesirable", ru: "нежелательный" }
       ]
     },
     {
@@ -691,75 +691,7 @@ export const unit1 = {
           explanation: "Communicate = to share information with someone."
         }
       ]
-    },
-    {
-      id: "ex1_concept",
-      type: "conceptMatch",
-      title: "Match the Concept",
-      instruction: "Match each description with the correct business term.",
-      pairs: [
-        { description: "A company reaches this point when its total income equals its total costs, so there is no profit and no loss.", term: "break even" },
-        { description: "This happens when two separate companies join together to form one company.", term: "merger" },
-        { description: "This market structure exists when one company is the only seller of a product or service.", term: "monopoly" },
-        { description: "These are the regular fixed costs a business must pay, such as rent, salaries, and utility bills.", term: "overheads" },
-        { description: "This is a formal statement in which a customer expresses dissatisfaction with a product or service.", term: "complaint" },
-        { description: "This is an official document that gives a person or company the legal right to do something.", term: "permit" },
-        { description: "To be under the control of a rule, condition, or authority that must be followed.", term: "subject (to)" },
-        { description: "When one idea, price, or condition becomes the most powerful or widespread in a situation.", term: "prevail" },
-        { description: "To give someone an official right to receive something or to take a particular action.", term: "entitle" },
-        { description: "A formal business agreement between two parties who each receive something of value.", term: "deal" }
-      ]
-    }
-  ],
-  reading: {
-    title: "Markets, Competition, and Monopolies",
-    guidance: "Read the text slowly. You know many words from the Dictionary. The important words are highlighted. Try to understand the main ideas.",
-    guidanceRu: "Читайте текст медленно. Вы уже знаете многие слова из Словаря. Важные слова выделены. Постарайтесь понять основные идеи.",
-    paragraphs: [
-      {
-        text: "A **market** is a place where buyers and sellers meet. Markets can be physical, like a street market, or online, like an internet shop. In a market economy, people are free to buy and sell goods and services.",
-        glossary: { "market": "рынок — место, где встречаются покупатели и продавцы", "goods": "товары", "services": "услуги" }
-      },
-      {
-        text: "When many companies sell the same product, there is **competition**. Companies **compete** for customers. They try to offer better products, lower prices, or better service. Competition is good for customers because it keeps prices low.",
-        glossary: { "competition": "конкуренция", "compete": "конкурировать", "customers": "клиенты, покупатели" }
-      },
-      {
-        text: "Sometimes one company controls the whole market. This is called a **monopoly**. When a company has a monopoly, there is no competition. The company can set high prices because customers have no other choice.",
-        glossary: { "monopoly": "монополия", "controls": "контролирует" }
-      },
-      {
-        text: "There are different types of monopolies. A **legal monopoly** is when the government gives one company the right to be the only seller. For example, a patent gives a company a legal monopoly for 20 years. A **natural monopoly** happens when it is too expensive for other companies to enter the market.",
-        glossary: { "legal monopoly": "легальная монополия", "patent": "патент", "natural monopoly": "естественная монополия" }
-      },
-      {
-        text: "The government can **restrict** monopolies by making special rules. These rules protect customers and help small businesses. The government **authority** controls fair **competition** and stops companies from using **undesirable** business methods.",
-        glossary: { "restrict": "ограничивать", "authority": "власть, орган контроля", "undesirable": "нежелательный" }
-      },
-      {
-        text: "In the labour market, companies **recruit** new workers. They look at each person's **resume** and choose the best candidates. The **recruitment** process can take weeks. Good workers are important for any **enterprise** to grow.",
-        glossary: { "recruit": "нанимать", "resume": "резюме", "recruitment": "набор персонала", "enterprise": "предприятие" }
-      },
-      {
-        text: "Running a business is not easy. Companies must pay their **overheads** — rent, electricity, salaries. Prices of materials often **fluctuate**, going up and down. A new company must work hard to reach the **break-even point** — the moment when income covers all costs.",
-        glossary: { "overheads": "накладные расходы", "fluctuate": "колебаться", "break-even point": "точка безубыточности" }
-      },
-      {
-        text: "Customers have important rights. If a product is **damaged**, a customer can **complain** and request a **refund**. The business must **communicate** clearly about the **procedure** for returning goods. Many businesses have a complaints **deal**ing process. Customers are **entitled** to a refund under certain **circumstances**.",
-        glossary: { "damaged": "повреждённый", "complain": "жаловаться", "refund": "возврат денег", "communicate": "сообщать", "entitled": "имеющий право" }
-      }
-    ]
-  },
-  comprehension: [
-    { q: "What is a market?", model: "A market is a place where buyers and sellers meet to trade goods and services." },
-    { q: "Why is competition good for customers?", model: "Competition is good because companies try to offer lower prices and better products." },
-    { q: "What happens when one company has a monopoly?", model: "The company can set high prices because customers have no other choice." },
-    { q: "What is a legal monopoly?", model: "A legal monopoly is when the government gives one company the right to be the only seller." },
-    { q: "How does the government protect customers from monopolies?", model: "The government restricts monopolies by making special rules that protect customers." },
-    { q: "What is the break-even point?", model: "The break-even point is the moment when a company's income covers all its costs." },
-    { q: "What can a customer do if a product is damaged?", model: "The customer can complain and request a refund from the business." },
-    { q: "True or False: Recruitment means firing workers.", model: "False. Recruitment means finding and hiring NEW workers." }
-  ],
+    },  ],
   media: [
     {
       mediaId: "u1_media_markets_intro",
@@ -768,7 +700,6 @@ export const unit1 = {
       source: "Educational Video",
       url: "https://youtu.be/4OUpUlBFmIo",
       embedId: "4OUpUlBFmIo",
-      localSrc: "/u1_markets_intro.mp4",
       duration: "Video",
       description: "An introductory video explaining how markets work, what competition means, and how prices are set by buyers and sellers.",
       whyHelps: "You will hear the words 'market', 'competition', 'supply', and 'price' in a real educational context.",
@@ -781,7 +712,7 @@ export const unit1 = {
       postQuiz: [
         { type: "trueFalse", q: "A market is a place where buyers and sellers meet to trade.", answer: true, explanation: "Correct — markets bring buyers and sellers together to exchange goods and services." },
         { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Markets and prices", "Recruitment and HR", "Insurance and taxes", "Pollution and waste"], answer: "Markets and prices", explanation: "The video focuses on markets, competition, supply, price, and demand." },
-        { type: "sentenceBuilder", q: "Build the sentence.", tiles: ["A", "market", "is", "a", "place", "where", "buyers", "and", "sellers", "meet", "monopoly", "price"], answer: ["A", "market", "is", "a", "place", "where", "buyers", "and", "sellers", "meet"] }
+        { type: "sentenceBuilder", q: "Build the sentence.", tiles: ["A", "market", "is", "a", "place", "where", "buyers", "and", "sellers", "meet", ".", "monopoly", "price"], answer: ["A", "market", "is", "a", "place", "where", "buyers", "and", "sellers", "meet", "."] }
       ]
     },
     {
@@ -791,7 +722,6 @@ export const unit1 = {
       source: "Educational Video",
       url: "https://youtu.be/720uyg0Dd_M",
       embedId: "720uyg0Dd_M",
-      localSrc: "/u1_monopoly.mp4",
       duration: "Video",
       description: "A short video explaining what a monopoly is, how it forms, and why governments try to control it.",
       whyHelps: "You will hear 'monopoly', 'control', 'restrict', and 'competition' used naturally.",
@@ -804,7 +734,7 @@ export const unit1 = {
       postQuiz: [
         { type: "trueFalse", q: "A monopoly means one company controls the whole market with no real competition.", answer: true, explanation: "Correct — in a monopoly, one company dominates with little or no competition." },
         { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Monopoly and control", "Supply chain and logistics", "Recruitment and salaries", "Technology and robots"], answer: "Monopoly and control", explanation: "The video focuses on monopoly, control, restrict, competition, and legal." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "monopoly", "is", "when", "one", "company", "controls", "the", "whole", "market", "many", "companies", "share", "prices", "fall"], answer: ["A", "monopoly", "is", "when", "one", "company", "controls", "the", "whole", "market"] }
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "monopoly", "is", "when", "one", "company", "controls", "the", "whole", "market", ".", "many", "companies", "share", "prices", "fall"], answer: ["A", "monopoly", "is", "when", "one", "company", "controls", "the", "whole", "market", "."] }
       ]
     },
     {
@@ -814,7 +744,6 @@ export const unit1 = {
       source: "Educational Video",
       url: "https://youtu.be/A2BOOkldCzw",
       embedId: "A2BOOkldCzw",
-      localSrc: "/u1_supply_demand.mp4",
       duration: "Video",
       description: "A clear explanation of supply and demand — two of the most important concepts in economics.",
       whyHelps: "You will hear 'supply', 'demand', 'price', 'fluctuate', and 'market' in a clear educational context.",
@@ -827,7 +756,7 @@ export const unit1 = {
       postQuiz: [
         { type: "trueFalse", q: "When demand is high and supply is low, prices usually go up.", answer: true, explanation: "Correct — high demand and low supply push prices upward." },
         { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Supply and demand", "Monopoly and mergers", "Recruitment and CV", "Insurance and overheads"], answer: "Supply and demand", explanation: "The video focuses on supply, demand, price, market, and fluctuations." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Supply", "is", "the", "amount", "of", "a", "product", "that", "sellers", "offer", "in", "the", "market", "buyers", "demand", "consume"], answer: ["Supply", "is", "the", "amount", "of", "a", "product", "that", "sellers", "offer", "in", "the", "market"] }
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Supply", "is", "the", "amount", "of", "a", "product", "that", "sellers", "offer", "in", "the", "market", ".", "buyers", "demand", "consume"], answer: ["Supply", "is", "the", "amount", "of", "a", "product", "that", "sellers", "offer", "in", "the", "market", "."] }
       ]
     },
     {
@@ -837,7 +766,6 @@ export const unit1 = {
       source: "Educational Video",
       url: "https://youtu.be/J9OO9lSQnG8",
       embedId: "J9OO9lSQnG8",
-      localSrc: "/u1_mergers.mp4",
       duration: "Video",
       description: "A video about what happens when two companies merge — how it affects competition, prices, and consumers.",
       whyHelps: "You will hear 'merger', 'competition', 'monopoly', 'affect', and 'authorize' in a business context.",
@@ -850,7 +778,7 @@ export const unit1 = {
       postQuiz: [
         { type: "trueFalse", q: "A merger can reduce competition in the market.", answer: true, explanation: "Correct — when two companies merge, there are fewer competitors, which can reduce competition." },
         { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Mergers and competition", "Supply and demand", "Recruitment and salaries", "Environment and pollution"], answer: "Mergers and competition", explanation: "The video focuses on merger, competition, monopoly, affect, and authorize." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "merger", "happens", "when", "two", "companies", "join", "together", "to", "become", "one", "many", "split", "apart", "three", "divide"], answer: ["A", "merger", "happens", "when", "two", "companies", "join", "together", "to", "become", "one"] }
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "merger", "happens", "when", "two", "companies", "join", "together", "to", "become", "one", ".", "many", "split", "apart", "three", "divide"], answer: ["A", "merger", "happens", "when", "two", "companies", "join", "together", "to", "become", "one", "."] }
       ]
     }
   ],

@@ -4,19 +4,37 @@ import { CheckCircle, XCircle, Eye, RotateCcw, Lightbulb, Trophy, AlertTriangle,
 
 /* ── Crossword data ── */
 const CROSSWORD_WORDS = [
-  { number: 1,  word: 'MARKET',      dir: 'across', row: 0,  col: 0,  clue: 'A place where buyers and sellers meet to trade.',         clueRu: 'Место встречи покупателей и продавцов.' },
-  { number: 2,  word: 'MONOPOLY',    dir: 'across', row: 2,  col: 0,  clue: 'When one company controls the whole market.',             clueRu: 'Когда одна компания контролирует весь рынок.' },
-  { number: 3,  word: 'MERGER',      dir: 'across', row: 4,  col: 1,  clue: 'Two companies join to become one bigger company.',        clueRu: 'Два предприятия объединяются в одно.' },
-  { number: 4,  word: 'OVERHEADS',   dir: 'across', row: 6,  col: 0,  clue: 'Regular costs like rent, electricity, and salaries.',     clueRu: 'Постоянные расходы: аренда, электричество.' },
-  { number: 5,  word: 'RECRUIT',     dir: 'across', row: 8,  col: 2,  clue: 'To find and hire new workers.',                           clueRu: 'Найти и нанять новых сотрудников.' },
-  { number: 6,  word: 'REFUND',      dir: 'across', row: 10, col: 0,  clue: 'Money given back to a buyer for a returned product.',     clueRu: 'Возврат денег покупателю.' },
-  { number: 7,  word: 'COMPETE',     dir: 'down',   row: 0,  col: 2,  clue: 'To try to be better than another company.',               clueRu: 'Стараться быть лучше конкурента.' },
-  { number: 8,  word: 'ENTERPRISE',  dir: 'down',   row: 0,  col: 5,  clue: 'A business or the courage to start one.',                 clueRu: 'Бизнес или смелость его начать.' },
-  { number: 9,  word: 'AUTHORITY',   dir: 'down',   row: 2,  col: 1,  clue: 'The power to make decisions or a controlling group.',     clueRu: 'Власть или орган контроля.' },
-  { number: 10, word: 'RESTRICT',    dir: 'down',   row: 4,  col: 7,  clue: 'To limit or put rules on something.',                    clueRu: 'Ограничивать или устанавливать правила.' },
-  { number: 11, word: 'PURCHASE',    dir: 'down',   row: 6,  col: 4,  clue: 'To buy something. Also: the thing you buy.',              clueRu: 'Купить. Также: то, что вы купили.' },
-  { number: 12, word: 'DEMAND',      dir: 'down',   row: 8,  col: 0,  clue: 'How much customers want to buy a product.',               clueRu: 'Насколько покупатели хотят купить товар.' },
+  // ── ACROSS ──
+  { number: 1, word: 'DAMAGE',     dir: 'across', row: 0,  col: 0,
+    clue: 'To physically harm or break something.',
+    clueRu: 'Повредить — причинить физический вред.' },
+  { number: 2, word: 'MARKET',     dir: 'across', row: 2,  col: 0,
+    clue: 'A place where buyers and sellers meet to trade.',
+    clueRu: 'Рынок — место встречи покупателей и продавцов.' },
+  { number: 3, word: 'AUTHORIZE',  dir: 'across', row: 11, col: 0,
+    clue: 'To give official permission for something.',
+    clueRu: 'Уполномочивать — давать официальное разрешение.' },
+  { number: 4, word: 'RESTRICT',   dir: 'across', row: 13, col: 0,
+    clue: 'To limit or place rules on something.',
+    clueRu: 'Ограничивать — устанавливать правила.' },
+  // ── DOWN ──
+  { number: 5, word: 'DEMAND',     dir: 'down',   row: 0,  col: 0,
+    clue: 'How much customers want to buy a product.',
+    clueRu: 'Спрос — желание покупателей купить товар.' },
+  { number: 6, word: 'MERGER',     dir: 'down',   row: 0,  col: 2,
+    clue: 'Two companies joining to become one bigger company.',
+    clueRu: 'Слияние — два предприятия объединяются в одно.' },
+  { number: 7, word: 'ENTERPRISE', dir: 'down',   row: 0,  col: 5,
+    clue: 'A business, or the initiative and courage to start one.',
+    clueRu: 'Предприятие — бизнес или инициатива его создать.' },
 ];
+// ── Verified intersections (all correct, 0 conflicts): ──
+// (0,0)=D: DAMAGE ∩ DEMAND     ✓
+// (0,2)=M: DAMAGE ∩ MERGER     ✓
+// (0,5)=E: DAMAGE ∩ ENTERPRISE ✓
+// (2,0)=M: MARKET ∩ DEMAND     ✓
+// (2,2)=R: MARKET ∩ MERGER     ✓
+// (2,5)=T: MARKET ∩ ENTERPRISE ✓
 
 function buildGrid(words) {
   let maxRow = 0, maxCol = 0;

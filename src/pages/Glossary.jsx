@@ -441,7 +441,7 @@ export default function Glossary() {
                   <span className="font-semibold" style={{ fontSize: 15, color: 'var(--col-heading)' }}>
                     {word.term}
                   </span>
-                  <PronounceButton term={word.term} size="xs" />
+                  <PronounceButton term={word.term} audioUrl={word.audioUrl} size="xs" />
                   <span
                     className="text-xs px-1.5 py-0.5 rounded font-medium shrink-0"
                     style={{ backgroundColor: 'var(--col-tag-bg)', color: 'var(--col-tag-text)' }}

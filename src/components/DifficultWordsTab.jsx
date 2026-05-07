@@ -56,7 +56,7 @@ function WordCard({ word }) {
           {/* Term + pronunciation */}
           <div className="flex items-center gap-2">
             <span className="font-bold text-base" style={{ color: 'var(--col-heading)' }}>{word.term}</span>
-            <PronounceButton term={word.term} size="sm" />
+            <PronounceButton term={word.term} audioUrl={word.audioUrl} size="sm" />
           </div>
 
           {/* Definitions */}

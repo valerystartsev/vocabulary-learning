@@ -16,7 +16,7 @@ const WORDS = [
   { number: 13, word: 'INTEREST',  dir: 'across', row: 7,  col: 1,  clue: 'Extra money paid on savings or a loan.',                        clueRu: 'Проценты по вкладу или кредиту.' },
   { number: 14, word: 'SAVINGS',   dir: 'across', row: 9,  col: 7,  clue: 'Money kept for future use.',                                    clueRu: 'Деньги, отложенные на будущее.' },
   { number: 15, word: 'MONEY',     dir: 'across', row: 10, col: 2,  clue: 'What people use to buy things and pay for services.',           clueRu: 'То, чем люди платят за товары.' },
-  { number: 16, word: 'RETURN',    dir: 'across', row: 11, col: 2,  clue: 'The money you get back from an investment.',                    clueRu: 'Доход / возврат от инвестиций.' },
+  { number: 16, word: 'RETURN',    dir: 'across', row: 12, col: 2,  clue: 'The money you get back from an investment.',                    clueRu: 'Доход / возврат от инвестиций.' },
   // Down
   { number: 2,  word: 'AFFECT',    dir: 'down',   row: 0,  col: 3,  clue: 'To influence or change something.',                            clueRu: 'Влиять на что-то.' },
   { number: 3,  word: 'INVEST',    dir: 'down',   row: 0,  col: 12, clue: 'To put money into something to make a profit.',                 clueRu: 'Вкладывать деньги с целью прибыли.' },
@@ -288,6 +288,13 @@ export default function Unit2Crossword({ isTeacherMode }) {
     setUserInput(newInput);
     setRevealed(newRevealed);
     setChecked(p => { const n = { ...p }; cells.forEach(({ r, c }) => delete n[`${r},${c}`]); return n; });
+    // FIX: immediately add revealed word to Weak Words
+    // Previously: only added to Weak Words when the whole crossword was completed.
+    // Now: any word revealed via "Reveal Word" is instantly flagged as weak.
+    const revealedWord = WORDS[selectedWordIdx];
+    if (revealedWord && addWeakWordsFromExercise) {
+      addWeakWordsFromExercise([`u2_${revealedWord.word.toLowerCase()}`]);
+    }
   };
 
   const resetPuzzle = () => {

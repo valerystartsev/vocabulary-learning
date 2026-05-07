@@ -3,10 +3,12 @@ import { Volume2 } from 'lucide-react';
 
 /**
  * Reusable pronunciation button.
- * Priority: plays audioUrl (MP3) if provided, otherwise falls back to Web Speech API.
+ * If `audioUrl` prop is provided → plays MP3 file from public/audio/.
+ * If file fails or audioUrl not given → falls back to Web Speech API (TTS).
+ *
  * Props:
- *   term      — the word/phrase to pronounce
- *   audioUrl  — optional path to MP3 file (e.g. "/audio/overheads.mp3")
+ *   term      — the word/phrase (used for TTS fallback and aria-label)
+ *   audioUrl  — optional path like "/audio/overheads.mp3"
  *   size      — 'sm' (default) | 'xs'
  *   className — extra tailwind classes
  */
@@ -17,22 +19,21 @@ export default function PronounceButton({ term, audioUrl, size = 'sm', className
     e.stopPropagation();
     if (!term) return;
 
-    // Use MP3 file if available (better quality than browser TTS)
+    // ── Priority 1: MP3 file ───────────────────────────────────────────────
     if (audioUrl) {
       const audio = new Audio(audioUrl);
       audio.onplay  = () => setPlaying(true);
       audio.onended = () => setPlaying(false);
       audio.onerror = () => {
         setPlaying(false);
-        // Fallback to TTS if audio file fails
-        speakWithTTS(term, setPlaying);
+        speakTTS(term, setPlaying); // fallback if file not found
       };
-      audio.play().catch(() => speakWithTTS(term, setPlaying));
+      audio.play().catch(() => speakTTS(term, setPlaying));
       return;
     }
 
-    // Fallback: browser Web Speech API
-    speakWithTTS(term, setPlaying);
+    // ── Priority 2: Browser TTS ────────────────────────────────────────────
+    speakTTS(term, setPlaying);
   }, [term, audioUrl]);
 
   const dim      = size === 'xs' ? 24 : 28;
@@ -56,7 +57,7 @@ export default function PronounceButton({ term, audioUrl, size = 'sm', className
   );
 }
 
-function speakWithTTS(term, setPlaying) {
+function speakTTS(term, setPlaying) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const utt      = new SpeechSynthesisUtterance(term);

@@ -1,87 +1,57 @@
-// src/lib/AuthContext.jsx
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 
 const AuthContext = createContext(null);
 
-// Загружает данные профиля из таблицы profiles и добавляет к auth-пользователю.
-// Вызывается при каждом входе и при смене сессии.
-async function loadProfile(authUser) {
-  try {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('full_name, display_name, university_tracking, email')
-      .eq('id', authUser.id)
-      .single();
-
-    // Если email в profiles пустой — дописываем из auth (для старых аккаунтов)
-    if (!profile?.email && authUser.email) {
-      await supabase
-        .from('profiles')
-        .update({ email: authUser.email })
-        .eq('id', authUser.id);
-    }
-
-    return {
-      ...authUser,
-      full_name: profile?.full_name || '',
-      displayName: profile?.display_name || profile?.full_name || '',
-      isFinancialUniversity: profile?.university_tracking || false,
-    };
-  } catch {
-    return authUser;
-  }
-}
-
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
-  const [authError, setAuthError] = useState(null);
-
-  // App.jsx использует isLoadingPublicSettings — делаем равным isLoadingAuth
-  const isLoadingPublicSettings = isLoadingAuth;
 
   useEffect(() => {
     let isMounted = true;
 
-    const loadUser = async () => {
-      setIsLoadingAuth(true);
-      const { data, error } = await supabase.auth.getUser();
-      if (!isMounted) return;
-
-      if (error || !data?.user) {
-        setUser(null);
-        setIsAuthenticated(false);
-        setAuthError(null);
-      } else {
-        const enriched = await loadProfile(data.user);
-        setUser(enriched);
-        setIsAuthenticated(true);
-        setAuthError(null);
-      }
-      setIsLoadingAuth(false);
-    };
-
-    loadUser();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+    // ─── FIX: Use getSession() instead of getUser() ──────────────────────────
+    // getUser() makes a NETWORK request to Supabase on every page load.
+    // If the network is slow or Supabase is briefly unreachable → app hangs.
+    // getSession() reads the session from LOCALSTORAGE instantly (no network).
+    // onAuthStateChange then keeps the session fresh in the background.
+    // ─────────────────────────────────────────────────────────────────────────
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
         if (!isMounted) return;
         if (session?.user) {
-          const enriched = await loadProfile(session.user);
-          setUser(enriched);
+          setUser(session.user);
           setIsAuthenticated(true);
-          setAuthError(null);
         } else {
           setUser(null);
           setIsAuthenticated(false);
-          setAuthError(null);
         }
         setIsLoadingAuth(false);
+      })
+      .catch(() => {
+        // Network error on initial load — still show the app, let onAuthStateChange recover
+        if (isMounted) {
+          setUser(null);
+          setIsAuthenticated(false);
+          setIsLoadingAuth(false);
+        }
+      });
+
+    // Real-time listener: fires on login, logout, token refresh, tab focus
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
+      if (session?.user) {
+        setUser(session.user);
+        setIsAuthenticated(true);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
       }
-    );
+      setIsLoadingAuth(false);
+    });
 
     return () => {
       isMounted = false;
@@ -89,33 +59,32 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-  // Вызывается из Profile.jsx после нажатия Save —
-  // обновляет данные пользователя в памяти без перезагрузки страницы
-  const refreshUser = async () => {
-    const { data } = await supabase.auth.getUser();
-    if (data?.user) {
-      const enriched = await loadProfile(data.user);
-      setUser(enriched);
-    }
-  };
-
   const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) { console.error('Logout error:', error.message); return; }
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {
+      console.error('Logout error:', e.message);
+    }
     setUser(null);
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      isAuthenticated,
-      isLoadingAuth,
-      isLoadingPublicSettings,
-      authError,
-      logout,
-      refreshUser,
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        isLoadingAuth,
+        // These aliases keep App.jsx working without changes:
+        isLoadingPublicSettings: isLoadingAuth,
+        authError: null,
+        logout,
+        refreshUser: async () => {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user) setUser(session.user);
+        },
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

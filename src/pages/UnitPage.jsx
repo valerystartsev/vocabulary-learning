@@ -282,7 +282,7 @@ export default function UnitPage() {
       <SectionDivider id="dictionary" isDone={sectionDone('dictionary')} />
       <Dictionary vocabulary={unit.vocabulary} />
 
-      {/* VocabularyRadar after Dictionary for Unit 2 (requested in доработки) */}
+      {/* VocabularyRadar after Dictionary — Unit 2 only (доработки п.1) */}
       {unit.id === 2 && (
         <VocabularyRadar
           words={unit.vocabulary.slice(0, 8)}

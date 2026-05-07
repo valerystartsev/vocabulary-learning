@@ -7,6 +7,7 @@ export const unit1 = {
   keyIdeas: [
     {
       term: "Market",
+      audioUrl: "/audio/market.mp3",
       termRu: "Рынок",
       meaning: "A place where buyers and sellers meet to trade goods and services.",
       meaningRu: "Место, где покупатели и продавцы встречаются для торговли товарами и услугами.",
@@ -14,6 +15,7 @@ export const unit1 = {
     },
     {
       term: "Competition",
+      audioUrl: "/audio/competition.mp3",
       termRu: "Конкуренция",
       meaning: "Companies fight to get customers by offering better products or lower prices.",
       meaningRu: "Компании борются за клиентов, предлагая лучшие товары или более низкие цены.",
@@ -31,6 +33,7 @@ export const unit1 = {
     {
       id: "u1_accept",
       term: "accept",
+      audioUrl: "/audio/accept.mp3",
       pos: "verb",
       translationRu: "принимать, соглашаться",
       trick: "A+C+C+E+P+T — представь, что открываешь дверь и впускаешь что-то внутрь. Accept = пустить, принять.",
@@ -42,6 +45,7 @@ export const unit1 = {
     {
       id: "u1_acceptance",
       term: "acceptance",
+      audioUrl: "/audio/acceptance.mp3",
       pos: "noun",
       translationRu: "принятие, согласие",
       trick: "accept + -ance = состояние, когда решение уже принято. Дверь уже открыта.",
@@ -53,6 +57,7 @@ export const unit1 = {
     {
       id: "u1_affect",
       term: "affect",
+      audioUrl: "/audio/affect.mp3",
       pos: "verb",
       translationRu: "влиять, воздействовать",
       trick: "Affect → effect. A стоит перед E — сначала действие (affect), потом результат (effect).",
@@ -64,6 +69,7 @@ export const unit1 = {
     {
       id: "u1_authorize",
       term: "authorize",
+      audioUrl: "/audio/authorize.mp3",
       pos: "verb",
       translationRu: "разрешать, уполномочивать",
       trick: "AUTHOR + ize — тот, кто написал правила, тот и даёт разрешение действовать.",
@@ -75,6 +81,7 @@ export const unit1 = {
     {
       id: "u1_authority",
       term: "authority",
+      audioUrl: "/audio/authority.mp3",
       pos: "noun",
       translationRu: "власть, полномочия, орган власти",
       trick: "AUTHOR + ity — тот, чьи правила все соблюдают. Как 'авторитет' — источник власти.",
@@ -86,6 +93,7 @@ export const unit1 = {
     {
       id: "u1_breakeven",
       term: "break even",
+      audioUrl: "/audio/break_even.mp3",
       pos: "verb phrase",
       translationRu: "выйти в ноль, окупиться",
       trick: "Break even = сделать числа равными. Доходы и расходы уравновешиваются — ни плюс, ни минус.",
@@ -97,6 +105,7 @@ export const unit1 = {
     {
       id: "u1_breakevenpoint",
       term: "break-even point",
+      audioUrl: "/audio/break_even_point.mp3",
       pos: "noun",
       translationRu: "точка безубыточности",
       trick: "Точка, где две линии пересекаются на графике: ни убытка, ни прибыли. Баланс.",
@@ -130,6 +139,7 @@ export const unit1 = {
     {
       id: "u1_communicate",
       term: "communicate",
+      audioUrl: "/audio/communicate.mp3",
       pos: "verb",
       translationRu: "общаться, сообщать",
       trick: "Communicate = сделать общим. Commun- (общий) — поделиться так, чтобы обе стороны знали.",
@@ -141,6 +151,7 @@ export const unit1 = {
     {
       id: "u1_complain",
       term: "complain",
+      audioUrl: "/audio/complain.mp3",
       pos: "verb",
       translationRu: "жаловаться",
       trick: "Complain = говорить открыто (plain) о том, что не так. Высказать недовольство.",
@@ -152,6 +163,7 @@ export const unit1 = {
     {
       id: "u1_complaint",
       term: "complaint",
+      audioUrl: "/audio/complaint.mp3",
       pos: "noun",
       translationRu: "жалоба",
       trick: "Complaint = официальный результат complain. Обычно письменное или зафиксированное возражение.",
@@ -163,6 +175,7 @@ export const unit1 = {
     {
       id: "u1_competition",
       term: "competition",
+      audioUrl: "/audio/competition.mp3",
       pos: "noun",
       translationRu: "конкуренция, соревнование",
       trick: "Competition = когда несколько продавцов борются за одних покупателей — как гонка за клиентами.",
@@ -174,6 +187,7 @@ export const unit1 = {
     {
       id: "u1_compete",
       term: "compete",
+      audioUrl: "/audio/compete.mp3",
       pos: "verb",
       translationRu: "конкурировать, соревноваться",
       trick: "Два человека хотят одно и то же одновременно — это и есть compete (конкурировать).",
@@ -185,6 +199,7 @@ export const unit1 = {
     {
       id: "u1_competitive",
       term: "competitive",
+      audioUrl: "/audio/competitive.mp3",
       pos: "adjective",
       translationRu: "конкурентоспособный",
       trick: "Если компания умеет хорошо compete — она competitive (конкурентоспособная).",
@@ -196,6 +211,7 @@ export const unit1 = {
     {
       id: "u1_damage",
       term: "damage",
+      audioUrl: "/audio/damage.mp3",
       pos: "noun / verb",
       translationRu: "ущерб / наносить ущерб",
       trick: "Damage = вред, который уже нанесён. Одно слово — и действие, и результат.",
@@ -218,6 +234,7 @@ export const unit1 = {
     {
       id: "u1_entitle",
       term: "entitle",
+      audioUrl: "/audio/entitle.mp3",
       pos: "verb",
       translationRu: "давать право, иметь право",
       trick: "Title (звание) даёт статус и права. Entitle = дать кому-то право что-то получить.",
@@ -229,6 +246,7 @@ export const unit1 = {
     {
       id: "u1_merger",
       term: "merger",
+      audioUrl: "/audio/merger.mp3",
       pos: "noun",
       translationRu: "слияние (компаний)",
       trick: "Как две полосы движения, которые сливаются в одну дорогу. Две компании → одна.",
@@ -251,6 +269,7 @@ export const unit1 = {
     {
       id: "u1_monopolise",
       term: "monopolise",
+      audioUrl: "/audio/monopolise.mp3",
       pos: "verb",
       translationRu: "монополизировать",
       trick: "Monopolise = взять весь рынок только себе. Никого другого не осталось.",
@@ -273,6 +292,7 @@ export const unit1 = {
     {
       id: "u1_overheads",
       term: "overheads",
+      audioUrl: "/audio/overheads.mp3",
       pos: "noun (plural)",
       translationRu: "накладные расходы",
       trick: "Эти расходы 'висят над головой' каждый месяц — аренда, электричество, зарплаты. Всегда.",
@@ -295,6 +315,7 @@ export const unit1 = {
     {
       id: "u1_prevail",
       term: "prevail",
+      audioUrl: "/audio/prevail.mp3",
       pos: "verb",
       translationRu: "преобладать, побеждать, господствовать",
       trick: "Что побеждает в итоге — то и prevails (преобладает). Сильнейшая сторона берёт верх.",
@@ -328,6 +349,7 @@ export const unit1 = {
     {
       id: "u1_enterprise",
       term: "enterprise",
+      audioUrl: "/audio/enterprise.mp3",
       pos: "noun",
       translationRu: "предприятие, предпринимательство",
       trick: "Enter the market to win a prize — enterprise = организованная деловая активность.",
@@ -339,6 +361,7 @@ export const unit1 = {
     {
       id: "u1_obtain",
       term: "obtain",
+      audioUrl: "/audio/obtain.mp3",
       pos: "verb",
       translationRu: "получать, приобретать",
       trick: "Obtain = тянуться к чему-то и наконец получить. Потянулся — взял официально.",
@@ -361,6 +384,7 @@ export const unit1 = {
     {
       id: "u1_procedure",
       term: "procedure",
+      audioUrl: "/audio/procedure.mp3",
       pos: "noun",
       translationRu: "процедура, порядок действий",
       trick: "Procedure = путь из шагов, по которому ты proceed (продвигаешься). Порядок действий.",
@@ -372,6 +396,7 @@ export const unit1 = {
     {
       id: "u1_purchase",
       term: "purchase",
+      audioUrl: "/audio/purchase.mp3",
       pos: "verb / noun",
       translationRu: "покупать / покупка",
       trick: "Гонишься за тем, что хочешь купить — и погоня заканчивается purchase (покупкой).",
@@ -405,6 +430,7 @@ export const unit1 = {
     {
       id: "u1_resume",
       term: "resume / CV",
+      audioUrl: "/audio/resume__cv.mp3",
       pos: "noun",
       translationRu: "резюме",
       trick: "Resume = снова (re-) подвести итог (sum) своей жизни. Для каждой новой работы — новое резюме.",
@@ -416,6 +442,7 @@ export const unit1 = {
     {
       id: "u1_circumstances",
       term: "circumstances",
+      audioUrl: "/audio/circumstances.mp3",
       pos: "noun (plural)",
       translationRu: "обстоятельства",
       trick: "Circum = вокруг. Circumstances = всё, что стоит вокруг тебя и определяет ситуацию.",
@@ -438,6 +465,7 @@ export const unit1 = {
     {
       id: "u1_undesirable",
       term: "undesirable",
+      audioUrl: "/audio/undesirable.mp3",
       pos: "adjective",
       translationRu: "нежелательный",
       trick: "Un- переворачивает слово. Desirable = желанное; undesirable = то, чего не хочешь.",
@@ -449,6 +477,7 @@ export const unit1 = {
     {
       id: "u1_refund",
       term: "refund",
+      audioUrl: "/audio/refund.mp3",
       pos: "noun / verb",
       translationRu: "возврат (денег) / возвращать деньги",
       trick: "Refund = деньги возвращаются туда, откуда пришли. Re = обратно.",
@@ -471,6 +500,7 @@ export const unit1 = {
     {
       id: "u1_control",
       term: "control",
+      audioUrl: "/audio/control.mp3",
       pos: "verb / noun",
       translationRu: "контролировать / контроль",
       trick: "Control = держать направление и власть в своих руках. Контролировать = управлять.",

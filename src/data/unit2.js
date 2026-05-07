@@ -7,6 +7,7 @@ export const unit2 = {
   keyIdeas: [
     {
       term: "Growth",
+      audioUrl: "/audio/growth.mp3",
       termRu: "Рост",
       meaning: "When a country produces more goods and services than before.",
       meaningRu: "Когда страна производит больше товаров и услуг, чем раньше.",
@@ -14,6 +15,7 @@ export const unit2 = {
     },
     {
       term: "Benefits",
+      audioUrl: "/audio/benefits.mp3",
       termRu: "Выгоды",
       meaning: "The good things that come from growth: more jobs, more income, better life.",
       meaningRu: "Хорошие вещи, которые приходят с ростом: больше работы, больше дохода, лучшая жизнь.",
@@ -21,6 +23,7 @@ export const unit2 = {
     },
     {
       term: "Costs",
+      audioUrl: "/audio/costs.mp3",
       termRu: "Издержки",
       meaning: "The bad things that can come from growth: pollution, inequality, job losses.",
       meaningRu: "Плохие вещи, которые могут сопровождать рост: загрязнение, неравенство, потеря рабочих мест.",
@@ -31,6 +34,7 @@ export const unit2 = {
     {
       id: "u2_amount",
       term: "amount",
+      audioUrl: "/audio/amount.mp3",
       pos: "noun",
       translationRu: "количество, сумма",
       trick: "Amount = сколько есть в сумме. Представь числа, которые накапливаются (mount) в единое целое.",
@@ -42,6 +46,7 @@ export const unit2 = {
     {
       id: "u2_average",
       term: "average",
+      audioUrl: "/audio/average.mp3",
       pos: "noun / adjective",
       translationRu: "средний, среднее значение",
       trick: "Average = середина: не самый высокий и не самый низкий показатель.",
@@ -53,6 +58,7 @@ export const unit2 = {
     {
       id: "u2_benefit",
       term: "benefit",
+      audioUrl: "/audio/benefit.mp3",
       pos: "noun / verb",
       translationRu: "выгода, польза / приносить пользу",
       trick: "Benefit = хорошая сторона. Bene (лат. хорошо) + fit = то, что хорошо тебе подходит.",
@@ -75,6 +81,7 @@ export const unit2 = {
     {
       id: "u2_encourage",
       term: "encourage",
+      audioUrl: "/audio/encourage.mp3",
       pos: "verb",
       translationRu: "поощрять, воодушевлять",
       trick: "Encourage = вложить courage (смелость) в кого-то. Поддержать, дать уверенность.",
@@ -86,6 +93,7 @@ export const unit2 = {
     {
       id: "u2_enlist",
       term: "enlist",
+      audioUrl: "/audio/enlist.mp3",
       pos: "verb",
       translationRu: "вербовать, привлекать, записываться",
       trick: "En + list = записать имя в список. Enlist = официально привлечь кого-то к делу.",
@@ -119,6 +127,7 @@ export const unit2 = {
     {
       id: "u2_justify",
       term: "justify",
+      audioUrl: "/audio/justify.mp3",
       pos: "verb",
       translationRu: "оправдывать, обосновывать",
       trick: "Justify = объяснить, почему это справедливо (just) и необходимо. Обосновать решение.",
@@ -130,6 +139,7 @@ export const unit2 = {
     {
       id: "u2_operate",
       term: "operate",
+      audioUrl: "/audio/operate.mp3",
       pos: "verb",
       translationRu: "работать, управлять, действовать",
       trick: "Operate = управлять системой или бизнесом. Как 'операция' — точные действия для результата.",
@@ -141,6 +151,7 @@ export const unit2 = {
     {
       id: "u2_output",
       term: "output",
+      audioUrl: "/audio/output.mp3",
       pos: "noun",
       translationRu: "выпуск, продукция, объём производства",
       trick: "OUT + PUT = то, что ты выпускаешь наружу. Результат производства — продукция.",
@@ -163,6 +174,7 @@ export const unit2 = {
     {
       id: "u2_overhead",
       term: "overhead",
+      audioUrl: "/audio/overhead.mp3",
       pos: "noun / adjective",
       translationRu: "накладные расходы",
       trick: "Overhead = расходы, которые всегда 'висят над головой' — аренда, свет, зарплаты.",
@@ -174,6 +186,7 @@ export const unit2 = {
     {
       id: "u2_promote",
       term: "promote",
+      audioUrl: "/audio/promote.mp3",
       pos: "verb",
       translationRu: "продвигать, повышать в должности",
       trick: "Promote = двигать что-то вперёд (pro = вперёд). Продвигать или повышать.",
@@ -185,6 +198,7 @@ export const unit2 = {
     {
       id: "u2_range",
       term: "range",
+      audioUrl: "/audio/range.mp3",
       pos: "noun / verb",
       translationRu: "диапазон, ассортимент",
       trick: "Range = весь охват от одного конца до другого. Горный хребет — разные вершины — это range.",
@@ -229,6 +243,7 @@ export const unit2 = {
     {
       id: "u2_retrain",
       term: "retrain",
+      audioUrl: "/audio/retrain.mp3",
       pos: "verb",
       translationRu: "переобучать, переквалифицировать",
       trick: "Retrain = когда старая работа исчезает, ты train (учишься) снова для новой.",
@@ -240,6 +255,7 @@ export const unit2 = {
     {
       id: "u2_returns",
       term: "returns",
+      audioUrl: "/audio/returns.mp3",
       pos: "noun (plural)",
       translationRu: "доход, прибыль, отдача",
       trick: "Returns = то, что возвращается обратно после вложения. Отдача от инвестиций.",
@@ -251,6 +267,7 @@ export const unit2 = {
     {
       id: "u2_revenue",
       term: "revenue",
+      audioUrl: "/audio/revenue.mp3",
       pos: "noun",
       translationRu: "доход, выручка",
       trick: "Revenue = деньги, поступающие в бизнес от продаж. Стрелки, несущие деньги внутрь.",
@@ -262,6 +279,7 @@ export const unit2 = {
     {
       id: "u2_save",
       term: "save",
+      audioUrl: "/audio/save.mp3",
       pos: "verb",
       translationRu: "сохранять, экономить, копить",
       trick: "Save = хранить сейчас, чтобы использовать потом. Откладывать, не тратить.",
@@ -273,6 +291,7 @@ export const unit2 = {
     {
       id: "u2_support",
       term: "support",
+      audioUrl: "/audio/support.mp3",
       pos: "verb / noun",
       translationRu: "поддерживать / поддержка",
       trick: "Support = держать кого-то или что-то, не давать упасть. Как опора под конструкцией.",
@@ -284,6 +303,7 @@ export const unit2 = {
     {
       id: "u2_opportunitycost",
       term: "opportunity cost",
+      audioUrl: "/audio/opportunity_cost.mp3",
       pos: "noun phrase",
       translationRu: "альтернативная стоимость, упущенная выгода",
       trick: "Opportunity cost = дорога, которую ты не выбрал. Цена упущенного варианта.",
@@ -295,6 +315,7 @@ export const unit2 = {
     {
       id: "u2_redundant",
       term: "redundant",
+      audioUrl: "/audio/redundant.mp3",
       pos: "adjective",
       translationRu: "уволенный (по сокращению), избыточный",
       trick: "Redundant = лишний, больше не нужный в системе. Должность исчезла — работник redundant.",
@@ -306,6 +327,7 @@ export const unit2 = {
     {
       id: "u2_leisure",
       term: "leisure",
+      audioUrl: "/audio/leisure.mp3",
       pos: "noun",
       translationRu: "досуг, свободное время",
       trick: "Leisure = время, когда работа останавливается и жизнь расслабляется. Досуг.",
@@ -317,6 +339,7 @@ export const unit2 = {
     {
       id: "u2_economicgrowth",
       term: "economic growth",
+      audioUrl: "/audio/economic_growth.mp3",
       pos: "noun phrase",
       translationRu: "экономический рост",
       trick: "Economic growth = движение вверх, больше, выше. Экономика производит больше.",
@@ -328,6 +351,7 @@ export const unit2 = {
     {
       id: "u2_capitalgoods",
       term: "capital goods",
+      audioUrl: "/audio/capital_goods.mp3",
       pos: "noun phrase",
       translationRu: "средства производства, капитальные товары",
       trick: "Capital goods = деньги или ресурсы, помогающие бизнесу расти. Машины, здания, инструменты.",
@@ -339,6 +363,7 @@ export const unit2 = {
     {
       id: "u2_naturalresources",
       term: "natural resources",
+      audioUrl: "/audio/natural_resources.mp3",
       pos: "noun phrase",
       translationRu: "природные ресурсы",
       trick: "Natural resources = материалы природы до того, как бизнес их использует. Нефть, лес, вода.",
@@ -350,6 +375,7 @@ export const unit2 = {
     {
       id: "u2_pollution",
       term: "pollution",
+      audioUrl: "/audio/pollution.mp3",
       pos: "noun",
       translationRu: "загрязнение",
       trick: "Pollution = загрязнение. Pollute = сделать грязным. Воздух, вода, земля.",
@@ -361,6 +387,7 @@ export const unit2 = {
     {
       id: "u2_socialcosts",
       term: "social costs",
+      audioUrl: "/audio/social_costs.mp3",
       pos: "noun phrase",
       translationRu: "социальные издержки",
       trick: "Social costs = не компания, а общество платит эту цену. Загрязнение, безработица, стресс.",
@@ -372,6 +399,7 @@ export const unit2 = {
     {
       id: "u2_techadvances",
       term: "technological advances",
+      audioUrl: "/audio/technological_advances.mp3",
       pos: "noun phrase",
       translationRu: "технологический прогресс",
       trick: "Technological advances = технология движется вперёд (advance). Новые возможности производства.",
@@ -383,6 +411,7 @@ export const unit2 = {
     {
       id: "u2_capitalaccumulation",
       term: "capital accumulation",
+      audioUrl: "/audio/capital_accumulation.mp3",
       pos: "noun phrase",
       translationRu: "накопление капитала",
       trick: "Capital accumulation = накапливать (accumulate) всё больше машин и мощностей для роста.",

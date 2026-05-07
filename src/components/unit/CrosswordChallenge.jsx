@@ -5,36 +5,37 @@ import { CheckCircle, XCircle, Eye, RotateCcw, Lightbulb, Trophy, AlertTriangle,
 /* ── Crossword data ── */
 const CROSSWORD_WORDS = [
   // ── ACROSS ──
-  { number: 1, word: 'DAMAGE',     dir: 'across', row: 0,  col: 0,
+  { number: 1, word: 'DAMAGE',     dir: 'across', row: 0, col: 0,
     clue: 'To physically harm or break something.',
     clueRu: 'Повредить — причинить физический вред.' },
-  { number: 2, word: 'MARKET',     dir: 'across', row: 2,  col: 0,
+  { number: 2, word: 'MARKET',     dir: 'across', row: 2, col: 0,
     clue: 'A place where buyers and sellers meet to trade.',
     clueRu: 'Рынок — место встречи покупателей и продавцов.' },
-  { number: 3, word: 'AUTHORIZE',  dir: 'across', row: 11, col: 0,
-    clue: 'To give official permission for something.',
-    clueRu: 'Уполномочивать — давать официальное разрешение.' },
-  { number: 4, word: 'RESTRICT',   dir: 'across', row: 13, col: 0,
-    clue: 'To limit or place rules on something.',
-    clueRu: 'Ограничивать — устанавливать правила.' },
+  { number: 3, word: 'PREVAIL',    dir: 'across', row: 7, col: 0,
+    clue: 'To be the most common or to win in the end.',
+    clueRu: 'Преобладать — быть самым распространённым.' },
+  { number: 4, word: 'CANCEL',     dir: 'across', row: 9, col: 6,
+    clue: 'To stop something that was planned.',
+    clueRu: 'Отменить — остановить запланированное.' },
   // ── DOWN ──
-  { number: 5, word: 'DEMAND',     dir: 'down',   row: 0,  col: 0,
+  { number: 5, word: 'DEMAND',     dir: 'down',   row: 0, col: 0,
     clue: 'How much customers want to buy a product.',
     clueRu: 'Спрос — желание покупателей купить товар.' },
-  { number: 6, word: 'MERGER',     dir: 'down',   row: 0,  col: 2,
+  { number: 6, word: 'MERGER',     dir: 'down',   row: 0, col: 2,
     clue: 'Two companies joining to become one bigger company.',
     clueRu: 'Слияние — два предприятия объединяются в одно.' },
-  { number: 7, word: 'ENTERPRISE', dir: 'down',   row: 0,  col: 5,
+  { number: 7, word: 'ENTERPRISE', dir: 'down',   row: 0, col: 5,
     clue: 'A business, or the initiative and courage to start one.',
     clueRu: 'Предприятие — бизнес или инициатива его создать.' },
 ];
-// ── Verified intersections (all correct, 0 conflicts): ──
+// ── All 7 intersections verified, 0 conflicts, compact grid rows 0-9 ──
 // (0,0)=D: DAMAGE ∩ DEMAND     ✓
 // (0,2)=M: DAMAGE ∩ MERGER     ✓
 // (0,5)=E: DAMAGE ∩ ENTERPRISE ✓
 // (2,0)=M: MARKET ∩ DEMAND     ✓
 // (2,2)=R: MARKET ∩ MERGER     ✓
 // (2,5)=T: MARKET ∩ ENTERPRISE ✓
+// (7,5)=I: PREVAIL ∩ ENTERPRISE ✓
 
 function buildGrid(words) {
   let maxRow = 0, maxCol = 0;

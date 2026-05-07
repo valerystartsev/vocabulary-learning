@@ -570,6 +570,7 @@ export const unit1 = {
   ],
   comicQuestions: [],
   exercises: [
+
     {
       id: "ex1_match_a",
       type: "match",
@@ -586,6 +587,7 @@ export const unit1 = {
         { en: "enterprise", ru: "предприятие" }
       ]
     },
+
     {
       id: "ex1_tf",
       type: "trueFalse",
@@ -606,6 +608,7 @@ export const unit1 = {
         { statement: "Prices subject to change means they may change at any time.", answer: true, explanation: "Subject to = under the condition of. Prices can change." }
       ]
     },
+
     {
       id: "ex1_match_b",
       type: "match",
@@ -623,6 +626,7 @@ export const unit1 = {
         { en: "procedure", ru: "процедура" }
       ]
     },
+
     {
       id: "ex1_fill",
       type: "fillGap",
@@ -650,6 +654,7 @@ export const unit1 = {
         { sentence: "The two companies made a ______ to share their warehouses.", answer: "deal", explanation: "Deal = a business agreement." }
       ]
     },
+
     {
       id: "ex1_match_c",
       type: "match",
@@ -666,6 +671,7 @@ export const unit1 = {
         { en: "undesirable", ru: "нежелательный" }
       ]
     },
+
     {
       id: "ex1_choose",
       type: "multipleChoice",
@@ -721,7 +727,57 @@ export const unit1 = {
           explanation: "Communicate = to share information with someone."
         }
       ]
-    },  ],
+    }
+  ],
+  reading: {
+    title: "Markets, Competition, and Monopolies",
+    guidance: "Read the text slowly. You know many words from the Dictionary. The important words are highlighted. Try to understand the main ideas.",
+    guidanceRu: "Читайте текст медленно. Вы уже знаете многие слова из Словаря. Важные слова выделены. Постарайтесь понять основные идеи.",
+    paragraphs: [
+      {
+        text: "A **market** is a place where buyers and sellers meet. Markets can be physical, like a street market, or online, like an internet shop. In a market economy, people are free to buy and sell goods and services.",
+        glossary: { "market": "рынок — место, где встречаются покупатели и продавцы", "goods": "товары", "services": "услуги" }
+      },
+      {
+        text: "When many companies sell the same product, there is **competition**. Companies **compete** for customers. They try to offer better products, lower prices, or better service. Competition is good for customers because it keeps prices low.",
+        glossary: { "competition": "конкуренция", "compete": "конкурировать", "customers": "клиенты, покупатели" }
+      },
+      {
+        text: "Sometimes one company controls the whole market. This is called a **monopoly**. When a company has a monopoly, there is no competition. The company can set high prices because customers have no other choice.",
+        glossary: { "monopoly": "монополия", "controls": "контролирует" }
+      },
+      {
+        text: "There are different types of monopolies. A **legal monopoly** is when the government gives one company the right to be the only seller. For example, a patent gives a company a legal monopoly for 20 years. A **natural monopoly** happens when it is too expensive for other companies to enter the market.",
+        glossary: { "legal monopoly": "легальная монополия", "patent": "патент", "natural monopoly": "естественная монополия" }
+      },
+      {
+        text: "The government can **restrict** monopolies by making special rules. These rules protect customers and help small businesses. The government **authority** controls fair **competition** and stops companies from using **undesirable** business methods.",
+        glossary: { "restrict": "ограничивать", "authority": "власть, орган контроля", "undesirable": "нежелательный" }
+      },
+      {
+        text: "In the labour market, companies **recruit** new workers. They look at each person's **resume** and choose the best candidates. The **recruitment** process can take weeks. Good workers are important for any **enterprise** to grow.",
+        glossary: { "recruit": "нанимать", "resume": "резюме", "recruitment": "набор персонала", "enterprise": "предприятие" }
+      },
+      {
+        text: "Running a business is not easy. Companies must pay their **overheads** — rent, electricity, salaries. Prices of materials often **fluctuate**, going up and down. A new company must work hard to reach the **break-even point** — the moment when income covers all costs.",
+        glossary: { "overheads": "накладные расходы", "fluctuate": "колебаться", "break-even point": "точка безубыточности" }
+      },
+      {
+        text: "Customers have important rights. If a product is **damaged**, a customer can **complain** and request a **refund**. The business must **communicate** clearly about the **procedure** for returning goods. Many businesses have a complaints **deal**ing process. Customers are **entitled** to a refund under certain **circumstances**.",
+        glossary: { "damaged": "повреждённый", "complain": "жаловаться", "refund": "возврат денег", "communicate": "сообщать", "entitled": "имеющий право" }
+      }
+    ]
+  },
+  comprehension: [
+    { q: "What is a market?", model: "A market is a place where buyers and sellers meet to trade goods and services." },
+    { q: "Why is competition good for customers?", model: "Competition is good because companies try to offer lower prices and better products." },
+    { q: "What happens when one company has a monopoly?", model: "The company can set high prices because customers have no other choice." },
+    { q: "What is a legal monopoly?", model: "A legal monopoly is when the government gives one company the right to be the only seller." },
+    { q: "How does the government protect customers from monopolies?", model: "The government restricts monopolies by making special rules that protect customers." },
+    { q: "What is the break-even point?", model: "The break-even point is the moment when a company's income covers all its costs." },
+    { q: "What can a customer do if a product is damaged?", model: "The customer can complain and request a refund from the business." },
+    { q: "True or False: Recruitment means firing workers.", model: "False. Recruitment means finding and hiring NEW workers." }
+  ],
   media: [
     {
       mediaId: "u1_media_markets_intro",

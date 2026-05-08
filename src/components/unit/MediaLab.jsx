@@ -216,10 +216,17 @@ function DuringStage({ item, onFinished }) {
         <video
           controls
           controlsList="nodownload"
-          style={{ width: '100%', borderRadius: '12px', display: 'block', backgroundColor: '#000' }}
+          preload="metadata"
+          style={{
+            width: '100%',
+            borderRadius: '12px',
+            display: 'block',
+            backgroundColor: '#000',
+            maxHeight: '400px',
+          }}
           src={item.localSrc}
         >
-          Ваш браузер не поддерживает видео.
+          Your browser does not support this video.
         </video>
       ) : item.type === 'video' && item.embedId ? (
         <EmbedPlayer embedId={item.embedId} title={item.title} url={item.url} />

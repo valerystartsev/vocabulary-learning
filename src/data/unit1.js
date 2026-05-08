@@ -7,7 +7,6 @@ export const unit1 = {
   keyIdeas: [
     {
       term: "Market",
-      audioUrl: "/audio/market.mp3",
       termRu: "Рынок",
       meaning: "A place where buyers and sellers meet to trade goods and services.",
       meaningRu: "Место, где покупатели и продавцы встречаются для торговли товарами и услугами.",
@@ -15,7 +14,6 @@ export const unit1 = {
     },
     {
       term: "Competition",
-      audioUrl: "/audio/competition.mp3",
       termRu: "Конкуренция",
       meaning: "Companies fight to get customers by offering better products or lower prices.",
       meaningRu: "Компании борются за клиентов, предлагая лучшие товары или более низкие цены.",
@@ -33,7 +31,6 @@ export const unit1 = {
     {
       id: "u1_accept",
       term: "accept",
-      audioUrl: "/audio/accept.mp3",
       pos: "verb",
       translationRu: "принимать, соглашаться",
       trick: "A+C+C+E+P+T — представь, что открываешь дверь и впускаешь что-то внутрь. Accept = пустить, принять.",
@@ -45,7 +42,6 @@ export const unit1 = {
     {
       id: "u1_acceptance",
       term: "acceptance",
-      audioUrl: "/audio/acceptance.mp3",
       pos: "noun",
       translationRu: "принятие, согласие",
       trick: "accept + -ance = состояние, когда решение уже принято. Дверь уже открыта.",
@@ -57,7 +53,6 @@ export const unit1 = {
     {
       id: "u1_affect",
       term: "affect",
-      audioUrl: "/audio/affect.mp3",
       pos: "verb",
       translationRu: "влиять, воздействовать",
       trick: "Affect → effect. A стоит перед E — сначала действие (affect), потом результат (effect).",
@@ -69,7 +64,6 @@ export const unit1 = {
     {
       id: "u1_authorize",
       term: "authorize",
-      audioUrl: "/audio/authorize.mp3",
       pos: "verb",
       translationRu: "разрешать, уполномочивать",
       trick: "AUTHOR + ize — тот, кто написал правила, тот и даёт разрешение действовать.",
@@ -81,7 +75,6 @@ export const unit1 = {
     {
       id: "u1_authority",
       term: "authority",
-      audioUrl: "/audio/authority.mp3",
       pos: "noun",
       translationRu: "власть, полномочия, орган власти",
       trick: "AUTHOR + ity — тот, чьи правила все соблюдают. Как 'авторитет' — источник власти.",
@@ -93,7 +86,6 @@ export const unit1 = {
     {
       id: "u1_breakeven",
       term: "break even",
-      audioUrl: "/audio/break_even.mp3",
       pos: "verb phrase",
       translationRu: "выйти в ноль, окупиться",
       trick: "Break even = сделать числа равными. Доходы и расходы уравновешиваются — ни плюс, ни минус.",
@@ -105,7 +97,6 @@ export const unit1 = {
     {
       id: "u1_breakevenpoint",
       term: "break-even point",
-      audioUrl: "/audio/break_even_point.mp3",
       pos: "noun",
       translationRu: "точка безубыточности",
       trick: "Точка, где две линии пересекаются на графике: ни убытка, ни прибыли. Баланс.",
@@ -139,7 +130,6 @@ export const unit1 = {
     {
       id: "u1_communicate",
       term: "communicate",
-      audioUrl: "/audio/communicate.mp3",
       pos: "verb",
       translationRu: "общаться, сообщать",
       trick: "Communicate = сделать общим. Commun- (общий) — поделиться так, чтобы обе стороны знали.",
@@ -151,7 +141,6 @@ export const unit1 = {
     {
       id: "u1_complain",
       term: "complain",
-      audioUrl: "/audio/complain.mp3",
       pos: "verb",
       translationRu: "жаловаться",
       trick: "Complain = говорить открыто (plain) о том, что не так. Высказать недовольство.",
@@ -163,7 +152,6 @@ export const unit1 = {
     {
       id: "u1_complaint",
       term: "complaint",
-      audioUrl: "/audio/complaint.mp3",
       pos: "noun",
       translationRu: "жалоба",
       trick: "Complaint = официальный результат complain. Обычно письменное или зафиксированное возражение.",
@@ -175,7 +163,6 @@ export const unit1 = {
     {
       id: "u1_competition",
       term: "competition",
-      audioUrl: "/audio/competition.mp3",
       pos: "noun",
       translationRu: "конкуренция, соревнование",
       trick: "Competition = когда несколько продавцов борются за одних покупателей — как гонка за клиентами.",
@@ -187,7 +174,6 @@ export const unit1 = {
     {
       id: "u1_compete",
       term: "compete",
-      audioUrl: "/audio/compete.mp3",
       pos: "verb",
       translationRu: "конкурировать, соревноваться",
       trick: "Два человека хотят одно и то же одновременно — это и есть compete (конкурировать).",
@@ -199,7 +185,6 @@ export const unit1 = {
     {
       id: "u1_competitive",
       term: "competitive",
-      audioUrl: "/audio/competitive.mp3",
       pos: "adjective",
       translationRu: "конкурентоспособный",
       trick: "Если компания умеет хорошо compete — она competitive (конкурентоспособная).",
@@ -211,7 +196,6 @@ export const unit1 = {
     {
       id: "u1_damage",
       term: "damage",
-      audioUrl: "/audio/damage.mp3",
       pos: "noun / verb",
       translationRu: "ущерб / наносить ущерб",
       trick: "Damage = вред, который уже нанесён. Одно слово — и действие, и результат.",
@@ -234,7 +218,6 @@ export const unit1 = {
     {
       id: "u1_entitle",
       term: "entitle",
-      audioUrl: "/audio/entitle.mp3",
       pos: "verb",
       translationRu: "давать право, иметь право",
       trick: "Title (звание) даёт статус и права. Entitle = дать кому-то право что-то получить.",
@@ -246,7 +229,6 @@ export const unit1 = {
     {
       id: "u1_merger",
       term: "merger",
-      audioUrl: "/audio/merger.mp3",
       pos: "noun",
       translationRu: "слияние (компаний)",
       trick: "Как две полосы движения, которые сливаются в одну дорогу. Две компании → одна.",
@@ -269,7 +251,6 @@ export const unit1 = {
     {
       id: "u1_monopolise",
       term: "monopolise",
-      audioUrl: "/audio/monopolise.mp3",
       pos: "verb",
       translationRu: "монополизировать",
       trick: "Monopolise = взять весь рынок только себе. Никого другого не осталось.",
@@ -292,7 +273,6 @@ export const unit1 = {
     {
       id: "u1_overheads",
       term: "overheads",
-      audioUrl: "/audio/overheads.mp3",
       pos: "noun (plural)",
       translationRu: "накладные расходы",
       trick: "Эти расходы 'висят над головой' каждый месяц — аренда, электричество, зарплаты. Всегда.",
@@ -315,7 +295,6 @@ export const unit1 = {
     {
       id: "u1_prevail",
       term: "prevail",
-      audioUrl: "/audio/prevail.mp3",
       pos: "verb",
       translationRu: "преобладать, побеждать, господствовать",
       trick: "Что побеждает в итоге — то и prevails (преобладает). Сильнейшая сторона берёт верх.",
@@ -349,7 +328,6 @@ export const unit1 = {
     {
       id: "u1_enterprise",
       term: "enterprise",
-      audioUrl: "/audio/enterprise.mp3",
       pos: "noun",
       translationRu: "предприятие, предпринимательство",
       trick: "Enter the market to win a prize — enterprise = организованная деловая активность.",
@@ -361,7 +339,6 @@ export const unit1 = {
     {
       id: "u1_obtain",
       term: "obtain",
-      audioUrl: "/audio/obtain.mp3",
       pos: "verb",
       translationRu: "получать, приобретать",
       trick: "Obtain = тянуться к чему-то и наконец получить. Потянулся — взял официально.",
@@ -384,7 +361,6 @@ export const unit1 = {
     {
       id: "u1_procedure",
       term: "procedure",
-      audioUrl: "/audio/procedure.mp3",
       pos: "noun",
       translationRu: "процедура, порядок действий",
       trick: "Procedure = путь из шагов, по которому ты proceed (продвигаешься). Порядок действий.",
@@ -396,7 +372,6 @@ export const unit1 = {
     {
       id: "u1_purchase",
       term: "purchase",
-      audioUrl: "/audio/purchase.mp3",
       pos: "verb / noun",
       translationRu: "покупать / покупка",
       trick: "Гонишься за тем, что хочешь купить — и погоня заканчивается purchase (покупкой).",
@@ -430,7 +405,6 @@ export const unit1 = {
     {
       id: "u1_resume",
       term: "resume / CV",
-      audioUrl: "/audio/resume__cv.mp3",
       pos: "noun",
       translationRu: "резюме",
       trick: "Resume = снова (re-) подвести итог (sum) своей жизни. Для каждой новой работы — новое резюме.",
@@ -442,7 +416,6 @@ export const unit1 = {
     {
       id: "u1_circumstances",
       term: "circumstances",
-      audioUrl: "/audio/circumstances.mp3",
       pos: "noun (plural)",
       translationRu: "обстоятельства",
       trick: "Circum = вокруг. Circumstances = всё, что стоит вокруг тебя и определяет ситуацию.",
@@ -465,7 +438,6 @@ export const unit1 = {
     {
       id: "u1_undesirable",
       term: "undesirable",
-      audioUrl: "/audio/undesirable.mp3",
       pos: "adjective",
       translationRu: "нежелательный",
       trick: "Un- переворачивает слово. Desirable = желанное; undesirable = то, чего не хочешь.",
@@ -477,7 +449,6 @@ export const unit1 = {
     {
       id: "u1_refund",
       term: "refund",
-      audioUrl: "/audio/refund.mp3",
       pos: "noun / verb",
       translationRu: "возврат (денег) / возвращать деньги",
       trick: "Refund = деньги возвращаются туда, откуда пришли. Re = обратно.",
@@ -500,7 +471,6 @@ export const unit1 = {
     {
       id: "u1_control",
       term: "control",
-      audioUrl: "/audio/control.mp3",
       pos: "verb / noun",
       translationRu: "контролировать / контроль",
       trick: "Control = держать направление и власть в своих руках. Контролировать = управлять.",
@@ -570,24 +540,45 @@ export const unit1 = {
   ],
   comicQuestions: [],
   exercises: [
-
     {
       id: "ex1_match_a",
       type: "match",
       title: "Match the Word with the Translation — A: Market and Competition vocabulary / Лексика рынка и конкуренции",
       instruction: "Connect each English word with its Russian translation.",
       pairs: [
-        { en: "compete", ru: "конкурировать" },
-        { en: "competition", ru: "конкуренция" },
-        { en: "competitive", ru: "конкурентоспособный" },
-        { en: "monopoly", ru: "монополия" },
-        { en: "monopolise", ru: "монополизировать" },
-        { en: "legal monopoly", ru: "законная монополия" },
-        { en: "merger", ru: "слияние" },
-        { en: "enterprise", ru: "предприятие" }
+        { en: "compete",       ru: "конкурировать" },
+        { en: "monopoly",      ru: "монополия" },
+        { en: "merger",        ru: "слияние" },
+        { en: "enterprise",    ru: "предприятие" },
+        { en: "competitive",   ru: "конкурентоспособный" },
       ]
     },
-
+    {
+      id: "ex1_match_b",
+      type: "match",
+      title: "Match the Word with the Translation — B: Business operations vocabulary / Деловые операции",
+      instruction: "Connect each English word with its Russian translation.",
+      pairs: [
+        { en: "purchase",  ru: "покупать / покупка" },
+        { en: "refund",    ru: "возврат денег" },
+        { en: "deal",      ru: "сделка" },
+        { en: "authorize", ru: "уполномочивать" },
+        { en: "negotiate", ru: "вести переговоры" },
+      ]
+    },
+    {
+      id: "ex1_match_c",
+      type: "match",
+      title: "Match the Word with the Translation — C: Formal and descriptive vocabulary / Формальная и описательная лексика",
+      instruction: "Connect each English word with its Russian translation.",
+      pairs: [
+        { en: "circumstances", ru: "обстоятельства" },
+        { en: "overheads",     ru: "накладные расходы" },
+        { en: "fluctuate",     ru: "колебаться" },
+        { en: "prevail",       ru: "преобладать" },
+        { en: "restrict",      ru: "ограничивать" },
+      ]
+    },
     {
       id: "ex1_tf",
       type: "trueFalse",
@@ -608,25 +599,6 @@ export const unit1 = {
         { statement: "Prices subject to change means they may change at any time.", answer: true, explanation: "Subject to = under the condition of. Prices can change." }
       ]
     },
-
-    {
-      id: "ex1_match_b",
-      type: "match",
-      title: "Match the Word with the Translation — B: Business operations vocabulary / Деловые операции",
-      instruction: "Connect each English word with its Russian translation.",
-      pairs: [
-        { en: "purchase", ru: "покупать / покупка" },
-        { en: "cancel", ru: "аннулировать" },
-        { en: "refund", ru: "возврат денег" },
-        { en: "deal", ru: "сделка" },
-        { en: "obtain", ru: "получать" },
-        { en: "authorize", ru: "уполномочивать" },
-        { en: "permit", ru: "разрешать" },
-        { en: "negotiate", ru: "вести переговоры" },
-        { en: "procedure", ru: "процедура" }
-      ]
-    },
-
     {
       id: "ex1_fill",
       type: "fillGap",
@@ -654,24 +626,6 @@ export const unit1 = {
         { sentence: "The two companies made a ______ to share their warehouses.", answer: "deal", explanation: "Deal = a business agreement." }
       ]
     },
-
-    {
-      id: "ex1_match_c",
-      type: "match",
-      title: "Match the Word with the Translation — C: Formal and descriptive vocabulary / Формальная и описательная лексика",
-      instruction: "Connect each English word with its Russian translation.",
-      pairs: [
-        { en: "circumstances", ru: "обстоятельства" },
-        { en: "overheads", ru: "накладные расходы" },
-        { en: "fluctuate", ru: "колебаться" },
-        { en: "fluctuation", ru: "колебание" },
-        { en: "prevail", ru: "преобладать" },
-        { en: "restrict", ru: "ограничивать" },
-        { en: "subject (to)", ru: "подвергать" },
-        { en: "undesirable", ru: "нежелательный" }
-      ]
-    },
-
     {
       id: "ex1_choose",
       type: "multipleChoice",
@@ -727,6 +681,24 @@ export const unit1 = {
           explanation: "Communicate = to share information with someone."
         }
       ]
+    },
+    {
+      id: "ex1_concept",
+      type: "conceptMatch",
+      title: "Match the Concept",
+      instruction: "Match each description with the correct business term.",
+      pairs: [
+        { description: "A company reaches this point when its total income equals its total costs, so there is no profit and no loss.", term: "break even" },
+        { description: "This happens when two separate companies join together to form one company.", term: "merger" },
+        { description: "This market structure exists when one company is the only seller of a product or service.", term: "monopoly" },
+        { description: "These are the regular fixed costs a business must pay, such as rent, salaries, and utility bills.", term: "overheads" },
+        { description: "This is a formal statement in which a customer expresses dissatisfaction with a product or service.", term: "complaint" },
+        { description: "This is an official document that gives a person or company the legal right to do something.", term: "permit" },
+        { description: "To be under the control of a rule, condition, or authority that must be followed.", term: "subject (to)" },
+        { description: "When one idea, price, or condition becomes the most powerful or widespread in a situation.", term: "prevail" },
+        { description: "To give someone an official right to receive something or to take a particular action.", term: "entitle" },
+        { description: "A formal business agreement between two parties who each receive something of value.", term: "deal" }
+      ]
     }
   ],
   reading: {
@@ -781,6 +753,7 @@ export const unit1 = {
   media: [
     {
       mediaId: "u1_media_markets_intro",
+      localSrc: "/u1_markets_intro.mp4",
       title: "Markets and Competition — Introduction",
       type: "video",
       source: "Educational Video",
@@ -798,11 +771,12 @@ export const unit1 = {
       postQuiz: [
         { type: "trueFalse", q: "A market is a place where buyers and sellers meet to trade.", answer: true, explanation: "Correct — markets bring buyers and sellers together to exchange goods and services." },
         { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Markets and prices", "Recruitment and HR", "Insurance and taxes", "Pollution and waste"], answer: "Markets and prices", explanation: "The video focuses on markets, competition, supply, price, and demand." },
-        { type: "sentenceBuilder", q: "Build the sentence.", tiles: ["A", "market", "is", "a", "place", "where", "buyers", "and", "sellers", "meet", ".", "monopoly", "price"], answer: ["A", "market", "is", "a", "place", "where", "buyers", "and", "sellers", "meet", "."] }
+        { type: "sentenceBuilder", q: "Build the sentence.", tiles: ["A", "market", "is", "a", "place", "where", "buyers", "and", "sellers", "meet.", "monopoly", "price"], answer: ["A", "market", "is", "a", "place", "where", "buyers", "and", "sellers", "meet."] }
       ]
     },
     {
       mediaId: "u1_media_monopoly",
+      localSrc: "/u1_monopoly.mp4",
       title: "What is a Monopoly?",
       type: "video",
       source: "Educational Video",
@@ -820,11 +794,12 @@ export const unit1 = {
       postQuiz: [
         { type: "trueFalse", q: "A monopoly means one company controls the whole market with no real competition.", answer: true, explanation: "Correct — in a monopoly, one company dominates with little or no competition." },
         { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Monopoly and control", "Supply chain and logistics", "Recruitment and salaries", "Technology and robots"], answer: "Monopoly and control", explanation: "The video focuses on monopoly, control, restrict, competition, and legal." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "monopoly", "is", "when", "one", "company", "controls", "the", "whole", "market", ".", "many", "companies", "share", "prices", "fall"], answer: ["A", "monopoly", "is", "when", "one", "company", "controls", "the", "whole", "market", "."] }
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "monopoly", "is", "when", "one", "company", "controls", "the", "whole", "market.", "many", "companies", "share", "prices", "fall"], answer: ["A", "monopoly", "is", "when", "one", "company", "controls", "the", "whole", "market."] }
       ]
     },
     {
       mediaId: "u1_media_supply_demand",
+      localSrc: "/u1_supply_demand.mp4",
       title: "Supply and Demand Explained",
       type: "video",
       source: "Educational Video",
@@ -842,11 +817,12 @@ export const unit1 = {
       postQuiz: [
         { type: "trueFalse", q: "When demand is high and supply is low, prices usually go up.", answer: true, explanation: "Correct — high demand and low supply push prices upward." },
         { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Supply and demand", "Monopoly and mergers", "Recruitment and CV", "Insurance and overheads"], answer: "Supply and demand", explanation: "The video focuses on supply, demand, price, market, and fluctuations." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Supply", "is", "the", "amount", "of", "a", "product", "that", "sellers", "offer", "in", "the", "market", ".", "buyers", "demand", "consume"], answer: ["Supply", "is", "the", "amount", "of", "a", "product", "that", "sellers", "offer", "in", "the", "market", "."] }
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Supply", "is", "the", "amount", "of", "a", "product", "that", "sellers", "offer", "in", "the", "market.", "buyers", "demand", "consume"], answer: ["Supply", "is", "the", "amount", "of", "a", "product", "that", "sellers", "offer", "in", "the", "market."] }
       ]
     },
     {
       mediaId: "u1_media_mergers",
+      localSrc: "/u1_mergers.mp4",
       title: "How Mergers Change Business",
       type: "video",
       source: "Educational Video",
@@ -864,7 +840,7 @@ export const unit1 = {
       postQuiz: [
         { type: "trueFalse", q: "A merger can reduce competition in the market.", answer: true, explanation: "Correct — when two companies merge, there are fewer competitors, which can reduce competition." },
         { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Mergers and competition", "Supply and demand", "Recruitment and salaries", "Environment and pollution"], answer: "Mergers and competition", explanation: "The video focuses on merger, competition, monopoly, affect, and authorize." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "merger", "happens", "when", "two", "companies", "join", "together", "to", "become", "one", ".", "many", "split", "apart", "three", "divide"], answer: ["A", "merger", "happens", "when", "two", "companies", "join", "together", "to", "become", "one", "."] }
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "merger", "happens", "when", "two", "companies", "join", "together", "to", "become", "one.", "many", "split", "apart", "three", "divide"], answer: ["A", "merger", "happens", "when", "two", "companies", "join", "together", "to", "become", "one."] }
       ]
     }
   ],

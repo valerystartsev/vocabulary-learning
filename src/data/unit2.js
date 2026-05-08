@@ -7,7 +7,6 @@ export const unit2 = {
   keyIdeas: [
     {
       term: "Growth",
-      audioUrl: "/audio/growth.mp3",
       termRu: "Рост",
       meaning: "When a country produces more goods and services than before.",
       meaningRu: "Когда страна производит больше товаров и услуг, чем раньше.",
@@ -15,7 +14,6 @@ export const unit2 = {
     },
     {
       term: "Benefits",
-      audioUrl: "/audio/benefits.mp3",
       termRu: "Выгоды",
       meaning: "The good things that come from growth: more jobs, more income, better life.",
       meaningRu: "Хорошие вещи, которые приходят с ростом: больше работы, больше дохода, лучшая жизнь.",
@@ -23,7 +21,6 @@ export const unit2 = {
     },
     {
       term: "Costs",
-      audioUrl: "/audio/costs.mp3",
       termRu: "Издержки",
       meaning: "The bad things that can come from growth: pollution, inequality, job losses.",
       meaningRu: "Плохие вещи, которые могут сопровождать рост: загрязнение, неравенство, потеря рабочих мест.",
@@ -34,7 +31,6 @@ export const unit2 = {
     {
       id: "u2_amount",
       term: "amount",
-      audioUrl: "/audio/amount.mp3",
       pos: "noun",
       translationRu: "количество, сумма",
       trick: "Amount = сколько есть в сумме. Представь числа, которые накапливаются (mount) в единое целое.",
@@ -46,7 +42,6 @@ export const unit2 = {
     {
       id: "u2_average",
       term: "average",
-      audioUrl: "/audio/average.mp3",
       pos: "noun / adjective",
       translationRu: "средний, среднее значение",
       trick: "Average = середина: не самый высокий и не самый низкий показатель.",
@@ -58,7 +53,6 @@ export const unit2 = {
     {
       id: "u2_benefit",
       term: "benefit",
-      audioUrl: "/audio/benefit.mp3",
       pos: "noun / verb",
       translationRu: "выгода, польза / приносить пользу",
       trick: "Benefit = хорошая сторона. Bene (лат. хорошо) + fit = то, что хорошо тебе подходит.",
@@ -81,7 +75,6 @@ export const unit2 = {
     {
       id: "u2_encourage",
       term: "encourage",
-      audioUrl: "/audio/encourage.mp3",
       pos: "verb",
       translationRu: "поощрять, воодушевлять",
       trick: "Encourage = вложить courage (смелость) в кого-то. Поддержать, дать уверенность.",
@@ -93,7 +86,6 @@ export const unit2 = {
     {
       id: "u2_enlist",
       term: "enlist",
-      audioUrl: "/audio/enlist.mp3",
       pos: "verb",
       translationRu: "вербовать, привлекать, записываться",
       trick: "En + list = записать имя в список. Enlist = официально привлечь кого-то к делу.",
@@ -127,7 +119,6 @@ export const unit2 = {
     {
       id: "u2_justify",
       term: "justify",
-      audioUrl: "/audio/justify.mp3",
       pos: "verb",
       translationRu: "оправдывать, обосновывать",
       trick: "Justify = объяснить, почему это справедливо (just) и необходимо. Обосновать решение.",
@@ -139,7 +130,6 @@ export const unit2 = {
     {
       id: "u2_operate",
       term: "operate",
-      audioUrl: "/audio/operate.mp3",
       pos: "verb",
       translationRu: "работать, управлять, действовать",
       trick: "Operate = управлять системой или бизнесом. Как 'операция' — точные действия для результата.",
@@ -151,7 +141,6 @@ export const unit2 = {
     {
       id: "u2_output",
       term: "output",
-      audioUrl: "/audio/output.mp3",
       pos: "noun",
       translationRu: "выпуск, продукция, объём производства",
       trick: "OUT + PUT = то, что ты выпускаешь наружу. Результат производства — продукция.",
@@ -174,7 +163,6 @@ export const unit2 = {
     {
       id: "u2_overhead",
       term: "overhead",
-      audioUrl: "/audio/overhead.mp3",
       pos: "noun / adjective",
       translationRu: "накладные расходы",
       trick: "Overhead = расходы, которые всегда 'висят над головой' — аренда, свет, зарплаты.",
@@ -186,7 +174,6 @@ export const unit2 = {
     {
       id: "u2_promote",
       term: "promote",
-      audioUrl: "/audio/promote.mp3",
       pos: "verb",
       translationRu: "продвигать, повышать в должности",
       trick: "Promote = двигать что-то вперёд (pro = вперёд). Продвигать или повышать.",
@@ -198,7 +185,6 @@ export const unit2 = {
     {
       id: "u2_range",
       term: "range",
-      audioUrl: "/audio/range.mp3",
       pos: "noun / verb",
       translationRu: "диапазон, ассортимент",
       trick: "Range = весь охват от одного конца до другого. Горный хребет — разные вершины — это range.",
@@ -243,7 +229,6 @@ export const unit2 = {
     {
       id: "u2_retrain",
       term: "retrain",
-      audioUrl: "/audio/retrain.mp3",
       pos: "verb",
       translationRu: "переобучать, переквалифицировать",
       trick: "Retrain = когда старая работа исчезает, ты train (учишься) снова для новой.",
@@ -255,7 +240,6 @@ export const unit2 = {
     {
       id: "u2_returns",
       term: "returns",
-      audioUrl: "/audio/returns.mp3",
       pos: "noun (plural)",
       translationRu: "доход, прибыль, отдача",
       trick: "Returns = то, что возвращается обратно после вложения. Отдача от инвестиций.",
@@ -267,7 +251,6 @@ export const unit2 = {
     {
       id: "u2_revenue",
       term: "revenue",
-      audioUrl: "/audio/revenue.mp3",
       pos: "noun",
       translationRu: "доход, выручка",
       trick: "Revenue = деньги, поступающие в бизнес от продаж. Стрелки, несущие деньги внутрь.",
@@ -279,7 +262,6 @@ export const unit2 = {
     {
       id: "u2_save",
       term: "save",
-      audioUrl: "/audio/save.mp3",
       pos: "verb",
       translationRu: "сохранять, экономить, копить",
       trick: "Save = хранить сейчас, чтобы использовать потом. Откладывать, не тратить.",
@@ -291,7 +273,6 @@ export const unit2 = {
     {
       id: "u2_support",
       term: "support",
-      audioUrl: "/audio/support.mp3",
       pos: "verb / noun",
       translationRu: "поддерживать / поддержка",
       trick: "Support = держать кого-то или что-то, не давать упасть. Как опора под конструкцией.",
@@ -303,7 +284,6 @@ export const unit2 = {
     {
       id: "u2_opportunitycost",
       term: "opportunity cost",
-      audioUrl: "/audio/opportunity_cost.mp3",
       pos: "noun phrase",
       translationRu: "альтернативная стоимость, упущенная выгода",
       trick: "Opportunity cost = дорога, которую ты не выбрал. Цена упущенного варианта.",
@@ -315,7 +295,6 @@ export const unit2 = {
     {
       id: "u2_redundant",
       term: "redundant",
-      audioUrl: "/audio/redundant.mp3",
       pos: "adjective",
       translationRu: "уволенный (по сокращению), избыточный",
       trick: "Redundant = лишний, больше не нужный в системе. Должность исчезла — работник redundant.",
@@ -327,7 +306,6 @@ export const unit2 = {
     {
       id: "u2_leisure",
       term: "leisure",
-      audioUrl: "/audio/leisure.mp3",
       pos: "noun",
       translationRu: "досуг, свободное время",
       trick: "Leisure = время, когда работа останавливается и жизнь расслабляется. Досуг.",
@@ -339,7 +317,6 @@ export const unit2 = {
     {
       id: "u2_economicgrowth",
       term: "economic growth",
-      audioUrl: "/audio/economic_growth.mp3",
       pos: "noun phrase",
       translationRu: "экономический рост",
       trick: "Economic growth = движение вверх, больше, выше. Экономика производит больше.",
@@ -351,7 +328,6 @@ export const unit2 = {
     {
       id: "u2_capitalgoods",
       term: "capital goods",
-      audioUrl: "/audio/capital_goods.mp3",
       pos: "noun phrase",
       translationRu: "средства производства, капитальные товары",
       trick: "Capital goods = деньги или ресурсы, помогающие бизнесу расти. Машины, здания, инструменты.",
@@ -363,7 +339,6 @@ export const unit2 = {
     {
       id: "u2_naturalresources",
       term: "natural resources",
-      audioUrl: "/audio/natural_resources.mp3",
       pos: "noun phrase",
       translationRu: "природные ресурсы",
       trick: "Natural resources = материалы природы до того, как бизнес их использует. Нефть, лес, вода.",
@@ -375,7 +350,6 @@ export const unit2 = {
     {
       id: "u2_pollution",
       term: "pollution",
-      audioUrl: "/audio/pollution.mp3",
       pos: "noun",
       translationRu: "загрязнение",
       trick: "Pollution = загрязнение. Pollute = сделать грязным. Воздух, вода, земля.",
@@ -387,7 +361,6 @@ export const unit2 = {
     {
       id: "u2_socialcosts",
       term: "social costs",
-      audioUrl: "/audio/social_costs.mp3",
       pos: "noun phrase",
       translationRu: "социальные издержки",
       trick: "Social costs = не компания, а общество платит эту цену. Загрязнение, безработица, стресс.",
@@ -399,7 +372,6 @@ export const unit2 = {
     {
       id: "u2_techadvances",
       term: "technological advances",
-      audioUrl: "/audio/technological_advances.mp3",
       pos: "noun phrase",
       translationRu: "технологический прогресс",
       trick: "Technological advances = технология движется вперёд (advance). Новые возможности производства.",
@@ -411,7 +383,6 @@ export const unit2 = {
     {
       id: "u2_capitalaccumulation",
       term: "capital accumulation",
-      audioUrl: "/audio/capital_accumulation.mp3",
       pos: "noun phrase",
       translationRu: "накопление капитала",
       trick: "Capital accumulation = накапливать (accumulate) всё больше машин и мощностей для роста.",
@@ -504,42 +475,21 @@ export const unit2 = {
   },
   exercises: [
     {
-      id: "ex2_match_a",
+      id: "ex2_match",
       type: "match",
-      title: "Match the Word — A: Economic Growth / Экономический рост",
-      instruction: "Connect each English term with its Russian translation.",
+      title: "Match the Word with the Translation",
+      instruction: "Connect each English word with its Russian translation.",
       pairs: [
         { en: "economic growth", ru: "экономический рост" },
-        { en: "revenue",         ru: "доход, выручка" },
-        { en: "benefit",         ru: "выгода, польза" },
-        { en: "opportunity cost",ru: "альтернативная стоимость" },
-        { en: "capital goods",   ru: "средства производства" }
-      ]
-    },
-    {
-      id: "ex2_match_b",
-      type: "match",
-      title: "Match the Word — B: Employment / Занятость",
-      instruction: "Connect each English term with its Russian translation.",
-      pairs: [
+        { en: "revenue", ru: "доход, выручка" },
+        { en: "pollution", ru: "загрязнение" },
+        { en: "benefit", ru: "выгода, польза" },
         { en: "redundant", ru: "уволенный по сокращению" },
-        { en: "retrain",   ru: "переобучать" },
-        { en: "enlist",    ru: "привлекать, вербовать" },
-        { en: "hire",      ru: "нанимать" },
-        { en: "replace",   ru: "заменять" }
-      ]
-    },
-    {
-      id: "ex2_match_c",
-      type: "match",
-      title: "Match the Word — C: Costs and Environment / Расходы и среда",
-      instruction: "Connect each English term with its Russian translation.",
-      pairs: [
-        { en: "pollution",    ru: "загрязнение" },
-        { en: "social costs", ru: "социальные издержки" },
-        { en: "rental",       ru: "аренда, прокат" },
-        { en: "overhead",     ru: "накладные расходы" },
-        { en: "insurance",    ru: "страхование" }
+        { en: "opportunity cost", ru: "альтернативная стоимость" },
+        { en: "capital goods", ru: "средства производства" },
+        { en: "retrain", ru: "переобучать" },
+        { en: "enlist", ru: "привлекать, вербовать" },
+        { en: "rental", ru: "аренда, прокат" }
       ]
     },
     {
@@ -558,52 +508,6 @@ export const unit2 = {
         { statement: "Pollution can be a social cost of economic growth.", answer: true, explanation: "Factories and production can cause pollution — a negative effect on society." },
         { statement: "To enlist someone means to ask for their help or bring them into a project.", answer: true, explanation: "Enlist = to get someone's help or to formally bring them in to assist." },
         { statement: "Rental and rent mean exactly the same thing in all situations.", answer: false, explanation: "Rent is the payment; rental can refer to the amount paid OR to the activity of renting (e.g. rental car, rental cost)." }
-      ]
-    },
-    {
-      id: "ex2_consumer_tf",
-      type: "trueFalse",
-      title: "Consumer Rights — True or False? / Права потребителя",
-      instruction: "Read each sentence. Is it TRUE or FALSE?",
-      items: [
-        { statement: "A customer is entitled to a refund if a product arrives damaged.",
-          answer: true,
-          explanation: "Under consumer rights law, a damaged product qualifies for a full refund or replacement." },
-        { statement: "You need a lawyer to make a formal complaint about a product.",
-          answer: false,
-          explanation: "Anyone can make a complaint directly to the seller — no lawyer needed." },
-        { statement: "A receipt is not required to claim a refund.",
-          answer: false,
-          explanation: "A receipt proves the purchase and is typically required for processing a refund." },
-        { statement: "Consumer rights protect buyers from damaged or faulty goods.",
-          answer: true,
-          explanation: "Consumer rights give buyers legal protection when products do not meet standards." },
-        { statement: "A warranty transfers automatically to a replacement product.",
-          answer: true,
-          explanation: "In most cases, warranty conditions automatically apply to the replacement item." }
-      ]
-    },
-    {
-      id: "ex2_consumer_gap",
-      type: "fillGap",
-      title: "Consumer Rights — Complete the Sentences / Заполните пропуски",
-      instruction: "Choose the correct word for each gap.",
-      items: [
-        { sentence: "The customer is ______ to a full refund for a faulty product.",
-          answer: "entitled",
-          options: ["entitled", "restricted", "cancelled", "caused"] },
-        { sentence: "She made a formal ______ about the poor service.",
-          answer: "complaint",
-          options: ["complaint", "permit", "deal", "procedure"] },
-        { sentence: "The manager agreed to ______ the refund immediately.",
-          answer: "authorize",
-          options: ["authorize", "recruit", "fluctuate", "cancel"] },
-        { sentence: "The phone was ______ during delivery and could not be used.",
-          answer: "damaged",
-          options: ["damaged", "merged", "obtained", "recruited"] },
-        { sentence: "Prices are ______ change without notice.",
-          answer: "subject to",
-          options: ["subject to", "caused by", "entitled to", "merged with"] }
       ]
     },
     {
@@ -733,8 +637,8 @@ export const unit2 = {
     {
       type: 'sentenceBuilder',
       q: 'What are capital goods? Build the definition:',
-      tiles: ['Capital', 'goods', 'are', 'tools', 'machines', 'and', 'buildings', 'used', 'to', 'produce', 'other', 'goods', '.', 'people', 'services', 'money'],
-      answer: ['Capital', 'goods', 'are', 'tools', 'machines', 'and', 'buildings', 'used', 'to', 'produce', 'other', 'goods', '.']
+      tiles: ['Capital', 'goods', 'are', 'tools', 'machines', 'and', 'buildings', 'used', 'to', 'produce', 'other', 'goods', 'people', 'services', 'money'],
+      answer: ['Capital', 'goods', 'are', 'tools', 'machines', 'and', 'buildings', 'used', 'to', 'produce', 'other', 'goods.']
     },
     {
       type: 'multipleChoice',
@@ -752,14 +656,14 @@ export const unit2 = {
     {
       type: 'sentenceBuilder',
       q: 'Name an advantage of growth — build this sentence:',
-      tiles: ['Economic', 'growth', 'increases', 'the', 'average', 'standard', 'of', 'living', '.', 'decreases', 'prices', 'workers', 'taxes'],
-      answer: ['Economic', 'growth', 'increases', 'the', 'average', 'standard', 'of', 'living', '.']
+      tiles: ['Economic', 'growth', 'increases', 'the', 'average', 'standard', 'of', 'living.', 'decreases', 'prices', 'workers', 'taxes'],
+      answer: ['Economic', 'growth', 'increases', 'the', 'average', 'standard', 'of', 'living.']
     },
     {
       type: 'sentenceBuilder',
       q: 'Name a second advantage — build this sentence:',
-      tiles: ['It', 'also', 'provides', 'the', 'government', 'with', 'additional', 'tax', 'revenues', '.', 'costs', 'problems', 'jobs', 'fewer'],
-      answer: ['It', 'also', 'provides', 'the', 'government', 'with', 'additional', 'tax', 'revenues', '.']
+      tiles: ['It', 'also', 'provides', 'the', 'government', 'with', 'additional', 'tax', 'revenues.', 'costs', 'problems', 'jobs', 'fewer'],
+      answer: ['It', 'also', 'provides', 'the', 'government', 'with', 'additional', 'tax', 'revenues.']
     },
     {
       type: 'match',
@@ -787,8 +691,8 @@ export const unit2 = {
     {
       type: 'sentenceBuilder',
       q: 'Define technological unemployment — build the sentence:',
-      tiles: ['Technological', 'unemployment', 'happens', 'when', 'machines', 'replace', 'workers', 'in', 'a', 'job', '.', 'companies', 'grow', 'profits', 'hire'],
-      answer: ['Technological', 'unemployment', 'happens', 'when', 'machines', 'replace', 'workers', 'in', 'a', 'job', '.']
+      tiles: ['Technological', 'unemployment', 'happens', 'when', 'machines', 'replace', 'workers', 'in', 'a', 'job.', 'companies', 'grow', 'profits', 'hire'],
+      answer: ['Technological', 'unemployment', 'happens', 'when', 'machines', 'replace', 'workers', 'in', 'a', 'job.']
     }
   ],
   // Memo / Business Communication section
@@ -1080,34 +984,29 @@ export const unit2 = {
     ]
   },
   dialogue: {
-    title: "At the Shop: A Consumer Rights Situation",
-    context: "Emma bought a phone online. It arrived damaged. She visits the shop to resolve the problem.",
+    title: "At the Office: Talking About Business Growth and Employment",
+    context: "Maria is a manager. She talks with her colleague Alex, and later with a researcher, about the company's growth, technology, and the workers who may be affected.",
     lines: [
-      { speaker: "Emma",    text: "Excuse me. I ordered this phone online and it arrived **damaged**. I would like a **refund**." },
-      { speaker: "Manager", text: "I am sorry to hear that. Do you have the **receipt** and the original packaging?" },
-      { speaker: "Emma",    text: "Yes, I have both. Under **consumer rights**, I am **entitled** to a full refund for a damaged product." },
-      { speaker: "Manager", text: "That is correct. You have the right to a **replacement** or a refund within 30 days. Let me **authorize** that now." },
-      { speaker: "Emma",    text: "Thank you. I also want to make a formal **complaint** — this is not acceptable service." },
-      { speaker: "Manager", text: "Of course. We take all **complaints** seriously. I will **communicate** this to our supplier immediately." },
-      { speaker: "Emma",    text: "The product was **subject to** a quality check before shipping. Why was it not caught?" },
-      { speaker: "Manager", text: "You are right to ask. We will **restrict** deliveries from this supplier until the issue is resolved." },
-      { speaker: "Emma",    text: "Good. And what about the **deal** I paid for — the extended warranty?" },
-      { speaker: "Manager", text: "It transfers automatically to the replacement. Your **purchase** is fully protected." }
+      { speaker: "Maria", text: "Alex, our **revenue** was very good this year. We are growing!" },
+      { speaker: "Alex", text: "That's great! But what about the **costs**? Our **overheads** are also going up. And the **rental** for the new warehouse is expensive." },
+      { speaker: "Maria", text: "Yes. We also need more **capital goods** — new machines and computers. The question is: can we keep growing **indefinitely**?" },
+      { speaker: "Alex", text: "If we buy new machines, will we need to **replace** some workers?" },
+      { speaker: "Maria", text: "Maybe. Some workers may become **redundant**. But we can **retrain** them for new positions. We should **enlist** a retraining agency." },
+      { speaker: "Alex", text: "That is responsible. The government also **encourages** retraining programmes and may **support** us with funding." },
+      { speaker: "Maria", text: "The **opportunity cost** of not investing is falling behind our competitors." },
+      { speaker: "Alex", text: "I agree. But we must also think about **social costs** — pollution, job insecurity, the effect on families." },
+      { speaker: "Maria", text: "Absolutely. Growth **may** bring benefits, but it also **might** cause problems. We must plan carefully." }
     ],
     tasks: [
-      { type: "fill",   q: "Emma says the phone arrived ______.",                                  a: "damaged" },
-      { type: "fill",   q: "Emma is ______ to a full refund for a damaged product.",               a: "entitled" },
-      { type: "choice", q: "What does the manager do immediately?",
-        options: ["Calls a lawyer", "Authorizes the refund", "Replaces the phone himself", "Calls the police"],
-        a: "Authorizes the refund" },
-      { type: "fill",   q: "Emma also makes a formal ______ about the service.",                   a: "complaint" },
-      { type: "choice", q: "What will happen to the supplier?",
-        options: ["They will be fined", "Deliveries will be restricted", "They will be replaced", "Nothing will happen"],
-        a: "Deliveries will be restricted" },
-      { type: "fill",   q: "The warranty ______ automatically to the replacement product.",        a: "transfers" }
+      { type: "fill", q: "Maria says the company's ______ was very good this year.", a: "revenue" },
+      { type: "fill", q: "Alex mentions that the ______ for the new warehouse is expensive.", a: "rental" },
+      { type: "choice", q: "What does Maria plan to do for displaced workers?", options: ["Cancel all programmes", "Enlist a retraining agency", "Reduce salaries", "Close the company"], a: "Enlist a retraining agency" },
+      { type: "fill", q: "If new machines replace workers, those workers become ______.", a: "redundant" },
+      { type: "choice", q: "What are 'social costs' according to Alex?", options: ["Only pollution", "Pollution, job insecurity, and family effects", "Only financial costs", "Revenue losses"], a: "Pollution, job insecurity, and family effects" },
+      { type: "choice", q: "What is the opportunity cost of NOT investing according to Maria?", options: ["Losing tax revenues", "Falling behind competitors and losing growth opportunities", "Hiring more workers", "Increasing social costs only"], a: "Falling behind competitors and losing growth opportunities" }
     ]
   },
-    writing: {
+  writing: {
     title: "Sentence Builder: Benefits and Costs of Growth",
     instruction: "Build 3 sentences about economic growth. Use the word blocks to assemble each sentence. Use the words from the box.",
     instructionRu: "Составьте 3 предложения об экономическом росте. Используйте слова из блоков. Слова из ящика.",
@@ -1189,20 +1088,21 @@ export const unit2 = {
       type: "video",
       source: "Educational Video",
       url: "https://youtu.be/KAGWjGzo-28",
+      localSrc: "/u2_growth.mp4",
       embedId: "KAGWjGzo-28",
       duration: "Video",
-      description: "A video explaining what economic growth means, what advantages it creates, and what social costs come with it.",
-      whyHelps: "You will hear 'growth', 'capital', 'standard of living', 'revenue', and 'benefit' in context.",
-      vocabToListen: ["growth", "capital", "revenue", "benefit", "cost"],
-      task: "After watching, list 2 advantages and 1 disadvantage of economic growth.",
+      description: "A video exploring both the advantages and the hidden costs of economic growth — from rising living standards to environmental damage.",
+      whyHelps: "You will hear 'growth', 'revenue', 'pollution', 'standard of living' and 'social costs' in a real economic context.",
+      vocabToListen: ["growth", "revenue", "pollution", "standard of living", "social costs"],
+      task: "After watching: name one benefit and one cost of economic growth.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "economic", "growth", "its", "benefits", "and", "costs", "for", "society", "pollution", "taxes", "mergers"], answer: ["This", "video", "is", "about", "economic", "growth", "its", "benefits", "and", "costs", "for", "society"] },
-        { type: "wordCheck", q: "Which words do you expect to hear? Tick all that apply.", options: ["growth", "capital", "revenue", "benefit", "cost"] }
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "economic", "growth", "and", "its", "benefits", "and", "costs", "problems", "taxes", "prices"], answer: ["This", "video", "is", "about", "economic", "growth", "and", "its", "benefits", "and", "costs"] },
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["growth", "revenue", "pollution", "standard of living", "social costs"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "Economic growth only has positive effects.", answer: false, explanation: "False — economic growth also has social costs: pollution, redundancy, and uneven distribution." },
-        { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Growth and capital", "Supply and demand", "Recruitment and CV", "Monopoly and mergers"], answer: "Growth and capital", explanation: "The video focuses on growth, capital, revenue, benefit, and cost." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Economic", "growth", "increases", "the", "average", "standard", "of", "living", "and", "creates", "more", "jobs", "pollution", "costs", "reduces", "taxes"], answer: ["Economic", "growth", "increases", "the", "average", "standard", "of", "living", "and", "creates", "more", "jobs"] }
+        { type: "trueFalse", q: "Economic growth always improves the quality of life for everyone in a country.", answer: false, explanation: "Growth can create benefits like higher incomes, but also costs like pollution and inequality." },
+        { type: "choice", q: "Which of these is a social cost of rapid economic growth?", options: ["Higher tax revenues", "Increased pollution", "More jobs", "Rising wages"], answer: "Increased pollution", explanation: "Pollution is a negative externality — a social cost not reflected in market prices." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Economic", "growth", "increases", "the", "average", "standard", "of", "living.", "decreases", "prices", "workers", "taxes"], answer: ["Economic", "growth", "increases", "the", "average", "standard", "of", "living."] }
       ]
     },
     {
@@ -1211,20 +1111,21 @@ export const unit2 = {
       type: "video",
       source: "Educational Video",
       url: "https://youtu.be/ZSZUT5Irhrg",
+      localSrc: "/u2_future_of_work.mp4",
       embedId: "ZSZUT5Irhrg",
       duration: "Video",
-      description: "A video about how new technology changes employment — who loses jobs, who gains them, and what retraining means.",
-      whyHelps: "You will hear 'redundant', 'retrain', 'hire', and 'employment' in a real-world discussion.",
-      vocabToListen: ["redundant", "retrain", "hire", "employment", "replace"],
-      task: "After watching, build a sentence: What can governments do to help displaced workers?",
+      description: "A forward-looking video examining how automation and AI are changing the labour market — what jobs will disappear, what will be created, and what skills will matter.",
+      whyHelps: "You will hear 'redundant', 'retrain', 'workforce', 'automation' and 'job insecurity' in context.",
+      vocabToListen: ["redundant", "retrain", "workforce", "automation", "job insecurity"],
+      task: "After watching: give one example of a job that technology might replace in the future.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "how", "technology", "changes", "employment", "and", "makes", "some", "workers", "redundant", "rich", "prices", "grow"], answer: ["This", "video", "is", "about", "how", "technology", "changes", "employment", "and", "makes", "some", "workers", "redundant"] },
-        { type: "wordCheck", q: "Which words do you expect to hear? Tick all that apply.", options: ["redundant", "retrain", "hire", "employment", "replace"] }
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "is", "about", "technology", "and", "the", "future", "of", "work", "money", "prices", "growth", "trade"], answer: ["This", "video", "is", "about", "technology", "and", "the", "future", "of", "work"] },
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["redundant", "retrain", "workforce", "automation", "job insecurity"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "Retraining is more useful for younger workers than older workers.", answer: true, explanation: "True — younger workers generally find it easier to learn new skills and adapt to new technology." },
-        { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Redundancy and retraining", "Supply and demand", "Monopoly and control", "Mergers and authority"], answer: "Redundancy and retraining", explanation: "The video focuses on redundant, retrain, hire, employment, and replace." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Many", "workers", "retrain", "after", "losing", "their", "jobs", "because", "of", "new", "technology", "retire", "hire", "wages", "complain"], answer: ["Many", "workers", "retrain", "after", "losing", "their", "jobs", "because", "of", "new", "technology"] }
+        { type: "trueFalse", q: "Technological unemployment means losing a job because a machine can do it more efficiently.", answer: true, explanation: "Correct — when machines replace human labour, workers become technologically unemployed." },
+        { type: "choice", q: "What is the most effective response to technological unemployment?", options: ["Banning new technology", "Retraining workers for new roles", "Reducing wages", "Shortening working hours"], answer: "Retraining workers for new roles", explanation: "Retraining allows workers to adapt to new types of jobs created by technology." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Technological", "unemployment", "happens", "when", "machines", "replace", "workers", "in", "a", "job.", "companies", "grow", "profits", "hire"], answer: ["Technological", "unemployment", "happens", "when", "machines", "replace", "workers", "in", "a", "job."] }
       ]
     },
     {
@@ -1232,32 +1133,24 @@ export const unit2 = {
       title: "Employment Rights and Responsibilities",
       type: "video",
       source: "Educational Video",
-      url: "https://youtu.be/",
-      localSrc: "/u2_employment.mp4",
+      url: "",
+      localSrc: "/u2_contract_law.mp4",
       embedId: "",
       duration: "Video",
-      description: "A clear video about employment contracts, worker rights, and what employers must provide by law.",
-      whyHelps: "You will hear 'hire', 'contract', 'rights', 'redundant', and 'retrain' used in a real employment context.",
-      vocabToListen: ["hire", "contract", "rights", "redundant", "retrain"],
-      task: "After watching: list 2 rights that every employee has.",
+      description: "A short animated introduction to contract law — what makes a contract valid, how the law enforces it, and when it can fail. Uses everyday examples to explain consideration, sanctity of contract, and legal remedies.",
+      whyHelps: "You will hear 'agreement', 'contract', 'obligation', 'damages' and 'consideration' — key legal vocabulary for business English.",
+      vocabToListen: ["agreement", "contract", "obligation", "damages", "consideration"],
+      task: "After watching: explain in one sentence what makes an agreement legally binding.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:",
-          tiles: ["This", "video", "is", "about", "employment", "rights", "and", "what", "workers", "are", "entitled", "to", ".", "monopoly", "prices", "growth"],
-          answer: ["This", "video", "is", "about", "employment", "rights", "and", "what", "workers", "are", "entitled", "to", "."] },
-        { type: "wordCheck", q: "Which words do you expect to hear?",
-          options: ["hire", "contract", "rights", "redundant", "retrain"] }
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "is", "about", "contracts", "and", "legal", "agreements", "between", "people", "taxes", "monopoly", "prices"], answer: ["This", "video", "is", "about", "contracts", "and", "legal", "agreements", "between", "people"] },
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["agreement", "contract", "obligation", "damages", "consideration"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "Every employee has the right to a written contract.",
-          answer: true,
-          explanation: "Employment law requires employers to provide a written statement of terms and conditions." },
-        { type: "choice", q: "What is the main topic of this video?",
-          options: ["Employment and rights", "Supply and demand", "Monopoly and mergers", "Insurance and taxes"],
-          answer: "Employment and rights",
-          explanation: "The video focuses on hire, contract, rights, redundant, and retrain in a workplace context." },
-        { type: "sentenceBuilder", q: "Build the sentence:",
-          tiles: ["Workers", "have", "the", "right", "to", "a", "safe", "working", "environment", ".", "wages", "profits", "costs", "pay"],
-          answer: ["Workers", "have", "the", "right", "to", "a", "safe", "working", "environment", "."] }
+        { type: "trueFalse", q: "A contract requires both parties to exchange something of value (consideration).", answer: true, explanation: "Correct — consideration (обмен ценностями) is essential. Both sides must give something meaningful." },
+        { type: "choice", q: "What does 'specific performance' mean in contract law?", options: ["Paying money as compensation", "A court ordering you to fulfil your promise", "Cancelling the contract", "Paying a fine to the government"], answer: "A court ordering you to fulfil your promise", explanation: "Specific performance means the court forces the party to do exactly what was promised — not just pay money." },
+        { type: "trueFalse", q: "A contract signed under duress (threats or force) is always fully enforceable.", answer: false, explanation: "A contract signed under duress can be declared 'voidable' — the victim may be able to cancel it." },
+        { type: "choice", q: "What is 'frustration' in contract law?", options: ["When one party is angry about the deal", "When an unexpected event makes it impossible to fulfil the contract", "When the price is unfair", "When one party refuses to sign"], answer: "When an unexpected event makes it impossible to fulfil the contract", explanation: "Frustration occurs when circumstances (e.g. a fire, a natural disaster) make the original contract impossible." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "contract", "is", "a", "legally", "binding", "agreement", "between", "two", "parties.", "optional", "informal", "suggestion", "request"], answer: ["A", "contract", "is", "a", "legally", "binding", "agreement", "between", "two", "parties."] }
       ]
     },
     {
@@ -1265,32 +1158,22 @@ export const unit2 = {
       title: "Consumer Rights — Know Your Rights",
       type: "video",
       source: "Educational Video",
-      url: "https://youtu.be/",
+      url: "",
       localSrc: "/u2_consumer_rights.mp4",
       embedId: "",
       duration: "Video",
-      description: "A practical video explaining what consumer rights are, when they apply, and how to use them.",
-      whyHelps: "You will hear 'entitled', 'refund', 'complaint', 'authorize', and 'damage' in a real consumer context.",
+      description: "A practical video explaining what consumer rights are, when they apply, and how to use them — covering refunds, replacements, and formal complaints.",
+      whyHelps: "You will hear 'entitled', 'refund', 'complaint', 'authorize' and 'damage' in a real consumer context.",
       vocabToListen: ["entitled", "refund", "complaint", "authorize", "damage"],
       task: "After watching: explain what you should do first if you buy a faulty product.",
       predictionTask: [
-        { type: "wordCheck", q: "Which words do you expect to hear?",
-          options: ["entitled", "refund", "complaint", "authorize", "damage"] }
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["entitled", "refund", "complaint", "authorize", "damage"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "A consumer can demand a refund for a product that does not work.",
-          answer: true,
-          explanation: "A faulty product entitles the buyer to a refund or replacement under consumer law." },
-        { type: "choice", q: "What should you do first if a product is damaged?",
-          options: ["Make a formal complaint to the seller", "Throw the product away", "Contact a lawyer immediately", "Post a review online"],
-          answer: "Make a formal complaint to the seller",
-          explanation: "The first step is to contact the seller directly with proof of purchase." },
-        { type: "trueFalse", q: "Consumer rights only apply when you buy in a physical shop.",
-          answer: false,
-          explanation: "Consumer rights apply to online purchases too — often with even stronger protection." },
-        { type: "sentenceBuilder", q: "Build the sentence:",
-          tiles: ["If", "a", "product", "is", "damaged", ",", "you", "are", "entitled", "to", "a", "refund", ".", "repaired", "used", "sold"],
-          answer: ["If", "a", "product", "is", "damaged", ",", "you", "are", "entitled", "to", "a", "refund", "."] }
+        { type: "trueFalse", q: "A consumer can demand a refund for a product that does not work.", answer: true, explanation: "A faulty product entitles the buyer to a refund or replacement under consumer law." },
+        { type: "choice", q: "What should you do first if a product is damaged?", options: ["Make a formal complaint to the seller", "Throw the product away", "Contact a lawyer immediately", "Post a review online"], answer: "Make a formal complaint to the seller", explanation: "The first step is to contact the seller directly with proof of purchase." },
+        { type: "trueFalse", q: "Consumer rights only apply when you buy in a physical shop.", answer: false, explanation: "Consumer rights apply to online purchases too — often with even stronger protection." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["If", "a", "product", "is", "damaged,", "you", "are", "entitled", "to", "a", "refund.", "repaired", "used", "sold"], answer: ["If", "a", "product", "is", "damaged,", "you", "are", "entitled", "to", "a", "refund."] }
       ]
     }
   ],

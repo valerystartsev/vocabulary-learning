@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useMode } from '../context/ModeContext';
 import { Home, BookOpen, LayoutDashboard, BookText, BarChart3, Menu, X, GraduationCap, Eye, Globe, LogOut, User, Lock, Settings, Headphones, Ship, RotateCcw, XCircle, Sun, Moon, TrendingUp } from 'lucide-react';
@@ -33,12 +34,27 @@ const publicNavItems = [
 function UnitProgressMini({ unitId }) {
   const { getUnitProgress } = useProgress();
   const pct = getUnitProgress(unitId);
+  const barRef = useRef(null);
+  const barInView = useInView(barRef, { once: true });
   return (
-    <div className="mt-1 flex items-center gap-1.5">
+    <div ref={barRef} className="mt-1 flex items-center gap-1.5">
       <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}>
-        <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: 'var(--col-accent)' }} />
+        <motion.div
+          className="h-full rounded-full"
+          style={{ backgroundColor: 'var(--col-accent)' }}
+          initial={{ width: 0 }}
+          animate={{ width: barInView ? `${pct}%` : 0 }}
+          transition={{ duration: 0.85, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+        />
       </div>
-      <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)', minWidth: 22, textAlign: 'right' }}>{pct}%</span>
+      <motion.span
+        style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)', minWidth: 22, textAlign: 'right' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: barInView ? 1 : 0 }}
+        transition={{ duration: 0.4, delay: 0.7 }}
+      >
+        {pct}%
+      </motion.span>
     </div>
   );
 }
@@ -90,29 +106,47 @@ export default function Layout() {
     const isUnit = item.path.startsWith('/unit/');
     const unitId = isUnit ? parseInt(item.path.split('/unit/')[1]) : null;
     return (
-      <Link
-        to={item.path}
-        onClick={() => mobile && setMobileOpen(false)}
-        className="flex items-center gap-3 rounded-lg transition-all group"
-        style={{
-          minHeight: mobile ? 56 : 44,
-          padding: mobile ? '0 24px' : '0 10px',
-          backgroundColor: active ? 'var(--col-sidebar-active)' : 'transparent',
-          borderLeft: active ? '3px solid var(--col-accent)' : '3px solid transparent',
-          color: active ? '#FFFFFF' : 'var(--col-sidebar-text)',
-          fontWeight: active ? 600 : 400,
-          fontSize: mobile ? 16 : 14,
-        }}
-        onMouseEnter={e => { if (!active) e.currentTarget.style.backgroundColor = 'var(--col-sidebar-hover)'; }}
-        onMouseLeave={e => { if (!active) e.currentTarget.style.backgroundColor = 'transparent'; }}
-      >
-        <item.icon className="h-4 w-4 shrink-0" style={{ color: active ? 'var(--col-accent)' : 'var(--col-sidebar-text)', opacity: active ? 1 : 0.7 }} />
-        <div className="min-w-0 flex-1">
-          <div className="truncate">{item.label}</div>
-          <div style={{ fontSize: 10, color: active ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.3)', lineHeight: 1.3 }}>{item.labelRu}</div>
-          {isUnit && <UnitProgressMini unitId={unitId} />}
-        </div>
-      </Link>
+      <motion.div whileHover={{ x: active ? 0 : 2 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
+        <Link
+          to={item.path}
+          onClick={() => mobile && setMobileOpen(false)}
+          className="relative flex items-center gap-3 rounded-lg group overflow-hidden"
+          style={{
+            minHeight: mobile ? 56 : 44,
+            padding: mobile ? '0 24px' : '0 10px',
+            backgroundColor: active ? 'var(--col-sidebar-active)' : 'transparent',
+            borderLeft: active ? '3px solid var(--col-accent)' : '3px solid transparent',
+            color: active ? '#FFFFFF' : 'var(--col-sidebar-text)',
+            fontWeight: active ? 600 : 400,
+            fontSize: mobile ? 16 : 14,
+            transition: 'background-color 0.18s, border-color 0.18s, color 0.18s',
+          }}
+          onMouseEnter={e => { if (!active) { e.currentTarget.style.backgroundColor = 'var(--col-sidebar-hover)'; } }}
+          onMouseLeave={e => { if (!active) e.currentTarget.style.backgroundColor = 'transparent'; }}
+        >
+          {/* Active glow ring */}
+          {active && (
+            <motion.div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{ background: 'rgba(94,158,137,0.06)', border: '1px solid rgba(94,158,137,0.18)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+          )}
+          <motion.div
+            animate={{ scale: active ? 1.1 : 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+          >
+            <item.icon className="h-4 w-4 shrink-0" style={{ color: active ? 'var(--col-accent)' : 'var(--col-sidebar-text)', opacity: active ? 1 : 0.65 }} />
+          </motion.div>
+          <div className="min-w-0 flex-1">
+            <div className="truncate">{item.label}</div>
+            <div style={{ fontSize: 10, color: active ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.28)', lineHeight: 1.3 }}>{item.labelRu}</div>
+            {isUnit && <UnitProgressMini unitId={unitId} />}
+          </div>
+        </Link>
+      </motion.div>
     );
   };
 
@@ -212,26 +246,61 @@ export default function Layout() {
       >
         {/* Logo */}
         <div className="px-5 py-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div
-              className="flex items-center justify-center rounded-lg shrink-0"
-              style={{ width: 34, height: 34, backgroundColor: 'var(--col-accent)' }}
-            >
-              <GraduationCap className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <h1 className="font-bold text-base tracking-tight text-white leading-tight">Adaptation</h1>
-              <p style={{ fontSize: 10, color: 'var(--col-sidebar-text)', lineHeight: 1.4 }}>
-                Business English · A1–A2
-              </p>
-            </div>
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <motion.div
+                className="flex items-center justify-center rounded-lg shrink-0"
+                style={{ width: 34, height: 34, backgroundColor: 'var(--col-accent)' }}
+                whileHover={{ scale: 1.08, rotate: 4 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                <GraduationCap className="h-5 w-5 text-white" />
+              </motion.div>
+              <div>
+                <h1 className="font-bold text-base tracking-tight text-white leading-tight">Adaptation</h1>
+                <p style={{ fontSize: 10, color: 'var(--col-sidebar-text)', lineHeight: 1.4 }}>
+                  Business English · A1–A2
+                </p>
+              </div>
+            </Link>
+          </motion.div>
         </div>
 
         {/* Nav */}
         <nav className="flex-1 py-4 px-3 space-y-0.5 overflow-y-auto">
-          <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', color: 'rgba(176,196,220,0.45)', textTransform: 'uppercase', paddingLeft: 10, marginBottom: 6 }}>Navigation</p>
-          {navItems.map(item => <NavItem key={item.path} item={item} />)}
+          <motion.p
+            style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', color: 'rgba(176,196,220,0.45)', textTransform: 'uppercase', paddingLeft: 10, marginBottom: 6 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
+            Navigation
+          </motion.p>
+          <motion.div
+            className="space-y-0.5"
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.055, delayChildren: 0.25 } }
+            }}
+          >
+            {navItems.map(item => (
+              <motion.div
+                key={item.path}
+                variants={{
+                  hidden: { opacity: 0, x: -14 },
+                  show: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } }
+                }}
+              >
+                <NavItem item={item} />
+              </motion.div>
+            ))}
+          </motion.div>
         </nav>
 
         {/* Auth / User section */}
@@ -306,23 +375,33 @@ export default function Layout() {
       </div>
 
       {/* ── Mobile Overlay ── */}
-      {mobileOpen && (
-        <div
-          className="lg:hidden fixed inset-0 z-50"
-          style={{ backgroundColor: 'var(--col-overlay)' }}
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            className="lg:hidden fixed inset-0 z-50"
+            style={{ backgroundColor: 'var(--col-overlay)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* ── Mobile Drawer ── */}
-      <div
-        className="lg:hidden fixed top-0 left-0 bottom-0 z-50 flex flex-col transition-transform duration-300"
+      <motion.div
+        className="lg:hidden fixed top-0 left-0 bottom-0 z-50 flex flex-col"
         style={{
           width: 'min(80vw, 300px)',
           backgroundColor: 'var(--col-sidebar)',
-          transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)',
+        }}
+        initial={false}
+        animate={{
+          x: mobileOpen ? 0 : '-100%',
           boxShadow: mobileOpen ? '4px 0 32px rgba(0,0,0,0.35)' : 'none',
         }}
+        transition={{ type: 'spring', stiffness: 320, damping: 32 }}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
           <div className="flex items-center gap-2.5">
@@ -415,7 +494,7 @@ export default function Layout() {
             </p>
           </div>
         )}
-      </div>
+      </motion.div>
 
       <TeacherPinModal />
 

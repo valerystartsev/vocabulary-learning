@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useProgress } from '../context/ProgressContext';
 import { getAllVocabulary } from '../data/courseData';
 import { getDueWords } from '../utils/spacedRepetition';
@@ -114,43 +115,76 @@ export default function Review() {
 
       {/* Progress bar */}
       <div className="h-1.5 rounded-full overflow-hidden mb-6" style={{ backgroundColor: 'var(--col-divider)' }}>
-        <div className="h-full rounded-full transition-all" style={{ width: `${(idx / dueWords.length) * 100}%`, backgroundColor: 'var(--col-accent)' }} />
+        <motion.div className="h-full rounded-full" style={{ backgroundColor: 'var(--col-accent)' }} animate={{ width: `${(idx / dueWords.length) * 100}%` }} transition={{ duration: 0.5, ease: [0.25,0.1,0.25,1] }} />
       </div>
 
-      {/* Card */}
+      {/* Card — flip animation */}
       <div
-        className="rounded-2xl p-8 text-center cursor-pointer min-h-48 flex flex-col items-center justify-center mb-5 transition-all"
-        style={{ backgroundColor: 'var(--col-surface)', border: `2px solid ${flipped ? 'var(--col-accent)' : 'var(--col-border)'}` }}
+        className="flip-card w-full mb-5"
+        style={{ minHeight: 192, cursor: 'pointer' }}
         onClick={() => setFlipped(f => !f)}
       >
-        {!flipped ? (
-          <>
-            <p className="text-3xl font-bold mb-2" style={{ color: 'var(--col-heading)' }}>{word.term}</p>
+        {/* Outer wrapper handles the 3D perspective */}
+        <div className={`flip-card-inner rounded-2xl${flipped ? ' flipped' : ''}`}
+          style={{ minHeight: 192 }}>
+
+          {/* Front face */}
+          <div
+            className="flip-card-front rounded-2xl p-8 flex flex-col items-center justify-center"
+            style={{ backgroundColor: 'var(--col-surface)', border: '2px solid var(--col-border)' }}
+          >
+            <motion.p
+              key={word.id + '-front'}
+              className="text-3xl font-bold mb-2"
+              style={{ color: 'var(--col-heading)' }}
+              initial={{ opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.35, ease: [0.25,0.1,0.25,1] }}
+            >
+              {word.term}
+            </motion.p>
             <p className="text-xs" style={{ color: 'var(--col-muted)' }}>Tap to reveal translation</p>
-          </>
-        ) : (
-          <>
+          </div>
+
+          {/* Back face */}
+          <div
+            className="flip-card-back rounded-2xl p-8 flex flex-col items-center justify-center"
+            style={{ backgroundColor: 'var(--col-surface)', border: '2px solid var(--col-accent)' }}
+          >
             <p className="text-xl font-semibold mb-2" style={{ color: 'var(--col-accent)' }}>{word.translationRu}</p>
             <p className="text-sm mb-3" style={{ color: 'var(--col-body)' }}>{word.meaningEn}</p>
             <p className="text-xs italic" style={{ color: 'var(--col-secondary)' }}>"{word.example}"</p>
-          </>
-        )}
+          </div>
+        </div>
       </div>
 
-      {flipped && (
-        <div className="grid grid-cols-4 gap-2">
-          {RATINGS.map(r => (
-            <button
-              key={r.value}
-              onClick={() => handleRate(r.value)}
-              className="py-3 rounded-xl text-xs font-semibold text-white"
-              style={{ backgroundColor: r.color, minHeight: 52 }}
-            >
-              {r.label}
-            </button>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {flipped && (
+          <motion.div
+            className="grid grid-cols-4 gap-2"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            {RATINGS.map((r, i) => (
+              <motion.button
+                key={r.value}
+                onClick={() => handleRate(r.value)}
+                className="py-3 rounded-xl text-xs font-semibold text-white"
+                style={{ backgroundColor: r.color, minHeight: 52 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.25, delay: i * 0.05 }}
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                {r.label}
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

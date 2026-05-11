@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { MapPin, ChevronRight } from 'lucide-react';
 import { PROFILES } from '../data/economicWorldData';
 import EconomicMap from '../components/economic-world/EconomicMap';

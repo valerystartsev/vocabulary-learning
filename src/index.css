@@ -429,3 +429,185 @@
   border: 6px solid transparent;
   border-top-color: var(--col-sidebar);
 }
+/* ════════════════════════════════════════════════════════════════
+   PREMIUM ANIMATIONS — added for motionsites-level polish
+   All compatible with existing brand palette
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Noise / grain texture overlay ── */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 200px 200px;
+  border-radius: inherit;
+}
+
+/* ── Liquid glass borders (for hero/dark elements) ── */
+.liquid-glass {
+  background: rgba(255,255,255,0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
+    rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+    rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Shimmer sweep (for dark header areas) ── */
+@keyframes shimmer-sweep {
+  0%   { background-position: -200% center; }
+  100% { background-position: 300% center; }
+}
+.shimmer-text {
+  background: linear-gradient(100deg, currentColor 0%, rgba(255,255,255,0.85) 45%, currentColor 55%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-sweep 3.5s linear infinite;
+}
+
+/* ── Pulse glow ring (for map markers, active indicators) ── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.7; }
+  70%  { transform: scale(1.55); opacity: 0; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: var(--col-accent);
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+/* ── Audio wave (for Listening Lab play button) ── */
+@keyframes audio-wave {
+  0%, 100% { transform: scaleY(0.4); }
+  50%       { transform: scaleY(1.1); }
+}
+.audio-bar { animation: audio-wave 0.8s ease-in-out infinite; }
+.audio-bar:nth-child(1) { animation-delay: 0s; }
+.audio-bar:nth-child(2) { animation-delay: 0.12s; }
+.audio-bar:nth-child(3) { animation-delay: 0.24s; }
+.audio-bar:nth-child(4) { animation-delay: 0.36s; }
+.audio-bar:nth-child(5) { animation-delay: 0.48s; }
+
+/* ── Flip card (Smart Review) ── */
+.flip-card { perspective: 1000px; }
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: inherit;
+}
+.flip-card-back { transform: rotateY(180deg); }
+
+/* ── Stagger fade-up for lists ── */
+@keyframes stagger-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.stagger-item {
+  animation: stagger-up 0.45s ease both;
+}
+.stagger-item:nth-child(1)  { animation-delay: 0.04s; }
+.stagger-item:nth-child(2)  { animation-delay: 0.08s; }
+.stagger-item:nth-child(3)  { animation-delay: 0.12s; }
+.stagger-item:nth-child(4)  { animation-delay: 0.16s; }
+.stagger-item:nth-child(5)  { animation-delay: 0.20s; }
+.stagger-item:nth-child(6)  { animation-delay: 0.24s; }
+.stagger-item:nth-child(7)  { animation-delay: 0.28s; }
+.stagger-item:nth-child(8)  { animation-delay: 0.32s; }
+.stagger-item:nth-child(9)  { animation-delay: 0.36s; }
+.stagger-item:nth-child(10) { animation-delay: 0.40s; }
+
+/* ── Hover glow card (light theme) ── */
+.hover-glow {
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.hover-glow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(94,158,137,0.14), 0 4px 10px rgba(0,0,0,0.05);
+  border-color: rgba(94,158,137,0.4) !important;
+}
+
+/* ── Country card tariff badge shimmer ── */
+@keyframes badge-pop {
+  0%   { transform: scale(0.85); opacity: 0; }
+  60%  { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+.tariff-badge-pop { animation: badge-pop 0.35s ease both; }
+
+/* ── Tab indicator slide ── */
+.tab-indicator {
+  transition: left 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── Glossary expand row ── */
+.glossary-row-expand {
+  overflow: hidden;
+  transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+}
+
+/* ── Count-up shimmer for stat numbers ── */
+@keyframes count-flash {
+  0%   { opacity: 0.4; filter: blur(2px); }
+  100% { opacity: 1;   filter: blur(0px); }
+}
+.count-up-number {
+  animation: count-flash 0.6s ease both;
+}
+
+/* ── Progress section page entrance ── */
+@keyframes section-enter {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.section-enter {
+  animation: section-enter 0.5s ease both;
+}
+.section-enter-delay-1 { animation-delay: 0.06s; }
+.section-enter-delay-2 { animation-delay: 0.12s; }
+.section-enter-delay-3 { animation-delay: 0.18s; }
+.section-enter-delay-4 { animation-delay: 0.24s; }
+
+/* ── Smooth accent bar fill ── */
+@keyframes bar-fill {
+  from { width: 0%; }
+}
+.animated-bar {
+  animation: bar-fill 0.9s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  animation-delay: 0.3s;
+}

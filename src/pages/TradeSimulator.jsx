@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Ship, ArrowRight, CheckCircle, RotateCcw, ChevronRight, TrendingUp, TrendingDown, Minus, Package, Globe } from 'lucide-react';
 
 // ── Data ─────────────────────────────────────────────────────────────────────
@@ -436,7 +437,7 @@ function GoodsGrid({ value, onSelect, exporter, importer }) {
                 {w.term} <span style={{ color: 'var(--col-secondary)', fontWeight: 400 }}>— {w.translationRu}</span>
               </span>
             ))}
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

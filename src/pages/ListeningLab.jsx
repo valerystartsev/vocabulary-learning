@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { units, getAllVocabulary } from '../data/courseData';
 import { useProgress } from '../context/ProgressContext';
@@ -381,7 +382,7 @@ export default function ListeningLab() {
           </div>
           <div className="h-2.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--col-divider)' }}>
             <div
-              className="h-full rounded-full transition-all"
+              className="h-full rounded-full"
               style={{ width: `${pct}%`, backgroundColor: pct === 100 ? 'var(--col-correct)' : 'var(--col-accent)' }}
             />
           </div>

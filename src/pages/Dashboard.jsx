@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { units, getAllVocabulary } from '../data/courseData';
 import { useProgress, computeUnitProgress } from '../context/ProgressContext';
@@ -12,6 +13,89 @@ import { getDueWords } from '../utils/spacedRepetition';
 const TEACHER_EMAIL = 'emzakhtser@mail.ru';
 // Normalized comparison — prevents whitespace/case-variant exploits
 const isTeacherUser = (u) => u?.email?.toLowerCase().trim() === TEACHER_EMAIL;
+
+// ── Animated counter hook ────────────────────────────────────────
+function useCountUp(target, duration = 1.2) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  useEffect(() => {
+    if (!inView) return;
+    const n = parseFloat(String(target).replace(/[^0-9.]/g, ''));
+    if (isNaN(n)) { setCount(target); return; }
+    const startTime = Date.now();
+    const tick = () => {
+      const elapsed = (Date.now() - startTime) / 1000;
+      const p = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const current = Math.round(eased * n);
+      setCount(String(target).replace(/\d+/, current));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [inView, target]);
+  return { count, ref };
+}
+
+
+// ── Animated Metric Card ─────────────────────────────────────────
+function MetricCard({ card }) {
+  const { count, ref: countRef } = useCountUp(card.value, 1.1);
+  return (
+    <motion.button
+      onClick={card.onClick}
+      className="rounded-2xl p-5 text-left focus-visible:outline-none hover-glow"
+      style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}
+      variants={{
+        hidden: { opacity: 0, y: 16, filter: 'blur(4px)' },
+        show:   { opacity: 1, y: 0,  filter: 'blur(0px)',
+                  transition: { duration: 0.5, ease: [0.25,0.1,0.25,1] } },
+      }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <div className="flex items-start justify-between mb-3">
+        <div>
+          <p className="uppercase tracking-widest font-semibold"
+            style={{ fontSize: 10, color: 'var(--col-muted)', letterSpacing: '0.08em' }}>
+            {card.label}
+          </p>
+          <p style={{ fontSize: 10, color: 'var(--col-tertiary)' }}>{card.labelRu}</p>
+        </div>
+        <motion.div
+          className="p-2 rounded-xl shrink-0"
+          style={{ backgroundColor: card.alert ? 'rgba(199,154,74,0.12)' : 'var(--col-accent-light)' }}
+          whileHover={{ scale: 1.12 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+        >
+          <card.icon className="h-4 w-4"
+            style={{ color: card.alert ? 'var(--col-warning)' : 'var(--col-accent)' }} />
+        </motion.div>
+      </div>
+      <div className="flex items-baseline gap-1.5" ref={countRef}>
+        <span className="font-bold count-up-number"
+          style={{ fontSize: 30, color: 'var(--col-heading)', lineHeight: 1 }}>
+          {count || card.value}
+        </span>
+        {card.sub && (
+          <span style={{ fontSize: 12, color: 'var(--col-secondary)' }}>{card.sub}</span>
+        )}
+      </div>
+      {card.hasBar && (
+        <div className="mt-3 h-1.5 rounded-full overflow-hidden"
+          style={{ backgroundColor: 'var(--col-divider)' }}>
+          <motion.div
+            className="h-full rounded-full"
+            style={{ backgroundColor: 'var(--col-accent)' }}
+            initial={{ width: 0 }}
+            animate={{ width: `${card.barValue}%` }}
+            transition={{ duration: 0.9, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+          />
+        </div>
+      )}
+    </motion.button>
+  );
+}
+
 
 export default function Dashboard() {
   const { progress, getUnitProgress } = useProgress();
@@ -107,7 +191,12 @@ export default function Dashboard() {
       {showRescue && <WeakWordsRescue staleWords={staleWeakWords} onClose={() => setShowRescue(false)} />}
 
       {/* Header */}
-      <div className="mb-8">
+      <motion.div
+        className="mb-8"
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
+      >
         <h1 className="font-bold" style={{ fontSize: 28, color: 'var(--col-heading)', letterSpacing: '-0.5px' }}>
           Course Dashboard
         </h1>
@@ -124,55 +213,19 @@ export default function Dashboard() {
             <div className="ml-1 w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--col-accent)' }} />
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* ── Metric cards 2×2 ── */}
-      <div className="grid grid-cols-2 gap-3 mb-8">
+      <motion.div
+        className="grid grid-cols-2 gap-3 mb-8"
+        initial="hidden"
+        animate="show"
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+      >
         {metricCards.map((card, i) => (
-          <button
-            key={i}
-            onClick={card.onClick}
-            className="rounded-2xl p-5 text-left transition-all focus-visible:outline-none card-elevated"
-            style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}
-            onMouseOver={e => { e.currentTarget.style.backgroundColor = 'var(--col-surface-secondary)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-            onMouseOut={e => { e.currentTarget.style.backgroundColor = 'var(--col-surface)'; e.currentTarget.style.transform = 'none'; }}
-          >
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <p className="uppercase tracking-widest font-semibold" style={{ fontSize: 10, color: 'var(--col-muted)', letterSpacing: '0.08em' }}>
-                  {card.label}
-                </p>
-                <p style={{ fontSize: 10, color: 'var(--col-tertiary)' }}>{card.labelRu}</p>
-              </div>
-              <div
-                className="p-2 rounded-xl shrink-0"
-                style={{ backgroundColor: card.alert ? 'rgba(199,154,74,0.12)' : 'var(--col-accent-light)' }}
-              >
-                <card.icon
-                  className="h-4 w-4"
-                  style={{ color: card.alert ? 'var(--col-warning)' : 'var(--col-accent)' }}
-                />
-              </div>
-            </div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="font-bold" style={{ fontSize: 30, color: 'var(--col-heading)', lineHeight: 1 }}>
-                {card.value}
-              </span>
-              {card.sub && (
-                <span style={{ fontSize: 12, color: 'var(--col-secondary)' }}>{card.sub}</span>
-              )}
-            </div>
-            {card.hasBar && (
-              <div className="mt-3 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--col-divider)' }}>
-                <div
-                  className="h-full rounded-full progress-bar-animate"
-                  style={{ width: `${card.barValue}%`, backgroundColor: 'var(--col-accent)' }}
-                />
-              </div>
-            )}
-          </button>
+          <MetricCard key={i} card={card} />
         ))}
-      </div>
+      </motion.div>
 
       {/* SRS due banner */}
       {dueCount > 0 && (

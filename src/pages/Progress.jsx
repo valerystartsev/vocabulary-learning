@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { units, getAllVocabulary } from '../data/courseData';
 import LearningAnalytics from '../components/progress/LearningAnalytics';
@@ -15,25 +16,73 @@ const SECTION_LABELS = {
   writing: 'Writing', scenario: 'Scenario', totaltest: 'Total Test',
 };
 
-function StatCard({ icon: Icon, value, sub, label, color, bar }) {
+function StatCard({ icon: Icon, value, sub, label, color, bar, delay = 0 }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+
+  // Count-up
+  const [displayVal, setDisplayVal] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    const n = parseFloat(String(value).replace(/[^0-9.]/g, ''));
+    if (isNaN(n)) return;
+    const dur = 1.1;
+    const startTime = Date.now();
+    const tick = () => {
+      const elapsed = (Date.now() - startTime) / 1000;
+      const p = Math.min(elapsed / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setDisplayVal(Math.round(eased * n));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [inView, value]);
+
+  const displayValue = typeof value === 'string' && value.includes('%')
+    ? `${displayVal}%`
+    : displayVal || value;
+
   return (
-    <div className="rounded-2xl p-5 card-elevated" style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>
+    <motion.div
+      ref={ref}
+      className="rounded-2xl p-5 card-elevated hover-glow"
+      style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}
+      initial={{ opacity: 0, y: 18, filter: 'blur(4px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+      transition={{ duration: 0.55, delay, ease: [0.25, 0.1, 0.25, 1] }}
+    >
       <div className="flex items-center gap-3 mb-3">
-        <div className="p-2.5 rounded-xl" style={{ backgroundColor: `${color}18` }}>
+        <motion.div
+          className="p-2.5 rounded-xl"
+          style={{ backgroundColor: `${color}18` }}
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: 'spring', stiffness: 320 }}
+        >
           <Icon className="h-5 w-5" style={{ color }} />
-        </div>
-        <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--col-muted)', letterSpacing: '0.06em' }}>{label}</p>
+        </motion.div>
+        <p className="text-xs font-semibold uppercase tracking-wide"
+          style={{ color: 'var(--col-muted)', letterSpacing: '0.06em' }}>{label}</p>
       </div>
       <div className="flex items-baseline gap-1">
-        <span className="font-bold" style={{ fontSize: 32, color: 'var(--col-heading)', lineHeight: 1 }}>{value}</span>
+        <span className="font-bold count-up-number"
+          style={{ fontSize: 32, color: 'var(--col-heading)', lineHeight: 1 }}>
+          {inView ? displayValue : 0}
+        </span>
         {sub && <span className="text-sm" style={{ color: 'var(--col-muted)' }}>{sub}</span>}
       </div>
       {bar !== undefined && (
-        <div className="mt-3 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--col-divider)' }}>
-          <div className="h-full rounded-full progress-bar-animate" style={{ width: `${Math.min(bar, 100)}%`, backgroundColor: color }} />
+        <div className="mt-3 h-1.5 rounded-full overflow-hidden"
+          style={{ backgroundColor: 'var(--col-divider)' }}>
+          <motion.div
+            className="h-full rounded-full"
+            style={{ backgroundColor: color }}
+            initial={{ width: 0 }}
+            animate={inView ? { width: `${Math.min(bar, 100)}%` } : {}}
+            transition={{ duration: 1.0, delay: delay + 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          />
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
 

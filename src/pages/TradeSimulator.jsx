@@ -437,7 +437,7 @@ function GoodsGrid({ value, onSelect, exporter, importer }) {
                 {w.term} <span style={{ color: 'var(--col-secondary)', fontWeight: 400 }}>— {w.translationRu}</span>
               </span>
             ))}
-          </motion.div>
+          </div>
         </div>
       )}
     </div>

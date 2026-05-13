@@ -765,7 +765,7 @@ export const unit1 = {
       vocabToListen: ["market", "competition", "supply", "price", "demand"],
       task: "After watching, build a sentence: What is a market?",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "markets", "and", "competition", "how", "prices", "are", "set", "by", "buyers", "sellers", "government", "taxes"], answer: ["This", "video", "is", "about", "markets", "and", "competition"] },
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "markets", "and", "competition.", "how", "prices", "are", "set", "by", "buyers", "sellers", "government", "taxes"], answer: ["This", "video", "is", "about", "markets", "and", "competition."] },
         { type: "wordCheck", q: "Which words do you expect to hear? Tick all that apply.", options: ["market", "competition", "supply", "price", "demand"] }
       ],
       postQuiz: [
@@ -788,7 +788,7 @@ export const unit1 = {
       vocabToListen: ["monopoly", "control", "restrict", "competition", "legal"],
       task: "After watching, answer: Is a monopoly good or bad for customers?",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "monopoly", "when", "one", "company", "controls", "the", "whole", "market", "many", "sellers", "prices", "fall"], answer: ["This", "video", "is", "about", "monopoly", "when", "one", "company", "controls", "the", "whole", "market"] },
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "monopoly", "when", "one", "company", "controls", "the", "whole", "market.", "many", "sellers", "prices", "fall"], answer: ["This", "video", "is", "about", "monopoly", "when", "one", "company", "controls", "the", "whole", "market."] },
         { type: "wordCheck", q: "Which words do you expect to hear? Tick all that apply.", options: ["monopoly", "control", "restrict", "competition", "legal"] }
       ],
       postQuiz: [
@@ -811,7 +811,7 @@ export const unit1 = {
       vocabToListen: ["supply", "demand", "price", "fluctuate", "market"],
       task: "After watching, build a sentence explaining the difference between supply and demand.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "explains", "supply", "and", "demand", "two", "key", "concepts", "in", "economics", "technology", "jobs", "wages"], answer: ["This", "video", "explains", "supply", "and", "demand", "two", "key", "concepts", "in", "economics"] },
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "explains", "supply", "and", "demand", "two", "key", "concepts", "in", "economics.", "technology", "jobs", "wages"], answer: ["This", "video", "explains", "supply", "and", "demand", "two", "key", "concepts", "in", "economics."] },
         { type: "wordCheck", q: "Which words do you expect to hear? Tick all that apply.", options: ["supply", "demand", "price", "fluctuate", "market"] }
       ],
       postQuiz: [
@@ -834,7 +834,7 @@ export const unit1 = {
       vocabToListen: ["merger", "competition", "monopoly", "affect", "authorize"],
       task: "After watching, explain: What happens to competition after a merger?",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "mergers", "when", "two", "companies", "join", "together", "to", "become", "one", "separate", "smaller", "banks"], answer: ["This", "video", "is", "about", "mergers", "when", "two", "companies", "join", "together", "to", "become", "one"] },
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "mergers", "when", "two", "companies", "join", "together", "to", "become", "one.", "separate", "smaller", "banks"], answer: ["This", "video", "is", "about", "mergers", "when", "two", "companies", "join", "together", "to", "become", "one."] },
         { type: "wordCheck", q: "Which words do you expect to hear? Tick all that apply.", options: ["merger", "competition", "monopoly", "affect", "authorize"] }
       ],
       postQuiz: [
@@ -876,18 +876,18 @@ export const unit1 = {
     sentenceTargets: [
       {
         prompt: "Build the sentence: What is a market?",
-        tiles: ['A', 'market', 'is', 'a', 'place', 'where', 'buyers', 'and', 'sellers', 'meet', 'monopoly', 'price'],
-        answer: ['A', 'market', 'is', 'a', 'place', 'where', 'buyers', 'and', 'sellers', 'meet']
+        tiles: ['A', 'market', 'is', 'a', 'place', 'where', 'buyers', 'and', 'sellers', 'meet.', 'monopoly', 'price'],
+        answer: ['A', 'market', 'is', 'a', 'place', 'where', 'buyers', 'and', 'sellers', 'meet.']
       },
       {
         prompt: "Sentence 2 — What does competition do to prices?",
-        tiles: ['Competition', 'between', 'companies', 'keeps', 'prices', 'lower', 'for', 'customers', 'higher', 'demand', 'monopoly', 'supply'],
-        answer: ['Competition', 'between', 'companies', 'keeps', 'prices', 'lower', 'for', 'customers']
+        tiles: ['Competition', 'between', 'companies', 'keeps', 'prices', 'lower', 'for', 'customers.', 'higher', 'demand', 'monopoly', 'supply'],
+        answer: ['Competition', 'between', 'companies', 'keeps', 'prices', 'lower', 'for', 'customers.']
       },
       {
         prompt: "Sentence 3 — What happens with a monopoly?",
-        tiles: ['If', 'one', 'company', 'has', 'a', 'monopoly', 'it', 'can', 'set', 'high', 'prices', 'because', 'customers', 'have', 'no', 'other', 'choice', 'low', 'many'],
-        answer: ['If', 'one', 'company', 'has', 'a', 'monopoly', 'it', 'can', 'set', 'high', 'prices', 'because', 'customers', 'have', 'no', 'other', 'choice']
+        tiles: ['If', 'one', 'company', 'has', 'a', 'monopoly', 'it', 'can', 'set', 'high', 'prices', 'because', 'customers', 'have', 'no', 'other', 'choice.', 'low', 'many'],
+        answer: ['If', 'one', 'company', 'has', 'a', 'monopoly', 'it', 'can', 'set', 'high', 'prices', 'because', 'customers', 'have', 'no', 'other', 'choice.']
       }
     ],
     sampleAnswer: "A market is a place where buyers and sellers meet to trade goods. Competition between companies keeps prices lower for customers. If one company has a monopoly, it can set high prices because customers have no other choice.",

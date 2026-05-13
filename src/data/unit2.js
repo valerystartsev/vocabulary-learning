@@ -637,7 +637,7 @@ export const unit2 = {
     {
       type: 'sentenceBuilder',
       q: 'What are capital goods? Build the definition:',
-      tiles: ['Capital', 'goods', 'are', 'tools', 'machines', 'and', 'buildings', 'used', 'to', 'produce', 'other', 'goods', 'people', 'services', 'money'],
+      tiles: ['Capital', 'goods', 'are', 'tools', 'machines', 'and', 'buildings', 'used', 'to', 'produce', 'other', 'goods.', 'people', 'services', 'money'],
       answer: ['Capital', 'goods', 'are', 'tools', 'machines', 'and', 'buildings', 'used', 'to', 'produce', 'other', 'goods.']
     },
     {
@@ -1096,7 +1096,7 @@ export const unit2 = {
       vocabToListen: ["growth", "revenue", "pollution", "standard of living", "social costs"],
       task: "After watching: name one benefit and one cost of economic growth.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "economic", "growth", "and", "its", "benefits", "and", "costs", "problems", "taxes", "prices"], answer: ["This", "video", "is", "about", "economic", "growth", "and", "its", "benefits", "and", "costs"] },
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "is", "about", "economic", "growth", "and", "its", "benefits", "and", "costs.", "problems", "taxes", "prices"], answer: ["This", "video", "is", "about", "economic", "growth", "and", "its", "benefits", "and", "costs."] },
         { type: "wordCheck", q: "Which words do you expect to hear?", options: ["growth", "revenue", "pollution", "standard of living", "social costs"] }
       ],
       postQuiz: [
@@ -1119,7 +1119,7 @@ export const unit2 = {
       vocabToListen: ["redundant", "retrain", "workforce", "automation", "job insecurity"],
       task: "After watching: give one example of a job that technology might replace in the future.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "is", "about", "technology", "and", "the", "future", "of", "work", "money", "prices", "growth", "trade"], answer: ["This", "video", "is", "about", "technology", "and", "the", "future", "of", "work"] },
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "is", "about", "technology", "and", "the", "future", "of", "work.", "money", "prices", "growth", "trade"], answer: ["This", "video", "is", "about", "technology", "and", "the", "future", "of", "work."] },
         { type: "wordCheck", q: "Which words do you expect to hear?", options: ["redundant", "retrain", "workforce", "automation", "job insecurity"] }
       ],
       postQuiz: [
@@ -1142,7 +1142,7 @@ export const unit2 = {
       vocabToListen: ["agreement", "contract", "obligation", "damages", "consideration"],
       task: "After watching: explain in one sentence what makes an agreement legally binding.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "is", "about", "contracts", "and", "legal", "agreements", "between", "people", "taxes", "monopoly", "prices"], answer: ["This", "video", "is", "about", "contracts", "and", "legal", "agreements", "between", "people"] },
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "is", "about", "contracts", "and", "legal", "agreements", "between", "people.", "taxes", "monopoly", "prices"], answer: ["This", "video", "is", "about", "contracts", "and", "legal", "agreements", "between", "people."] },
         { type: "wordCheck", q: "Which words do you expect to hear?", options: ["agreement", "contract", "obligation", "damages", "consideration"] }
       ],
       postQuiz: [

@@ -96,7 +96,19 @@ export function getSectionStatus(sectionId, unitId, progress, unit) {
     case 'roleperspectives':
     case 'labourmarket':
     case 'memo':
-    case 'grammar': {
+    case 'grammar':
+    // ── Unit 3 new feature section IDs ─────────────────────────────────────
+    case 'moneycompass':       // moneyFunctionsCompass — 4 functions of money
+    case 'bankaccounts':       // bankAccountSection — current/checking/time/bond
+    case 'loansimulator':      // loanSimulator — Arthur's car loan
+    case 'currencycomparator': // currencyComparator — £ vs $
+    // ── Unit 4 new feature section IDs ─────────────────────────────────────
+    case 'gdpapproaches':      // gdpTwoApproaches — earnings vs flow-of-product
+    case 'telephoneetiquette': // telephoneEtiquetteSection — phone phrases
+    case 'indicators':         // economicIndicatorsDashboard — leading/coincident/lagging
+    case 'annualreport':       // annualReportReader — RusTech Solutions tabs
+    case 'policymap':          // economicPolicyMap — 5 countries
+    case 'governmentpolicy': { // governmentPolicySection — fiscal vs monetary
       return visited ? 'completed' : 'not_started';
     }
 

@@ -18,6 +18,8 @@ const authNavItems = [
   { path: '/dashboard',      label: 'Dashboard',       labelRu: 'Панель',           icon: LayoutDashboard },
   { path: '/unit/1',         label: 'Unit 1',          labelRu: 'Markets',          icon: BookOpen },
   { path: '/unit/2',         label: 'Unit 2',          labelRu: 'Economics',        icon: BookOpen },
+  { path: '/unit/3',         label: 'Unit 3',          labelRu: 'Money & Banking',  icon: BookOpen },
+  { path: '/unit/4',         label: 'Unit 4',          labelRu: 'Measuring Economy', icon: BookOpen },
   { path: '/glossary',       label: 'Glossary',        labelRu: 'Словарь',          icon: BookText },
   { path: '/progress',       label: 'Progress',        labelRu: 'Прогресс',         icon: BarChart3 },
   { path: '/review',         label: 'Smart Review',    labelRu: 'Повторение',       icon: RotateCcw },

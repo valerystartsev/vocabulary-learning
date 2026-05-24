@@ -82,15 +82,15 @@ function StudentDetail({ student, onBack }) {
       try {
         const { data: profile } = await supabase
           .from('profiles')
-          .select('id, display_name, full_name, email, university_tracking, progress')
+          .select('id, full_name, email, is_financial_university, progress')
           .eq('id', student.id)
           .single();
         if (profile && !cancelled) {
           setLocalStudent({
             id: profile.id,
             email: profile.email || '—',
-            displayName: profile.display_name || profile.full_name || profile.email || '—',
-            isFinancialUniversity: profile.university_tracking,
+            displayName: profile.full_name || profile.email || '—',
+            isFinancialUniversity: profile.is_financial_university,
             progress: profile.progress || {},
           });
         }
@@ -324,23 +324,23 @@ export default function TeacherDashboard() {
     loadStudents();
   }, [user, isLoadingAuth]);
 
-  // Загружает студентов с university_tracking = true из Supabase.
+  // Загружает студентов с is_financial_university = true из Supabase.
   // Было: const allUsers = [] — возвращал пустой массив.
   const loadStudents = async () => {
     try {
       setLoading(true);
       const { data: profiles, error } = await supabase
         .from('profiles')
-        .select('id, display_name, full_name, email, university_tracking, progress')
-        .eq('university_tracking', true);
+        .select('id, full_name, email, is_financial_university, progress')
+        .eq('is_financial_university', true);
       if (error) throw error;
       const tracked = (profiles || [])
         .filter(p => p.email !== TEACHER_EMAIL)
         .map(p => ({
           id: p.id,
           email: p.email || '—',
-          displayName: p.display_name || p.full_name || p.email || '—',
-          isFinancialUniversity: p.university_tracking,
+          displayName: p.full_name || p.email || '—',
+          isFinancialUniversity: p.is_financial_university,
           progress: p.progress || {},
         }))
         .sort((a, b) => {

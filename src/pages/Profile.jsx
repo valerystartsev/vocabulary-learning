@@ -19,7 +19,6 @@ export default function Profile() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [tourReset, setTourReset] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -47,24 +46,22 @@ export default function Profile() {
   // Было: console.log('Profile save disabled...') — ничего не писало в базу.
   const handleSave = async () => {
     setSaving(true);
-    setError(null);
     try {
       const trimmed = displayName.trim();
-      const { error: saveError } = await supabase
+      const { error } = await supabase
         .from('profiles')
         .upsert({
           id: user.id,
-          full_name: trimmed || null,
-          is_financial_university: Boolean(isFinancialUniversity),
+          display_name: trimmed || null,
+          university_tracking: Boolean(isFinancialUniversity),
           updated_at: new Date().toISOString(),
         });
-      if (saveError) throw saveError;
+      if (error) throw error;
       await refreshUser();
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch (e) {
       console.error('Failed to save profile:', e);
-      setError(e.message || 'Failed to save profile');
     } finally {
       setSaving(false);
     }
@@ -83,13 +80,6 @@ export default function Profile() {
         Profile & Settings
       </h1>
       <p className="text-sm mb-7" style={{ color: 'var(--col-muted)' }}>Профиль и настройки</p>
-
-      {error && (
-        <div className="mb-4 p-3 rounded-xl text-sm"
-          style={{ backgroundColor: 'var(--col-incorrect-light)', color: 'var(--col-incorrect)', border: '1px solid var(--col-incorrect)' }}>
-          {error}
-        </div>
-      )}
 
       <div className="space-y-5">
 

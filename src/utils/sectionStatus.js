@@ -75,8 +75,14 @@ export function getSectionStatus(sectionId, unitId, progress, unit) {
     }
 
     case 'mediaquest': {
+      // STRICT per-unit check. The previous version included
+      //   k.includes('mediaquest')
+      // which matched ANY MediaQuest key in the global scores object,
+      // so completing the quest in Unit 1 made Unit 2/3/4 also show
+      // it as done. Now we only accept keys explicitly prefixed with
+      // the current unit's id.
       const mqScores = progress.mediaQuestScores || {};
-      const hasAny = Object.keys(mqScores).some(k => k.startsWith(`${unitId}_`) || k.includes('mediaquest'));
+      const hasAny = Object.keys(mqScores).some(k => k.startsWith(`${unitId}_`));
       if (!hasAny && !visited) return 'not_started';
       if (!hasAny && visited) return 'in_progress';
       return 'completed';

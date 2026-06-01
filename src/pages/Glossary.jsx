@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getAllVocabulary } from '../data/courseData';
+import { getAllVocabulary, units } from '../data/courseData';
 import PronounceButton from '../components/PronounceButton';
 import DifficultWordsTab from '../components/DifficultWordsTab';
 import { useProgress } from '../context/ProgressContext';
@@ -381,8 +381,9 @@ export default function Glossary() {
           <SelectTrigger className="w-28" style={{ minHeight: 40 }}><SelectValue placeholder="Unit" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Units</SelectItem>
-            <SelectItem value="1">Unit 1</SelectItem>
-            <SelectItem value="2">Unit 2</SelectItem>
+            {units.map(u => (
+              <SelectItem key={u.id} value={String(u.id)}>Unit {u.id}</SelectItem>
+            ))}
           </SelectContent>
         </Select>
         <Select value={statusFilter} onValueChange={setStatusFilter}>

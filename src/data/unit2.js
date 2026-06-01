@@ -1,5 +1,17 @@
 export const unit2 = {
   id: 2,
+  // Flags that toggle data-driven optional sections (Phase 3 / R2)
+  timeline: true,             // → renders GrowthTimeline as the impactmap section
+  radarAfterDictionary: true, // → renders VocabularyRadar right after Dictionary
+  // R3: declarative section list — drives nav strip + render loop order
+  sections: [
+    'header', 'keyideas', 'growthdrivers', 'dictionary', 'impactmap', 'exercises',
+    'reading', 'comprehension', 'media', 'crossword',
+    'casestudy', 'roleperspectives', 'labourmarket',
+    'techjobsflow',
+    'dialogue', 'memo', 'grammar',
+    'writing', 'scenario', 'totaltest', 'answerkey', 'summary',
+  ],
   title: "Economic Growth",
   subtitle: "What makes economies grow — and what it costs",
   description: "Learn about economic growth: what it means, why it matters, and what problems it can create. Understand how countries measure progress, the costs of growing, and how technology and employment are connected.",
@@ -27,6 +39,112 @@ export const unit2 = {
       icon: "AlertTriangle"
     }
   ],
+
+  // Growth Drivers Compass — 4 main forces that push economic output up.
+  // Renders as a 2×2 expandable grid in the same pattern as Unit 1's
+  // MarketStructureCompass and Unit 3's MoneyCompass.
+  growthDrivers: [
+    {
+      id: 'labour',
+      title: 'Labour',
+      titleRu: 'Труд',
+      icon: 'Users',
+      mechanism: 'More workers, or workers with higher skills, can produce more output for the economy.',
+      mechanismRu: 'Больше работников или работники с более высокой квалификацией дают больше выпуска экономики.',
+      example: 'Russia hires 200,000 IT specialists in 2024. Software output rises by 8% — pure labour-driven growth.',
+      exampleRu: 'Россия нанимает 200 000 IT-специалистов в 2024. Выпуск ПО растёт на 8% — чистый рост за счёт труда.',
+      limit: 'Bounded by population size and how long it takes to train people for new jobs.',
+      limitRu: 'Ограничен численностью населения и временем, нужным для обучения людей новым профессиям.',
+    },
+    {
+      id: 'capital',
+      title: 'Capital',
+      titleRu: 'Капитал',
+      icon: 'Building2',
+      mechanism: 'More machines, factories and tools mean each worker produces more during the same shift.',
+      mechanismRu: 'Больше машин, заводов и инструментов — каждый работник за смену производит больше.',
+      example: 'A textile factory installs new automatic looms. The same 50 workers now produce 3× more cloth per shift.',
+      exampleRu: 'Текстильная фабрика устанавливает новые автоматические станки. Те же 50 работников за смену производят в 3 раза больше ткани.',
+      limit: 'Requires saving today to invest tomorrow — and machines wear out over time (depreciation).',
+      limitRu: 'Требует сберегать сегодня, чтобы инвестировать завтра — и оборудование со временем изнашивается (амортизация).',
+    },
+    {
+      id: 'technology',
+      title: 'Technology',
+      titleRu: 'Технологии',
+      icon: 'Cpu',
+      mechanism: 'New techniques and ideas let the same workers and machines produce more or better goods.',
+      mechanismRu: 'Новые методы и идеи позволяют тем же работникам и машинам производить больше или качественнее.',
+      example: 'A bank rolls out mobile-app loans. The same 20 staff process 10× more applications per day — same headcount, more output.',
+      exampleRu: 'Банк запускает кредиты через мобильное приложение. Те же 20 сотрудников обрабатывают в 10 раз больше заявок в день.',
+      limit: 'Often disrupts old jobs — social costs are high when workers must retrain or move cities.',
+      limitRu: 'Часто разрушает старые рабочие места — социальные издержки велики, когда людям нужно переучиваться или менять город.',
+    },
+    {
+      id: 'productivity',
+      title: 'Productivity',
+      titleRu: 'Производительность',
+      icon: 'Zap',
+      mechanism: 'Better organisation, training and management let inputs produce more output per hour.',
+      mechanismRu: 'Лучшая организация, обучение и менеджмент дают больше выпуска на тот же час труда.',
+      example: 'A car plant adopts lean manufacturing. Defect rate drops 60%, output per worker rises 25% — without buying new machines.',
+      exampleRu: 'Автозавод внедряет бережливое производство. Брак падает на 60%, выпуск на работника — +25% без новых машин.',
+      limit: 'Improvements compound but eventually plateau — diminishing returns set in.',
+      limitRu: 'Улучшения накапливаются, но в итоге упираются в потолок — наступает убывающая отдача.',
+    },
+  ],
+
+  // Technology & Jobs Flow — 4-step stepper showing how new technology
+  // ripples through the labour market. Pattern matches Unit 1's
+  // ComplaintResolutionPath: pill-stepper with EN/RU + bilingual
+  // vocabulary-in-context highlights.
+  techJobsFlow: {
+    intro: "When a new technology arrives, the labour market doesn't react all at once. It moves through four predictable stages — tap each to see the vocabulary in context.",
+    introRu: "Когда приходит новая технология, рынок труда меняется не сразу. Он проходит четыре предсказуемых стадии — нажмите каждую, чтобы увидеть лексику в контексте.",
+    steps: [
+      {
+        id: 'arrival',
+        title: 'New technology arrives',
+        titleRu: 'Приходит новая технология',
+        icon: 'Cpu',
+        what: 'A company adopts a faster or cheaper way to produce something — automation, software, AI tools.',
+        whatRu: 'Компания внедряет более быстрый или дешёвый способ производства — автоматизацию, ПО, ИИ.',
+        vocab: 'A logistics firm invests in **capital accumulation** — new robotic warehouses driven by **technological advances** that boost **output** without extra workers.',
+        vocabRu: 'Логистическая компания вкладывает в **накопление капитала** — новые роботизированные склады на основе **технологических достижений**, которые увеличивают **выпуск** без новых работников.',
+      },
+      {
+        id: 'displaced',
+        title: 'Some jobs disappear',
+        titleRu: 'Часть рабочих мест исчезает',
+        icon: 'UserMinus',
+        what: 'Tasks that the new tech does better are no longer assigned to humans. Some workers are made redundant.',
+        whatRu: 'Задачи, которые новая технология выполняет лучше, больше не дают людям. Часть работников увольняют.',
+        vocab: 'The firm stops **hiring** new pickers and packers. Existing staff face **social costs** — lost income, stress, the need to move cities to find work.',
+        vocabRu: 'Фирма больше не **нанимает** грузчиков и упаковщиков. Существующий персонал сталкивается с **социальными издержками** — потеря дохода, стресс, необходимость менять город.',
+      },
+      {
+        id: 'transition',
+        title: 'Workers retrain or stay',
+        titleRu: 'Работники переучиваются или остаются',
+        icon: 'GraduationCap',
+        what: 'Governments and companies encourage retraining. Some workers learn new skills; others stay in shrinking professions.',
+        whatRu: 'Государство и компании поощряют переобучение. Часть работников осваивает новые навыки, часть остаётся в сокращающихся профессиях.',
+        vocab: 'The government **encourages** workers to **enlist** in retraining programmes, often free of charge, paid for by an **insurance** scheme funded by employers.',
+        vocabRu: 'Правительство **поощряет** работников **записываться** на программы переобучения, часто бесплатные, финансируемые **страховой** схемой за счёт работодателей.',
+      },
+      {
+        id: 'newjobs',
+        title: 'New jobs emerge',
+        titleRu: 'Появляются новые профессии',
+        icon: 'Sparkles',
+        what: 'The same technology that destroyed old jobs creates new ones — robot maintenance, data analysis, AI training. Net employment can rise.',
+        whatRu: 'Та же технология, что уничтожила старые рабочие места, создаёт новые — обслуживание роботов, анализ данных, обучение ИИ. Чистая занятость может вырасти.',
+        vocab: 'Within two years the firm **hires** 40 robot technicians and 12 data analysts — these new roles **justify** the original investment and grow the total **output** of the economy.',
+        vocabRu: 'За два года фирма **нанимает** 40 техников по роботам и 12 аналитиков данных — эти новые роли **оправдывают** первоначальные инвестиции и увеличивают общий **выпуск** экономики.',
+      },
+    ],
+  },
+
   vocabulary: [
     {
       id: "u2_amount",
@@ -1272,6 +1390,26 @@ export const unit2 = {
           }
         ]
       }
+    ]
+  },
+  crossword: {
+    words: [
+      { number: 1,  word: 'VALUE',     dir: 'across', row: 0,  col: 2,  clue: 'The worth of something in money.',                         clueRu: 'Стоимость чего-либо.' },
+      { number: 5,  word: 'FUND',      dir: 'across', row: 2,  col: 3,  clue: 'A pool of money used for investment.',                     clueRu: 'Пул денег для инвестирования.' },
+      { number: 8,  word: 'FLUCTUATE', dir: 'across', row: 4,  col: 0,  clue: 'To go up and down in value or price.',                     clueRu: 'Колебаться — расти и падать.' },
+      { number: 10, word: 'GROWTH',    dir: 'across', row: 5,  col: 8,  clue: 'An increase in size, value, or profit.',                   clueRu: 'Рост — увеличение размера, стоимости.' },
+      { number: 13, word: 'INTEREST',  dir: 'across', row: 7,  col: 1,  clue: 'Extra money paid on savings or a loan.',                   clueRu: 'Проценты по вкладу или кредиту.' },
+      { number: 14, word: 'SAVINGS',   dir: 'across', row: 9,  col: 7,  clue: 'Money kept for future use.',                               clueRu: 'Деньги, отложенные на будущее.' },
+      { number: 15, word: 'MONEY',     dir: 'across', row: 10, col: 2,  clue: 'What people use to buy things and pay for services.',      clueRu: 'То, чем люди платят за товары.' },
+      { number: 16, word: 'RETURN',    dir: 'across', row: 12, col: 2,  clue: 'The money you get back from an investment.',               clueRu: 'Доход / возврат от инвестиций.' },
+      { number: 2,  word: 'AFFECT',    dir: 'down',   row: 0,  col: 3,  clue: 'To influence or change something.',                       clueRu: 'Влиять на что-то.' },
+      { number: 3,  word: 'INVEST',    dir: 'down',   row: 0,  col: 12, clue: 'To put money into something to make a profit.',            clueRu: 'Вкладывать деньги с целью прибыли.' },
+      { number: 4,  word: 'PROFIT',    dir: 'down',   row: 1,  col: 0,  clue: 'The money left after paying all costs.',                   clueRu: 'Прибыль — деньги после расходов.' },
+      { number: 6,  word: 'DEAL',      dir: 'down',   row: 2,  col: 6,  clue: 'An agreement between buyer and seller.',                   clueRu: 'Сделка — соглашение покупателя и продавца.' },
+      { number: 7,  word: 'NEGOTIATE', dir: 'down',   row: 3,  col: 8,  clue: 'To discuss and agree on terms.',                          clueRu: 'Вести переговоры об условиях.' },
+      { number: 9,  word: 'LOSS',      dir: 'down',   row: 4,  col: 10, clue: 'When you spend more money than you receive.',              clueRu: 'Убыток — тратите больше, чем получаете.' },
+      { number: 11, word: 'INCOME',    dir: 'down',   row: 6,  col: 2,  clue: 'Money received regularly from work or investment.',        clueRu: 'Доход — деньги, получаемые регулярно.' },
+      { number: 12, word: 'BROKER',    dir: 'down',   row: 6,  col: 5,  clue: 'A person who buys and sells on behalf of others.',        clueRu: 'Брокер — посредник в сделках.' },
     ]
   }
 };

@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useMode } from '../context/ModeContext';
-import { Home, BookOpen, LayoutDashboard, BookText, BarChart3, Menu, X, GraduationCap, Eye, Globe, LogOut, User, Lock, Settings, Headphones, Ship, RotateCcw, XCircle, Sun, Moon, TrendingUp } from 'lucide-react';
+import { Home, BookOpen, LayoutDashboard, BookText, BarChart3, Menu, X, GraduationCap, Eye, Globe, LogOut, User, Lock, Settings, Headphones, Ship, RotateCcw, XCircle, Sun, Moon, TrendingUp, FlaskConical } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Switch } from '@/components/ui/switch';
 import TeacherPinModal from './TeacherPinModal';
 import { useProgress } from '../context/ProgressContext';
 import { useAuth } from '../lib/AuthContext';
+import { units } from '../data/courseData';
 
 const TEACHER_EMAIL = 'emzakhtser@mail.ru';
 // Normalized comparison — prevents whitespace/case-variant exploits
@@ -16,15 +17,13 @@ const isTeacherUser = (user) => user?.email?.toLowerCase().trim() === TEACHER_EM
 const authNavItems = [
   { path: '/',               label: 'Welcome',         labelRu: 'Главная',          icon: Home },
   { path: '/dashboard',      label: 'Dashboard',       labelRu: 'Панель',           icon: LayoutDashboard },
-  { path: '/unit/1',         label: 'Unit 1',          labelRu: 'Markets',          icon: BookOpen },
-  { path: '/unit/2',         label: 'Unit 2',          labelRu: 'Economics',        icon: BookOpen },
-  { path: '/glossary',       label: 'Glossary',        labelRu: 'Словарь',          icon: BookText },
-  { path: '/progress',       label: 'Progress',        labelRu: 'Прогресс',         icon: BarChart3 },
-  { path: '/review',         label: 'Smart Review',    labelRu: 'Повторение',       icon: RotateCcw },
-  { path: '/economic-world', label: 'Economic World',  labelRu: 'Экон. карта',      icon: Globe },
-  { path: '/listening-lab',  label: 'Listening Lab',   labelRu: 'Аудирование',     icon: Headphones },
-  { path: '/trade-simulator',label: 'Trade Simulator', labelRu: 'Симулятор',        icon: Ship },
-  { path: '/mistakes',       label: 'My Mistakes',     labelRu: 'Мои ошибки',      icon: XCircle },
+  ...units.map(u => ({ path: `/unit/${u.id}`, label: `Unit ${u.id}`, labelRu: u.title, icon: BookOpen })),
+  { path: '/glossary',        label: 'Glossary',         labelRu: 'Словарь',          icon: BookText },
+  { path: '/interactive-lab', label: 'Interactive Lab',  labelRu: 'Лаборатория',      icon: FlaskConical },
+  { path: '/progress',        label: 'Progress',         labelRu: 'Прогресс',         icon: BarChart3 },
+  { path: '/review',          label: 'Smart Review',     labelRu: 'Повторение',       icon: RotateCcw },
+  { path: '/listening-lab',   label: 'Listening Lab',    labelRu: 'Аудирование',      icon: Headphones },
+  { path: '/mistakes',        label: 'My Mistakes',      labelRu: 'Мои ошибки',       icon: XCircle },
 ];
 
 const publicNavItems = [

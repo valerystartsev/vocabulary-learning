@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useProgress } from '../context/ProgressContext';
-import { getAllVocabulary } from '../data/courseData';
+import { getAllVocabulary, units } from '../data/courseData';
 import { XCircle, AlertTriangle, BarChart3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -32,9 +32,9 @@ export default function MyMistakes() {
         <XCircle className="h-14 w-14 mx-auto mb-4 opacity-30" style={{ color: 'var(--col-muted)' }} />
         <h1 className="font-bold text-xl mb-2" style={{ color: 'var(--col-heading)' }}>No mistakes recorded yet</h1>
         <p className="text-sm mb-6" style={{ color: 'var(--col-muted)' }}>Complete exercises to see your error patterns here.</p>
-        <Link to="/unit/1">
+        <Link to={`/unit/${units[0].id}`}>
           <button className="px-6 py-3 rounded-xl font-semibold text-sm text-white" style={{ backgroundColor: 'var(--col-accent)' }}>
-            Go to Unit 1
+            Go to Unit {units[0].id}
           </button>
         </Link>
       </div>

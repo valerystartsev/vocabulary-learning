@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMode } from '../../context/ModeContext';
 import { HelpCircle, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
 import SentenceBuilder from '../exercises/SentenceBuilder';
+import { useProgress } from '../../context/ProgressContext';
 
 /**
  * ComprehensionQuestions
@@ -12,8 +13,37 @@ import SentenceBuilder from '../exercises/SentenceBuilder';
  *   { type:'sentenceBuilder', q, tiles, answer }
  *   { type:'match', pairs: [{a,b}] }
  */
-export default function ComprehensionQuestions({ questions }) {
+export default function ComprehensionQuestions({ questions, unitId }) {
   const { isTeacherMode } = useMode();
+  const { saveSectionScore, markSectionComplete } = useProgress();
+
+  // Trackable = anything except open-ended (open has no machine-checkable
+  // answer, just a model). The Submit Section button is enabled once
+  // these are answered; OpenCards stay informational.
+  const trackable = questions.filter(q => (q.type || 'open') !== 'open');
+  const totalTrackable = trackable.length;
+
+  // Per-question outcomes — kept in state so re-renders see them.
+  const [answeredMap, setAnsweredMap] = useState({}); // { idx: isCorrect }
+  const [submitted, setSubmitted] = useState(false);
+
+  const onAnswered = (idx, isCorrect) => {
+    setAnsweredMap(prev => (prev[idx] === isCorrect ? prev : { ...prev, [idx]: isCorrect }));
+  };
+
+  const answeredCount = Object.keys(answeredMap).length;
+  const correctCount = Object.values(answeredMap).filter(Boolean).length;
+  const score = totalTrackable > 0 ? Math.round((correctCount / totalTrackable) * 100) : 100;
+  const allAnswered = totalTrackable > 0 && answeredCount >= totalTrackable;
+
+  const handleSubmit = () => {
+    if (!allAnswered) return;
+    setSubmitted(true);
+    if (typeof unitId === 'number') {
+      saveSectionScore?.(unitId, 'comprehension', score);
+      markSectionComplete?.(unitId, 'comprehension');
+    }
+  };
 
   return (
     <div className="mb-8">
@@ -22,18 +52,66 @@ export default function ComprehensionQuestions({ questions }) {
         Comprehension Questions
       </h2>
       <p className="text-sm mb-4" style={{ color: 'var(--col-secondary)' }}>
-        Answer each question. Use vocabulary from the unit.
+        Answer each question, then press <strong>Submit Answers</strong> at the bottom to save your score.
+        <br />
+        <span className="italic" style={{ color: 'var(--col-muted)' }}>
+          Ответьте на каждый вопрос и нажмите «Submit Answers» внизу, чтобы сохранить результат.
+        </span>
       </p>
       <div className="space-y-4">
         {questions.map((q, idx) => (
-          <QuestionCard key={idx} q={q} idx={idx} isTeacherMode={isTeacherMode} />
+          <QuestionCard key={idx} q={q} idx={idx} isTeacherMode={isTeacherMode} onAnswered={onAnswered} />
         ))}
+      </div>
+
+      {/* ── Submit Answers bar — final, section-level call to action ── */}
+      <div
+        className="rounded-2xl mt-6 p-4 flex items-center justify-between gap-4 flex-wrap"
+        style={{
+          backgroundColor: submitted ? 'var(--col-accent-light)' : 'var(--col-surface)',
+          border: `1px solid ${submitted ? 'var(--col-accent)' : 'var(--col-border)'}`,
+        }}
+      >
+        <div className="min-w-0">
+          <p className="text-sm font-semibold" style={{ color: 'var(--col-heading)' }}>
+            {submitted
+              ? `Submitted — score ${score}% (${correctCount}/${totalTrackable})`
+              : `Progress — ${answeredCount}/${totalTrackable} answered`}
+          </p>
+          <p className="text-xs italic" style={{ color: 'var(--col-muted)' }}>
+            {submitted
+              ? 'Раздел зачтён. Прогресс сохранён.'
+              : allAnswered
+                ? 'Все вопросы отвечены — нажмите Submit для зачёта раздела.'
+                : 'Дайте ответ на каждый вопрос и нажмите Check в карточке.'}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={!allAnswered || submitted}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors"
+          style={{
+            backgroundColor: submitted
+              ? 'var(--col-correct)'
+              : allAnswered
+                ? 'var(--col-accent)'
+                : 'var(--col-divider)',
+            opacity: submitted ? 0.85 : 1,
+            cursor: !allAnswered || submitted ? 'not-allowed' : 'pointer',
+            minHeight: 44,
+            border: 'none',
+          }}
+        >
+          <CheckCircle className="h-4 w-4" />
+          {submitted ? 'Submitted ✓' : 'Submit Answers · Отправить'}
+        </button>
       </div>
     </div>
   );
 }
 
-function QuestionCard({ q, idx, isTeacherMode }) {
+function QuestionCard({ q, idx, isTeacherMode, onAnswered }) {
   const type = q.type || 'open';
 
   if (type === 'sentenceBuilder') {
@@ -51,27 +129,36 @@ function QuestionCard({ q, idx, isTeacherMode }) {
   }
 
   if (type === 'trueFalse') {
-    return <TrueFalseCard q={q} idx={idx} isTeacherMode={isTeacherMode} />;
+    return <TrueFalseCard q={q} idx={idx} isTeacherMode={isTeacherMode} onAnswered={onAnswered} />;
   }
 
   if (type === 'multipleChoice') {
-    return <MultipleChoiceCard q={q} idx={idx} isTeacherMode={isTeacherMode} />;
+    return <MultipleChoiceCard q={q} idx={idx} isTeacherMode={isTeacherMode} onAnswered={onAnswered} />;
   }
 
   if (type === 'match') {
-    return <MatchCard q={q} idx={idx} isTeacherMode={isTeacherMode} />;
+    return <MatchCard q={q} idx={idx} isTeacherMode={isTeacherMode} onAnswered={onAnswered} />;
   }
 
   // Default: open question with model answer toggle
   return <OpenCard q={q} idx={idx} isTeacherMode={isTeacherMode} />;
 }
 
-function TrueFalseCard({ q, idx, isTeacherMode }) {
+function TrueFalseCard({ q, idx, isTeacherMode, onAnswered }) {
   const [answer, setAnswer] = useState(null);
   const [checked, setChecked] = useState(false);
 
   const correct = checked && answer === q.answer;
   const wrong   = checked && answer !== q.answer;
+
+  // Report to parent ONCE per question on first Check click.
+  const reportedRef = useRef(false);
+  useEffect(() => {
+    if (checked && !reportedRef.current) {
+      reportedRef.current = true;
+      onAnswered?.(idx, answer === q.answer);
+    }
+  }, [checked, answer, idx, q.answer, onAnswered]);
 
   return (
     <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--col-border)', backgroundColor: 'var(--col-surface)' }}>
@@ -119,9 +206,17 @@ function TrueFalseCard({ q, idx, isTeacherMode }) {
   );
 }
 
-function MultipleChoiceCard({ q, idx, isTeacherMode }) {
+function MultipleChoiceCard({ q, idx, isTeacherMode, onAnswered }) {
   const [answer, setAnswer] = useState(null);
   const [checked, setChecked] = useState(false);
+
+  const reportedRef = useRef(false);
+  useEffect(() => {
+    if (checked && !reportedRef.current) {
+      reportedRef.current = true;
+      onAnswered?.(idx, answer === q.answer);
+    }
+  }, [checked, answer, idx, q.answer, onAnswered]);
 
   return (
     <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--col-border)', backgroundColor: 'var(--col-surface)' }}>
@@ -168,13 +263,22 @@ function MultipleChoiceCard({ q, idx, isTeacherMode }) {
   );
 }
 
-function MatchCard({ q, idx, isTeacherMode }) {
+function MatchCard({ q, idx, isTeacherMode, onAnswered }) {
   const [selections, setSelections] = useState({});
   const [checked, setChecked] = useState(false);
   const rightCol = [...q.pairs.map(p => p.b)].sort(() => Math.random() - 0.5);
   const [shuffled] = useState(rightCol);
 
   const allAnswered = q.pairs.every((_, i) => selections[i] !== undefined);
+
+  const reportedRef = useRef(false);
+  useEffect(() => {
+    if (checked && !reportedRef.current) {
+      reportedRef.current = true;
+      const allCorrect = q.pairs.every((p, pi) => selections[pi] === p.b);
+      onAnswered?.(idx, allCorrect);
+    }
+  }, [checked, selections, q.pairs, idx, onAnswered]);
 
   return (
     <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--col-border)', backgroundColor: 'var(--col-surface)' }}>

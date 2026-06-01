@@ -1,5 +1,19 @@
 export const unit4 = {
   id: 4,
+  // R3: declarative section list
+  // Section list — the order shown in the nav strip and the render loop.
+  // Tools moved to /interactive-lab (Phase 2 of Lab refactor):
+  //   gdpcalc, balancesheet  →  Interactive Lab
+  // Their data fields (gdpTwoApproaches, balanceSheet) are still on
+  // this object so the Lab can read them.
+  sections: [
+    'header', 'keyideas',
+    'labbanner:gdp-calculator',         // GDP is foundational — calculator helps before reading
+    'dictionary', 'indicators', 'businesscycle', 'annualreport',
+    'labbanner:balance-sheet-builder',  // annual report contains a balance sheet
+    'exercises', 'reading', 'comprehension', 'media', 'crossword',
+    'dialogue', 'writing', 'scenario', 'totaltest', 'answerkey', 'summary',
+  ],
   title: "Measuring the Economy",
   subtitle: "GDP, economic indicators, balance sheets, and government policy",
   description: "Learn how economies are measured, what economic indicators reveal, and how governments shape policy. Understand GDP, business cycles, annual reports, and the basics of business telephone communication.",
@@ -828,6 +842,108 @@ export const unit4 = {
   },
 
   // ── НОВАЯ ФИШКА: Annual Report Reader (вместо caseStudy у unit2) ─────────────
+  businessCycle: {
+    title: "The Business Cycle — Four Phases",
+    description: "The economy moves through four repeating phases. Click each phase to see which metrics rise, fall, or stay flat at that point.",
+    descriptionRu: "Экономика движется через четыре повторяющиеся фазы. Нажмите на фазу, чтобы увидеть, какие показатели растут, падают или остаются на месте.",
+    phases: [
+      {
+        id: 'expansion',
+        label: 'Expansion',
+        labelRu: 'Подъём',
+        color: '#5E9E89',
+        summary: 'The economy is growing. Output, jobs, and spending are all increasing.',
+        summaryRu: 'Экономика растёт. Производство, занятость и расходы увеличиваются.',
+        metrics: [
+          { name: 'GDP',                   direction: 'up',   note: 'Rising steadily' },
+          { name: 'Employment',            direction: 'up',   note: 'Companies hire' },
+          { name: 'Household consumption', direction: 'up',   note: 'Consumers spend more' },
+          { name: 'Inflation',             direction: 'flat', note: 'Moderate, under control' },
+          { name: 'Leading indicators',    direction: 'up',   note: 'All signs point upward' },
+          { name: 'Performance',           direction: 'up',   note: 'Corporate profits grow' },
+        ],
+      },
+      {
+        id: 'peak',
+        label: 'Peak',
+        labelRu: 'Пик',
+        color: '#C9955A',
+        summary: 'The economy is at its highest point. Growth is slowing — the next move will be down.',
+        summaryRu: 'Экономика на своей высшей точке. Рост замедляется — следующее движение будет вниз.',
+        metrics: [
+          { name: 'GDP',                   direction: 'flat', note: 'Highest level, levelling off' },
+          { name: 'Employment',            direction: 'flat', note: 'Near full employment' },
+          { name: 'Household consumption', direction: 'up',   note: 'Strong, starting to cool' },
+          { name: 'Inflation',             direction: 'up',   note: 'Often rising' },
+          { name: 'Leading indicators',    direction: 'down', note: 'Already pointing down' },
+          { name: 'Performance',           direction: 'flat', note: 'Maximum output' },
+        ],
+      },
+      {
+        id: 'contraction',
+        label: 'Contraction',
+        labelRu: 'Сокращение',
+        color: '#B91C1C',
+        summary: 'The economy is shrinking. GDP falls, unemployment rises. Also called "recession".',
+        summaryRu: 'Экономика сокращается. ВВП падает, безработица растёт. Также называется «рецессия».',
+        metrics: [
+          { name: 'GDP',                   direction: 'down', note: 'Declining' },
+          { name: 'Employment',            direction: 'down', note: 'Companies cut jobs' },
+          { name: 'Household consumption', direction: 'down', note: 'Consumers spend less' },
+          { name: 'Inflation',             direction: 'down', note: 'Demand falls, prices ease' },
+          { name: 'Leading indicators',    direction: 'down', note: 'Continue downward' },
+          { name: 'Performance',           direction: 'down', note: 'Profits decline' },
+        ],
+      },
+      {
+        id: 'trough',
+        label: 'Trough',
+        labelRu: 'Дно',
+        color: '#6B7280',
+        summary: 'The lowest point. Decline has stopped. Recovery begins — the next phase is expansion.',
+        summaryRu: 'Низшая точка. Падение остановилось. Начинается восстановление — следующая фаза подъём.',
+        metrics: [
+          { name: 'GDP',                   direction: 'flat', note: 'Lowest level, levelling off' },
+          { name: 'Employment',            direction: 'flat', note: 'Stops falling' },
+          { name: 'Household consumption', direction: 'flat', note: 'Bottoming out' },
+          { name: 'Inflation',             direction: 'down', note: 'Lowest, may turn up' },
+          { name: 'Leading indicators',    direction: 'up',   note: 'First signs of recovery' },
+          { name: 'Performance',           direction: 'flat', note: 'Stabilising' },
+        ],
+      },
+    ],
+  },
+
+  balanceSheet: {
+    title: "Balance Sheet Builder — Drag & Drop",
+    description: "Drag each card into the correct column. The accounting equation must always hold: Assets = Liabilities + Equity. The balance check turns green when both sides match.",
+    descriptionRu: "Перетащите каждую карточку в правильную колонку. Уравнение бухучёта должно всегда выполняться: Активы = Обязательства + Капитал. Проверка балансировки станет зелёной, когда обе стороны совпадут.",
+    unitLabel: 'K $',
+    unitLabelRu: 'тыс. долларов',
+    // 12 items — totals balance to $1,500K on both sides when correctly placed:
+    //   assets:   250 + 150 + 100 + 300 + 500 + 200 = 1,500
+    //   liab:     400 + 200 + 150 + 50  =   800
+    //   equity:   300 + 400             =   700
+    //   liab+eq:  800 + 700             = 1,500
+    items: [
+      // ── Assets ─────────────────────────────────────────────
+      { id: 'cash',         label: 'Cash',                 labelRu: 'Денежные средства',           value: 250, category: 'asset' },
+      { id: 'receivable',   label: 'Accounts receivable',  labelRu: 'Дебиторская задолженность',   value: 150, category: 'asset' },
+      { id: 'inventory',    label: 'Inventory',            labelRu: 'Запасы',                      value: 100, category: 'asset' },
+      { id: 'equipment',    label: 'Equipment',            labelRu: 'Оборудование',                value: 300, category: 'asset' },
+      { id: 'buildings',    label: 'Buildings',            labelRu: 'Здания',                      value: 500, category: 'asset' },
+      { id: 'patents',      label: 'Patents & software',   labelRu: 'Патенты и ПО',                value: 200, category: 'asset' },
+      // ── Liabilities ────────────────────────────────────────
+      { id: 'bank_loan',    label: 'Bank loan',            labelRu: 'Банковский кредит',           value: 400, category: 'liability' },
+      { id: 'bonds',        label: 'Bonds outstanding',    labelRu: 'Облигации в обращении',       value: 200, category: 'liability' },
+      { id: 'payable',      label: 'Accounts payable',     labelRu: 'Кредиторская задолженность',  value: 150, category: 'liability' },
+      { id: 'wages_owed',   label: 'Wages payable',        labelRu: 'Задолженность по зарплате',   value:  50, category: 'liability' },
+      // ── Equity ─────────────────────────────────────────────
+      { id: 'common_stock', label: 'Common stock',         labelRu: 'Уставный капитал',            value: 300, category: 'equity' },
+      { id: 'retained',     label: 'Retained earnings',    labelRu: 'Нераспределённая прибыль',    value: 400, category: 'equity' },
+    ],
+  },
+
   annualReportReader: {
     title: "Annual Report Reader: RusTech Solutions",
     subtitle: "How to read a company annual report — highlights, letter, balance sheet",
@@ -1382,94 +1498,72 @@ export const unit4 = {
 
   media: [
     {
-      mediaId: "u4_media_what_is_gdp",
-      localSrc: "/u4_what_is_gdp.mp4",
+      mediaId: "u4_media_gdp",
+      localSrc: "/u4_gdp.mp4",
       title: "What is GDP and How is it Measured?",
       type: "video",
       source: "Educational Video",
-      url: "https://youtu.be/oeOg4Ed4S08",
-      embedId: "oeOg4Ed4S08",
+      url: "",
+      embedId: "",
       duration: "Video",
-      description: "A clear explanation of Gross Domestic Product — what it counts, how it's calculated using two different approaches, and why both approaches give the same answer.",
-      whyHelps: "You will hear 'GDP', 'final goods', 'household spending', 'approach', and 'measure' in clear economic context.",
+      description: "What Gross Domestic Product really measures, how it is calculated, what it includes (and importantly, what it leaves out), and what its key limitations are when used as a measure of economic health.",
+      whyHelps: "You will hear 'GDP', 'final goods', 'per capita', 'household', and 'approach' explained in a clear textbook style.",
       vocabToListen: ["GDP", "household", "final", "approach", "measure"],
-      task: "After watching: explain in one sentence why the earnings-and-cost approach and the flow-of-product approach give the same total.",
+      task: "After watching: explain in one sentence why GDP only counts FINAL goods and services, and name one important limitation of using GDP as a measure of well-being.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "explains", "what", "GDP", "is", "and", "the", "two", "approaches", "to", "measure", "it.", "household", "stocks", "bonds"], answer: ["This", "video", "explains", "what", "GDP", "is", "and", "the", "two", "approaches", "to", "measure", "it."] },
-        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["GDP", "household", "final", "approach", "measure"] }
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "explains", "what", "GDP", "is", "and", "how", "it", "is", "measured.", "household", "stocks", "bonds"], answer: ["This", "video", "explains", "what", "GDP", "is", "and", "how", "it", "is", "measured."] },
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["GDP", "final goods", "per capita", "household", "growth"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "GDP includes the value of raw materials and inputs as well as final goods.", answer: false, explanation: "GDP only includes FINAL goods — to avoid double counting. Counting inputs separately would mean counting the same value twice." },
-        { type: "choice", q: "Which of these is part of the flow-of-product approach?", options: ["Wages", "Interest income", "Household spending on final goods", "Profit"], answer: "Household spending on final goods", explanation: "Flow-of-product = total spending on final goods by households, business investment, government, and net exports." },
+        { type: "trueFalse", q: "GDP only counts the value of FINAL goods and services, not raw materials or intermediate inputs.", answer: true, explanation: "Correct. Counting raw materials separately would mean counting the same value twice, since their cost is already included in the final product." },
+        { type: "choice", q: "Which of the following is a recognised LIMITATION of GDP?", options: ["It is easy to calculate", "It does not measure well-being or income distribution", "It includes too many final goods", "It is only used in Europe"], answer: "It does not measure well-being or income distribution", explanation: "GDP measures economic activity but ignores inequality, environmental damage, unpaid labour and quality of life — major reasons it is not a perfect well-being measure." },
         { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["GDP", "measures", "the", "total", "monetary", "value", "of", "all", "final", "goods", "produced", "in", "one", "year.", "borrowed", "deposited", "interest"], answer: ["GDP", "measures", "the", "total", "monetary", "value", "of", "all", "final", "goods", "produced", "in", "one", "year."] }
       ]
     },
     {
-      mediaId: "u4_media_indicators",
-      localSrc: "/u4_indicators.mp4",
-      title: "Leading, Coincident, and Lagging Economic Indicators",
+      mediaId: "u4_media_fiscal_monetary",
+      localSrc: "/u4_fiscal_and_monetary_policy.mp4",
+      title: "Fiscal vs Monetary Policy",
       type: "video",
       source: "Educational Video",
-      url: "https://youtu.be/T96gjV1zCks",
-      embedId: "T96gjV1zCks",
+      url: "",
+      embedId: "",
       duration: "Video",
-      description: "A practical guide to the three types of economic indicators — what they signal, how to read them, and which ones professionals use to anticipate the business cycle.",
-      whyHelps: "You will hear 'leading economic indicators', 'lagging', 'coincident', 'contraction', and 'business cycle' in real analytical context.",
-      vocabToListen: ["leading economic indicators", "lagging economic indicators", "coincident economic indicators", "contraction", "measure"],
-      task: "After watching: give one example of each type of indicator.",
+      description: "The difference between fiscal policy (government spending and taxes) and monetary policy (central bank interest rates and money supply): who controls each one, what tools they use, and how they fight unemployment and inflation.",
+      whyHelps: "You will hear 'fiscal policy', 'monetary policy', 'central bank', 'interest rate', 'inflation', and 'unemployment' in a clear comparative explanation.",
+      vocabToListen: ["fiscal policy", "monetary policy", "central bank", "inflation", "interest rate"],
+      task: "After watching: name which body controls fiscal policy and which controls monetary policy, and give one tool used by each.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "explains", "the", "three", "types", "of", "economic", "indicators", "and", "how", "they", "are", "used.", "ignored", "banks", "loans"], answer: ["This", "video", "explains", "the", "three", "types", "of", "economic", "indicators", "and", "how", "they", "are", "used."] },
-        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["leading", "coincident", "lagging", "contraction", "GDP"] }
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "explains", "the", "difference", "between", "fiscal", "policy", "and", "monetary", "policy.", "barter", "stocks", "bonds"], answer: ["This", "video", "explains", "the", "difference", "between", "fiscal", "policy", "and", "monetary", "policy."] },
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["fiscal", "monetary", "central bank", "inflation", "interest rate"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "Stock market prices are a leading economic indicator.", answer: true, explanation: "Correct — stock prices reflect investor expectations about future profits, so they change BEFORE the broader economy." },
-        { type: "choice", q: "Which is the BEST example of a lagging economic indicator?", options: ["New business orders", "Industrial production", "Unemployment rate", "Building permits"], answer: "Unemployment rate", explanation: "Unemployment changes AFTER the economy. Employers wait to see if a downturn is real before reducing staff." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Leading", "indicators", "change", "before", "the", "economy", "changes,", "predicting", "future", "trends.", "after", "lagging", "stock", "asset"], answer: ["Leading", "indicators", "change", "before", "the", "economy", "changes,", "predicting", "future", "trends."] }
-      ]
-    },
-    {
-      mediaId: "u4_media_telephone",
-      localSrc: "/u4_telephone.mp4",
-      title: "Business Telephone Etiquette",
-      type: "video",
-      source: "Educational Video",
-      url: "https://youtu.be/aJtRYpw7-aw",
-      embedId: "aJtRYpw7-aw",
-      duration: "Video",
-      description: "Practical phrases and etiquette rules for professional business phone calls — greeting, holding, taking messages, and transferring calls.",
-      whyHelps: "You will hear the professional phrases for answering, putting on hold, taking a message, and transferring — exactly the situations from this unit.",
-      vocabToListen: ["hold the line", "take a message", "put through", "speak to", "afraid"],
-      task: "After watching: practise saying the phrase 'Could you hold the line for a moment, please?' in front of a mirror three times.",
-      predictionTask: [
-        { type: "wordCheck", q: "Which phrases do you expect to hear?", options: ["Could you hold the line", "Can I take a message", "I'll put you through", "Good morning, this is..."] }
-      ],
-      postQuiz: [
-        { type: "trueFalse", q: "Saying 'Hold on!' is the most professional way to ask a business caller to wait.", answer: false, explanation: "'Hold on!' is informal and abrupt. The professional phrase is 'Could you hold the line for a moment, please?'" },
-        { type: "choice", q: "Which is the most professional way to start a business call?", options: ["Hello, who's this?", "Yo, who am I talking to?", "Good morning, [Company]. How may I help you?", "What do you want?"], answer: "Good morning, [Company]. How may I help you?", explanation: "Time-of-day greeting + company identification + offer of help = the professional template." },
-        { type: "sentenceBuilder", q: "Build the polite phrase:", tiles: ["Could", "you", "hold", "the", "line", "for", "a", "moment,", "please?", "wait", "now", "stop"], answer: ["Could", "you", "hold", "the", "line", "for", "a", "moment,", "please?"] }
+        { type: "trueFalse", q: "Fiscal policy is controlled by the government, while monetary policy is controlled by the central bank.", answer: true, explanation: "Correct. Governments set taxes and spending (fiscal policy); central banks set interest rates and control the money supply (monetary policy)." },
+        { type: "choice", q: "Which of the following is a tool of MONETARY policy?", options: ["Raising income tax rates", "Increasing government spending on roads", "Changing the central bank's interest rate", "Sending stimulus cheques to citizens"], answer: "Changing the central bank's interest rate", explanation: "Adjusting interest rates is the classic monetary policy tool. The other options are fiscal policy — they involve government taxes or spending." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Expansionary", "fiscal", "policy", "means", "the", "government", "increases", "spending", "or", "cuts", "taxes.", "raises", "freezes", "ignores"], answer: ["Expansionary", "fiscal", "policy", "means", "the", "government", "increases", "spending", "or", "cuts", "taxes."] }
       ]
     },
     {
       mediaId: "u4_media_annual_report",
       localSrc: "/u4_annual_report.mp4",
-      title: "How to Read an Annual Report",
+      title: "Annual Report — What Businesses Must File",
       type: "video",
       source: "Educational Video",
-      url: "https://youtu.be/sPfg40MZA0g",
-      embedId: "sPfg40MZA0g",
+      url: "",
+      embedId: "",
       duration: "Video",
-      description: "A guide to reading and understanding the key parts of a corporate annual report — highlights, the letter to shareholders, balance sheet, income statement, and notes.",
-      whyHelps: "You will hear 'highlights', 'performance', 'asset', 'liability', 'equity', 'profit', 'net', and 'depreciation' as a financial analyst uses them.",
-      vocabToListen: ["highlights", "asset", "liability", "equity", "profit", "net", "depreciation", "performance"],
-      task: "After watching: name three things you would look for in the 'highlights' section of an annual report.",
+      description: "What an Annual Report (or Biennial Statement) is for an LLC, why it must be filed with the state, what it contains, and why timely filing is essential for business compliance.",
+      whyHelps: "You will hear 'annual report', 'LLC', 'compliance', 'registered agent', 'filing', and 'state requirements' explained from a business owner's perspective.",
+      vocabToListen: ["annual report", "asset", "liability", "equity", "performance"],
+      task: "After watching: list three things that are typically included in an Annual Report, and explain in one sentence why filing it on time matters.",
       predictionTask: [
-        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["highlights", "asset", "liability", "equity", "depreciation"] }
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["annual report", "LLC", "compliance", "filing", "state"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "The balance sheet shows what a company owns (assets), what it owes (liabilities), and what is left for the owners (equity).", answer: true, explanation: "Correct — and the fundamental equation is Assets = Liabilities + Equity." },
-        { type: "choice", q: "Where would you find the headline financial figures on the first page of an annual report?", options: ["In the legal disclaimers", "In the highlights section", "In the index", "In the auditor's signature"], answer: "In the highlights section", explanation: "Highlights = the key numbers investors want to see immediately." },
-        { type: "trueFalse", q: "Depreciation is a real cash payment the company makes every year.", answer: false, explanation: "Depreciation is an ACCOUNTING entry — it recognises that an asset has lost value. No cash actually changes hands." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "company's", "assets", "equal", "its", "liabilities", "plus", "the", "owners'", "equity.", "minus", "interest", "rate"], answer: ["A", "company's", "assets", "equal", "its", "liabilities", "plus", "the", "owners'", "equity."] }
+        { type: "trueFalse", q: "An Annual Report is filed with the state to keep a business in good legal standing.", answer: true, explanation: "Correct. Filing the Annual Report is a compliance requirement — failing to file can lead to fines or even dissolution of the business." },
+        { type: "choice", q: "Why is it important to file an Annual Report on time?", options: ["So shareholders can vote on dividends", "To stay in legal compliance and avoid penalties", "Because banks require it for loans every year", "To reset the company's tax rate"], answer: "To stay in legal compliance and avoid penalties", explanation: "On-time filing is a state requirement. Late filing usually triggers fines and can put the business at risk of administrative dissolution." },
+        { type: "trueFalse", q: "Every LLC must usually appoint a registered agent who can receive official documents on its behalf.", answer: true, explanation: "Correct. A registered agent is the official point of contact for legal and government correspondence — a standard part of staying compliant." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["The", "annual", "report", "shows", "the", "company's", "assets,", "liabilities,", "and", "equity", "for", "the", "year.", "stocks", "interest", "barter"], answer: ["The", "annual", "report", "shows", "the", "company's", "assets,", "liabilities,", "and", "equity", "for", "the", "year."] }
       ]
     }
   ],
@@ -1588,6 +1682,21 @@ export const unit4 = {
           }
         ]
       }
+    ]
+  },
+
+  crossword: {
+    words: [
+      // ACROSS
+      { number: 1, word: 'CONTRACT',  dir: 'across', row: 0,  col: 0, clue: 'When the economy gets smaller — opposite of expand.',          clueRu: 'Сокращаться — экономика уменьшается.' },
+      { number: 2, word: 'EQUITY',    dir: 'across', row: 4,  col: 1, clue: 'What the owners own after subtracting debts from assets.',     clueRu: 'Капитал — то, что остаётся владельцам после вычета долгов.' },
+      { number: 3, word: 'HOUSEHOLD', dir: 'across', row: 6,  col: 0, clue: 'A family or group living together — they buy goods.',          clueRu: 'Домохозяйство — семья, потребляющая товары и услуги.' },
+      { number: 4, word: 'WITHDRAW',  dir: 'across', row: 8,  col: 0, clue: 'To take money out of a bank account.',                          clueRu: 'Снять деньги со счёта.' },
+      { number: 5, word: 'PROFIT',    dir: 'across', row: 10, col: 0, clue: 'The money left after paying all costs.',                        clueRu: 'Прибыль — деньги после вычета расходов.' },
+      { number: 6, word: 'MEASURE',   dir: 'across', row: 12, col: 0, clue: 'To find the size or amount of something.',                      clueRu: 'Измерять размер или количество.' },
+      // DOWN
+      { number: 7, word: 'NET',       dir: 'down',   row: 0,  col: 2, clue: 'After all deductions — like "net profit".',                     clueRu: 'Чистый — после всех вычетов.' },
+      { number: 8, word: 'ASSET',     dir: 'down',   row: 0,  col: 5, clue: 'Something a company owns that has value.',                      clueRu: 'Актив — то ценное, чем владеет компания.' },
     ]
   }
 };

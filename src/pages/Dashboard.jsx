@@ -5,7 +5,7 @@ import { units, getAllVocabulary } from '../data/courseData';
 import { useProgress, computeUnitProgress } from '../context/ProgressContext';
 import { useMode } from '../context/ModeContext';
 import { useAuth } from '../lib/AuthContext';
-import { BookOpen, ArrowRight, Brain, AlertTriangle, Trophy, BarChart3, BookText, RotateCcw, Eye, Play } from 'lucide-react';
+import { BookOpen, ArrowRight, Brain, AlertTriangle, Trophy, BarChart3, BookText, RotateCcw, Eye, Play, FlaskConical, ChevronRight } from 'lucide-react';
 import WeakWordsRescue from '../components/WeakWordsRescue';
 import OnboardingTour, { shouldShowTour } from '../components/OnboardingTour';
 import { getDueWords } from '../utils/spacedRepetition';
@@ -282,7 +282,7 @@ export default function Dashboard() {
             </div>
           </Link>
         ) : (
-          <Link to="/unit/1">
+          <Link to={`/unit/${units[0]?.id ?? 1}`}>
             <div
               className="rounded-xl p-4 flex items-start gap-3 transition-colors cursor-pointer h-full"
               style={{ backgroundColor: 'var(--col-accent-light)', border: '1px solid var(--col-divider)' }}
@@ -531,6 +531,54 @@ export default function Dashboard() {
             </div>
           );
         })}
+      </div>
+
+      {/* ── Interactive Lab promo card ── */}
+      <div className="mt-8">
+        <Link
+          to="/interactive-lab"
+          className="block rounded-2xl p-5 transition-colors group"
+          style={{
+            backgroundColor: 'var(--col-surface)',
+            border: '1px solid var(--col-border)',
+            boxShadow: '0 1px 3px rgba(26,40,40,0.04)',
+          }}
+        >
+          <div className="flex items-start gap-4">
+            <div
+              className="flex items-center justify-center rounded-xl shrink-0"
+              style={{ width: 52, height: 52, backgroundColor: 'var(--col-accent-light)' }}
+            >
+              <FlaskConical className="h-6 w-6" style={{ color: 'var(--col-accent)' }} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="font-semibold text-base" style={{ color: 'var(--col-heading)' }}>
+                  Interactive Lab
+                </h3>
+                <span
+                  className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded"
+                  style={{ backgroundColor: 'var(--col-accent-light)', color: 'var(--col-accent-text)' }}
+                >
+                  Hands-on
+                </span>
+              </div>
+              <p className="text-xs italic mt-0.5" style={{ color: 'var(--col-muted)' }}>
+                Лаборатория
+              </p>
+              <p className="text-sm mt-2 leading-relaxed" style={{ color: 'var(--col-body)' }}>
+                A sandbox of practical tools — trade simulator, economic map and more — to practise course concepts freely.
+              </p>
+              <p className="text-xs italic mt-1 leading-relaxed" style={{ color: 'var(--col-secondary)' }}>
+                Песочница с практическими инструментами — отрабатывайте темы курса без оценок.
+              </p>
+            </div>
+            <ChevronRight
+              className="h-5 w-5 shrink-0 mt-2 transition-transform group-hover:translate-x-1"
+              style={{ color: 'var(--col-accent)' }}
+            />
+          </div>
+        </Link>
       </div>
     </div>
   );

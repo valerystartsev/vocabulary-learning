@@ -15,6 +15,10 @@ export const DEFAULT_PROGRESS = {
   exerciseBestScores: {},
   exerciseAttempts: {},
   completedSections: {},
+  // Per-section score 0-100 for the few sections where a natural score
+  // makes sense (BalanceSheet correct ratio, BankAccount picker, etc.).
+  // Shape: sectionScores[unitId][sectionId] = number
+  sectionScores: {},
   totalTestScores: {},
   completedMedia: [],
   mediaTaskScores: {},
@@ -27,6 +31,26 @@ export const DEFAULT_PROGRESS = {
   srsData: {},
   errorLog: [],
 };
+
+// Section IDs that count toward unit progress via "section visited /
+// completed" tracking. We exclude sections already counted by dedicated
+// counters (exercises, media, totaltest, scenario, crossword) so that
+// each activity contributes exactly once, and informational-only
+// sections (header, answerkey, summary) which a student can't really
+// "complete".
+export const VISIT_TRACKED_SECTIONS = new Set([
+  'keyideas', 'comics', 'dictionary', 'reading', 'comprehension',
+  'dialogue', 'writing', 'memo', 'grammar',
+  'casestudy', 'roleperspectives', 'labourmarket',
+  'mediaquest', 'timeline', 'impactmap',
+  // Unit 3 interactive
+  'moneycompass', 'moneyforms', 'currency', 'centralbank',
+  'bankaccounts', 'worldbanking', 'loansim',
+  // Unit 4 interactive
+  'gdpcalc', 'indicators', 'businesscycle', 'balancesheet', 'annualreport',
+  // Units 1/2 interactive
+  'marketstructures', 'complaintpath', 'growthdrivers', 'techjobsflow',
+]);
 
 // localStorage key scoped to a specific user so no cross-user leakage
 const storageKey = (userId) => `adaptation_progress_${userId}`;
@@ -107,6 +131,20 @@ export function computeUnitProgress(prog, unitId, unit) {
   total += 1;
   if (prog.crosswordScores?.[unitId] !== undefined) completed += 1;
 
+  // Visit-tracked sections (1 slot each) — comics, dictionary, reading,
+  // every interactive section etc. Only sections that are actually part
+  // of this unit are counted, so units with fewer features don't get
+  // penalised. The completion signal comes from `completedSections`,
+  // which interactive components already write via markSectionComplete.
+  const unitSections = unit.sections || [];
+  const unitDoneSections = prog.completedSections?.[unitId] || {};
+  unitSections.forEach(sectionId => {
+    if (VISIT_TRACKED_SECTIONS.has(sectionId)) {
+      total += 1;
+      if (unitDoneSections[sectionId]) completed += 1;
+    }
+  });
+
   if (total === 0) return 0;
   return Math.round((completed / total) * 100);
 }
@@ -176,6 +214,7 @@ export function ProgressProvider({ children, user, courseUnits }) {
           crosswordScores:     { ...(db.crosswordScores || {}), ...(prev.crosswordScores || {}) },
           mediaTaskScores:     { ...(db.mediaTaskScores || {}), ...(prev.mediaTaskScores || {}) },
           mediaQuestScores:    { ...(db.mediaQuestScores || {}), ...(prev.mediaQuestScores || {}) },
+          sectionScores:       deepMerge(db.sectionScores, prev.sectionScores),
           srsData:             { ...(db.srsData || {}), ...(prev.srsData || {}) },
         };
         // Persist the merged result to localStorage immediately
@@ -304,7 +343,10 @@ export function ProgressProvider({ children, user, courseUnits }) {
     });
   }, []);
 
-  // Section visited — kept for display badges, does NOT drive progress %
+  // Section visited — used by computeUnitProgress to count visit-based
+  // sections (comics, dictionary, interactive widgets) toward the unit
+  // progress percentage, and surfaced verbatim in TeacherDashboard so
+  // the teacher can see which sections each student actually opened.
   const markSectionComplete = useCallback((unitId, section) => {
     setProgress(p => ({
       ...p,
@@ -313,6 +355,30 @@ export function ProgressProvider({ children, user, courseUnits }) {
         [unitId]: { ...(p.completedSections[unitId] || {}), [section]: true }
       }
     }));
+  }, []);
+
+  // Per-section score 0-100 — write the best-so-far. Used by components
+  // where a natural success ratio exists (BalanceSheet correct placements,
+  // BankAccountPicker matches, etc.). Recording a score also implicitly
+  // marks the section as visited.
+  const saveSectionScore = useCallback((unitId, section, score) => {
+    if (typeof score !== 'number' || isNaN(score)) return;
+    const clamped = Math.max(0, Math.min(100, Math.round(score)));
+    setProgress(p => {
+      const prev = p.sectionScores?.[unitId]?.[section];
+      const best = prev === undefined ? clamped : Math.max(prev, clamped);
+      return {
+        ...p,
+        sectionScores: {
+          ...p.sectionScores,
+          [unitId]: { ...(p.sectionScores?.[unitId] || {}), [section]: best }
+        },
+        completedSections: {
+          ...p.completedSections,
+          [unitId]: { ...(p.completedSections[unitId] || {}), [section]: true }
+        }
+      };
+    });
   }, []);
 
   const saveTotalTestScore = useCallback((unitId, score) => {
@@ -389,7 +455,7 @@ export function ProgressProvider({ children, user, courseUnits }) {
   return (
     <ProgressContext.Provider value={{
       progress, markWordLearned, markWordWeak, addWeakWordsFromExercise,
-      markExerciseComplete, markSectionComplete, saveTotalTestScore,
+      markExerciseComplete, markSectionComplete, saveSectionScore, saveTotalTestScore,
       markMediaComplete, setLastOpened, resetProgress, getUnitProgress,
       updateVocabRadar, saveScenarioScore, saveCrosswordScore, saveMediaQuestScore,
       updateSRS, logError,

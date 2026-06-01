@@ -3,7 +3,7 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -26,6 +26,8 @@ import TradeSimulator from './pages/TradeSimulator';
 import Review from './pages/Review';
 import MyMistakes from './pages/MyMistakes';
 import LoginPage from './pages/LoginPage';
+import UpdatePassword from './pages/UpdatePassword';
+import InteractiveLab from './pages/InteractiveLab';
 
 const AuthenticatedApp = () => {
   // navigateToLogin убрана — её нет в AuthContext и она ломала сборку
@@ -58,16 +60,24 @@ const AuthenticatedApp = () => {
             <Route path="/unit/:id" element={<UnitPage />} />
             <Route path="/glossary" element={<Glossary />} />
             <Route path="/progress" element={<Progress />} />
-            <Route path="/economic-world" element={<EconomicWorld />} />
             <Route path="/listening-lab" element={<ListeningLab />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/trade-simulator" element={<TradeSimulator />} />
             <Route path="/review" element={<Review />} />
             <Route path="/mistakes" element={<MyMistakes />} />
+
+            {/* Interactive Lab — hub for hands-on tools. The :toolId
+                pattern is handled inside InteractiveLab via useParams. */}
+            <Route path="/interactive-lab" element={<InteractiveLab />} />
+            <Route path="/interactive-lab/:toolId" element={<InteractiveLab />} />
+
+            {/* Legacy redirects — keep forever so bookmarks survive */}
+            <Route path="/trade-simulator" element={<Navigate to="/interactive-lab/trade-simulator" replace />} />
+            <Route path="/economic-world"  element={<Navigate to="/interactive-lab/economic-world"  replace />} />
           </Route>
           <Route path="/teacher" element={<TeacherDashboard />} />
           <Route path="/admin-setup" element={<AdminSetup />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/update-password" element={<UpdatePassword />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ModeProvider>

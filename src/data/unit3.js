@@ -1,5 +1,20 @@
 export const unit3 = {
   id: 3,
+  // R3: declarative section list
+  // Section list — the order shown in the nav strip and the render loop.
+  // Tools moved to /interactive-lab (Phase 2 of Lab refactor):
+  //   currency, worldbanking, loansim  →  Interactive Lab
+  // Their data fields are still on this object so the Lab can read them.
+  sections: [
+    'header', 'keyideas', 'dictionary', 'moneycompass', 'moneyforms',
+    'labbanner:currency-comparator',   // concrete examples of money forms
+    'centralbank',
+    'labbanner:world-banking-map',     // concrete examples of central banks
+    'bankaccounts',
+    'labbanner:loan-simulator',        // loans build on accounts/banking
+    'exercises', 'reading', 'comprehension', 'media', 'crossword',
+    'dialogue', 'writing', 'scenario', 'totaltest', 'answerkey', 'summary',
+  ],
   title: "Money & Banking",
   subtitle: "From cash in your pocket to compound interest — how money works",
   description: "Learn how money works: its functions, forms, and how banks use it. Understand loans, interest, deposits, and currencies — the financial system that connects everyone.",
@@ -652,6 +667,13 @@ export const unit3 = {
     title: "Bank Account Picker — Which Account is Right?",
     description: "Banks offer different types of accounts for different needs. Learn the four main types and when to use each one.",
     descriptionRu: "Банки предлагают разные типы счетов для разных нужд. Изучите четыре основных вида и узнайте, когда использовать каждый из них.",
+    filters: [
+      { id: 'all',          label: 'All accounts',    labelRu: 'Все счета' },
+      { id: 'daily',        label: 'Daily spending',  labelRu: 'Повседневные траты' },
+      { id: 'saving',       label: 'Saving long-term', labelRu: 'Долгосрочные сбережения' },
+      { id: 'interest',     label: 'Earning interest', labelRu: 'Заработок процентов' },
+      { id: 'no_notice',    label: 'Instant access',  labelRu: 'Мгновенный доступ' },
+    ],
     accountTypes: [
       {
         id: "current",
@@ -659,9 +681,12 @@ export const unit3 = {
         nameRu: "Текущий счёт (BR)",
         icon: "Wallet",
         color: "#5E9E89",
+        region: "UK",
+        tags: ['daily', 'no_notice'],
         description: "For everyday transactions. Pay bills, receive salary, make transfers. Access your money at any time.",
         descriptionRu: "Для повседневных операций. Оплата счетов, получение зарплаты, переводы. Доступ к деньгам в любое время.",
         keyFeatures: ["No restriction on withdrawals", "Low or no interest paid", "Used daily — salary, bills, shopping"],
+        stats: { interest: 'Usually 0%', access: 'Immediate', term: 'None' },
         equivalents: "Also called: checking account (US)"
       },
       {
@@ -670,9 +695,12 @@ export const unit3 = {
         nameRu: "Расчётный счёт (US)",
         icon: "CheckSquare",
         color: "#3B6EA5",
+        region: "USA",
+        tags: ['daily', 'no_notice'],
         description: "The American equivalent of a current account. You write cheques, make card payments, and receive salary. Accessible at any time.",
         descriptionRu: "Американский эквивалент текущего счёта. Вы выписываете чеки, делаете карточные платежи и получаете зарплату. Доступ в любое время.",
         keyFeatures: ["Linked to cheque-writing", "No restriction on withdrawals", "Standard for salary and bills in the US"],
+        stats: { interest: '0%', access: 'Immediate', term: 'None' },
         equivalents: "Also called: current account (UK)"
       },
       {
@@ -681,9 +709,12 @@ export const unit3 = {
         nameRu: "Депозит до востребования",
         icon: "Clock",
         color: "#C0943A",
+        region: "USA / UK",
+        tags: ['no_notice'],
         description: "Any account where you can withdraw money on demand — at any time, without advance notice. Current accounts and checking accounts are demand deposits.",
         descriptionRu: "Любой счёт, с которого можно снять деньги по требованию — в любое время, без предварительного уведомления. Текущие и расчётные счета — это депозиты до востребования.",
         keyFeatures: ["Available any time", "No notice required", "Usually low interest — the bank cannot rely on the money staying"],
+        stats: { interest: 'Small / 0%', access: 'Immediate', term: 'None' },
         equivalents: "Includes: current accounts, checking accounts"
       },
       {
@@ -692,9 +723,12 @@ export const unit3 = {
         nameRu: "Срочный вклад",
         icon: "Calendar",
         color: "#6A5ACD",
+        region: "USA / UK",
+        tags: ['saving', 'interest'],
         description: "Money you lock away for a fixed period — 6 months, 1 year, or more. In return, the bank pays higher interest. You must give advance notice before withdrawing early.",
         descriptionRu: "Деньги, которые вы блокируете на фиксированный срок — 6 месяцев, 1 год и более. Взамен банк платит более высокий процент. Для досрочного снятия нужно предварительное уведомление.",
         keyFeatures: ["Fixed term — 6 months to 5 years", "Higher interest rate than demand deposits", "Advance notice required for early withdrawal"],
+        stats: { interest: 'Highest', access: 'Fixed term', term: '6 mo – 5 yr' },
         equivalents: "Also called: term deposit, fixed-rate deposit, CD (US)"
       }
     ],
@@ -758,8 +792,21 @@ export const unit3 = {
   loanSimulator: {
     title: "Loan Simulator — Arthur's Car",
     subtitle: "Real numbers. Real vocabulary. Real decision.",
-    description: "Arthur is a student who wants to buy a second-hand car for $15,000. He visits a bank loan officer. Read the case, study the numbers, and answer the questions.",
-    descriptionRu: "Артур — студент, который хочет купить подержанный автомобиль за 15 000 долларов. Он приходит к кредитному специалисту банка. Прочитайте кейс, изучите цифры и ответьте на вопросы.",
+    description: "Arthur wants to buy a car. Move the sliders to see how the price, down payment, term, and interest rate change his monthly payment and total cost.",
+    descriptionRu: "Артур хочет купить автомобиль. Двигайте слайдеры, чтобы увидеть, как цена, первоначальный взнос, срок и процентная ставка влияют на ежемесячный платёж и общую стоимость.",
+    currency: 'RUB',
+    defaults: {
+      price: 1500000,        // ₽ price of the car
+      downPaymentPct: 20,    // % of price paid upfront
+      termMonths: 36,        // months to repay the loan
+      ratePct: 14.5,         // annual interest rate %
+    },
+    sliders: {
+      price:          { min: 500000, max: 5000000, step: 50000,  label: 'Car price',          labelRu: 'Цена автомобиля' },
+      downPaymentPct: { min: 0,      max: 50,      step: 1,      label: 'Down payment',       labelRu: 'Первоначальный взнос' },
+      termMonths:     { min: 6,      max: 60,      step: 6,      label: 'Term',               labelRu: 'Срок кредита' },
+      ratePct:        { min: 5,      max: 25,      step: 0.5,    label: 'Annual rate',        labelRu: 'Годовая ставка' },
+    },
     loanParams: {
       principal: 15000,
       interestRate: 8.5,
@@ -1047,94 +1094,95 @@ export const unit3 = {
 
   media: [
     {
-      mediaId: "u3_media_what_is_money",
-      localSrc: "/u3_what_is_money.mp4",
-      title: "What is Money? — Functions and Forms",
+      mediaId: "u3_media_functions_of_money",
+      localSrc: "/u3_functions_of_money.mp4",
+      title: "Functions of Money",
       type: "video",
       source: "Educational Video",
-      url: "https://youtu.be/sP4C6tBSjJQ",
-      embedId: "sP4C6tBSjJQ",
+      url: "",
+      embedId: "",
       duration: "Video",
-      description: "An introduction to money: what it is, what functions it serves, and what forms it has taken throughout history — from barter to fiat currency.",
-      whyHelps: "You will hear 'means of exchange', 'store of value', 'fiat money', 'currency' and 'monetary value' in a real economic context.",
-      vocabToListen: ["means of exchange", "store of value", "fiat money", "currency", "monetary value"],
-      task: "After watching: explain the three functions of money in your own words.",
+      description: "What money really is and the four core functions it performs in an economy: medium of exchange, store of value, unit of account, and standard of deferred payment. The video also explains why money is so much more efficient than barter.",
+      whyHelps: "You will hear 'medium of exchange', 'store of value', 'unit of account', 'standard of deferred payment', and 'barter' used in a clear textbook-style explanation.",
+      vocabToListen: ["medium of exchange", "store of value", "unit of account", "barter", "currency"],
+      task: "After watching: list the four functions of money and give one real-life example of each.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "explains", "what", "money", "is", "and", "how", "it", "works", "in", "the", "economy.", "banks", "loans", "interest", "bonds"], answer: ["This", "video", "explains", "what", "money", "is", "and", "how", "it", "works", "in", "the", "economy."] },
-        { type: "wordCheck", q: "Which words do you expect to hear? Tick all that apply.", options: ["means of exchange", "store of value", "fiat money", "currency", "monetary value"] }
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about what you think this video is about:", tiles: ["This", "video", "explains", "what", "money", "is", "and", "the", "four", "main", "functions", "it", "serves.", "banks", "loans", "interest", "bonds"], answer: ["This", "video", "explains", "what", "money", "is", "and", "the", "four", "main", "functions", "it", "serves."] },
+        { type: "wordCheck", q: "Which words do you expect to hear? Tick all that apply.", options: ["medium of exchange", "store of value", "unit of account", "barter", "currency"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "Money acts as a means of exchange — it replaces the need for direct barter.", answer: true, explanation: "Correct — money allows people to trade goods and services without needing to exchange items directly." },
-        { type: "choice", q: "Which vocabulary group is most important in this video?", options: ["Money functions and forms", "Recruitment and salaries", "Monopoly and competition", "Insurance and contracts"], answer: "Money functions and forms", explanation: "The video focuses on the functions (exchange, value, store) and historical forms of money." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Money", "serves", "as", "a", "means", "of", "exchange,", "a", "store", "of", "value,", "and", "a", "standard", "of", "value.", "loan", "interest", "bank"], answer: ["Money", "serves", "as", "a", "means", "of", "exchange,", "a", "store", "of", "value,", "and", "a", "standard", "of", "value."] }
+        { type: "trueFalse", q: "Before money existed, people exchanged goods directly — this system is called barter.", answer: true, explanation: "Correct. Barter is direct exchange of one good or service for another, without using money as an intermediate step." },
+        { type: "choice", q: "Which function of money allows you to save today and spend in the future?", options: ["Medium of exchange", "Unit of account", "Store of value", "Standard of measurement"], answer: "Store of value", explanation: "Store of value = money keeps its purchasing power over time, so you can defer consumption until later." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Money", "is", "a", "medium", "of", "exchange,", "a", "store", "of", "value,", "and", "a", "unit", "of", "account.", "barter", "stock", "bond"], answer: ["Money", "is", "a", "medium", "of", "exchange,", "a", "store", "of", "value,", "and", "a", "unit", "of", "account."] }
       ]
     },
     {
-      mediaId: "u3_media_how_banks_work",
-      localSrc: "/u3_how_banks_work.mp4",
-      title: "How Banks Work",
+      mediaId: "u3_media_dollar_vs_pound",
+      localSrc: "/u3_dollar_vs_pound.mp4",
+      title: "Dollar vs Pound — Comparing the World's Currencies",
       type: "video",
       source: "Educational Video",
-      url: "https://youtu.be/mFaFE0gRVcQ",
-      embedId: "mFaFE0gRVcQ",
+      url: "",
+      embedId: "",
       duration: "Video",
-      description: "A clear explanation of how banks take deposits, give loans, and earn money from the difference in interest rates.",
-      whyHelps: "You will hear 'deposit', 'loan', 'interest rate', 'borrow', and 'account' in a real banking context.",
-      vocabToListen: ["deposit", "loan", "interest rate", "borrow", "account"],
-      task: "After watching: explain why banks charge a higher interest rate on loans than they pay on deposits.",
+      description: "A side-by-side comparison of the US dollar (USD) and the British pound (GBP): their history, current strength, exchange rate behaviour, purchasing power, and roles in global trade and reserves.",
+      whyHelps: "You will hear 'exchange rate', 'reserve currency', 'purchasing power', 'inflation', and 'currency' used in real economic comparison.",
+      vocabToListen: ["currency", "exchange rate", "fiat money", "monetary value", "reserve currency"],
+      task: "After watching: explain in one sentence why the US dollar is the world's main reserve currency, and name one reason the pound is still globally important.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "explains", "how", "banks", "take", "deposits", "and", "give", "loans", "to", "customers.", "stocks", "bonds", "currency", "inflation"], answer: ["This", "video", "explains", "how", "banks", "take", "deposits", "and", "give", "loans", "to", "customers."] },
-        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["deposit", "loan", "interest rate", "borrow", "account"] }
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "compares", "the", "British", "pound", "and", "the", "US", "dollar", "as", "global", "currencies.", "barter", "loans", "deposits"], answer: ["This", "video", "compares", "the", "British", "pound", "and", "the", "US", "dollar", "as", "global", "currencies."] },
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["exchange rate", "reserve currency", "inflation", "purchasing power", "trade"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "Banks earn money by charging a higher interest rate on loans than they pay on deposits.", answer: true, explanation: "Correct — the difference between deposit and loan interest rates is the bank's profit margin." },
-        { type: "choice", q: "What do banks do with the money customers deposit?", options: ["Store it in a vault forever", "Invest it all in stocks", "Use it to give loans to other customers", "Send it to the government"], answer: "Use it to give loans to other customers", explanation: "Banks act as intermediaries — they take deposits and use that money to fund loans, earning a profit on the interest rate difference." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Banks", "pay", "lower", "interest", "on", "deposits", "and", "charge", "higher", "interest", "on", "loans.", "borrow", "account", "advance", "fiat"], answer: ["Banks", "pay", "lower", "interest", "on", "deposits", "and", "charge", "higher", "interest", "on", "loans."] }
+        { type: "trueFalse", q: "The US dollar is the most widely held reserve currency in the world.", answer: true, explanation: "Correct. Central banks around the world hold the largest share of their reserves in US dollars, making it the dominant reserve currency." },
+        { type: "choice", q: "What does 'exchange rate' mean?", options: ["The interest rate set by the central bank", "The price of one currency in terms of another", "The cost of sending money abroad", "The total money supply"], answer: "The price of one currency in terms of another", explanation: "An exchange rate tells you how many units of one currency you need to buy one unit of another — e.g. 1 GBP = 1.27 USD." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["The", "exchange", "rate", "between", "the", "dollar", "and", "the", "pound", "changes", "every", "day.", "weekly", "barter", "bond"], answer: ["The", "exchange", "rate", "between", "the", "dollar", "and", "the", "pound", "changes", "every", "day."] }
       ]
     },
     {
-      mediaId: "u3_media_compound_interest",
-      localSrc: "/u3_compound_interest.mp4",
-      title: "Compound Interest Explained",
+      mediaId: "u3_media_bank_accounts",
+      localSrc: "/u3_bank_accounts.mp4",
+      title: "Types of Bank Accounts — Checking, Savings, MMA, CD",
       type: "video",
       source: "Educational Video",
-      url: "https://youtu.be/4s9FhhWrafI",
-      embedId: "4s9FhhWrafI",
+      url: "",
+      embedId: "",
       duration: "Video",
-      description: "A visual explanation of compound interest — why it grows much faster than simple interest and how it affects savings and debt.",
-      whyHelps: "You will hear 'compound interest', 'interest rate', 'repay', 'principal' and 'loan' explained with clear examples.",
-      vocabToListen: ["compound interest", "interest rate", "repay", "principal", "loan"],
-      task: "After watching: give one example of compound interest working in your favour (savings) and one against you (debt).",
+      description: "An overview of the four main types of personal bank accounts: checking, savings, money market accounts and certificates of deposit (CDs). When to use each, what they pay in interest, and what restrictions apply.",
+      whyHelps: "You will hear 'checking account', 'savings account', 'interest rate', 'withdraw', 'deposit', and 'certificate of deposit' explained with practical examples.",
+      vocabToListen: ["demand deposit", "time deposit", "interest rate", "near money", "money supply"],
+      task: "After watching: choose which type of account would be best for an emergency fund, and explain why.",
       predictionTask: [
-        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "explains", "compound", "interest", "and", "why", "it", "grows", "faster", "than", "simple", "interest.", "deposit", "account", "currency"], answer: ["This", "video", "explains", "compound", "interest", "and", "why", "it", "grows", "faster", "than", "simple", "interest."] },
-        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["compound interest", "interest rate", "repay", "principal", "loan"] }
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "explains", "the", "main", "types", "of", "bank", "accounts", "and", "when", "to", "use", "each.", "stocks", "bonds", "barter"], answer: ["This", "video", "explains", "the", "main", "types", "of", "bank", "accounts", "and", "when", "to", "use", "each."] },
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["checking", "savings", "interest rate", "withdraw", "deposit"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "Compound interest charges interest only on the original amount borrowed.", answer: false, explanation: "Compound interest charges interest on the original amount AND on all interest already earned. This is what makes it grow faster." },
-        { type: "choice", q: "If you save $1,000 at 10% compound interest for 2 years, how much do you have?", options: ["$1,100", "$1,200", "$1,210", "$1,020"], answer: "$1,210", explanation: "Year 1: $1,000 + 10% = $1,100. Year 2: $1,100 + 10% = $1,210. Compound interest earns extra because it grows on the year-1 interest too." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["Compound", "interest", "is", "calculated", "on", "both", "the", "principal", "and", "the", "interest", "already", "earned.", "loan", "currency", "deposit", "fiat"], answer: ["Compound", "interest", "is", "calculated", "on", "both", "the", "principal", "and", "the", "interest", "already", "earned."] }
+        { type: "trueFalse", q: "A savings account usually pays a higher interest rate than a checking account.", answer: true, explanation: "Correct. Checking accounts are designed for everyday transactions and pay little or no interest; savings accounts reward you for keeping your money in place." },
+        { type: "choice", q: "Which account is BEST suited to daily expenses and frequent withdrawals?", options: ["Certificate of deposit", "Money market account", "Checking account", "Time deposit"], answer: "Checking account", explanation: "A checking (demand) account allows unlimited withdrawals without penalty — ideal for daily spending." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["A", "certificate", "of", "deposit", "pays", "higher", "interest", "but", "locks", "your", "money", "for", "a", "fixed", "term.", "free", "lower", "bonus"], answer: ["A", "certificate", "of", "deposit", "pays", "higher", "interest", "but", "locks", "your", "money", "for", "a", "fixed", "term."] }
       ]
     },
     {
-      mediaId: "u3_media_currency_exchange",
-      localSrc: "/u3_currency_exchange.mp4",
-      title: "Currency and Exchange Rates",
+      mediaId: "u3_media_basics_of_loans",
+      localSrc: "/u3_basic_of_loans.mp4",
+      title: "The Basics of Loans — Borrowing Money Responsibly",
       type: "video",
       source: "Educational Video",
-      url: "https://youtu.be/G1LMqx4HXNQ",
-      embedId: "G1LMqx4HXNQ",
+      url: "",
+      embedId: "",
       duration: "Video",
-      description: "A guide to how currencies work, why exchange rates change, and what the money supply has to do with the value of a currency.",
-      whyHelps: "You will hear 'currency', 'exchange rate', 'monetary value', 'fiat money', and 'supply of currency' in economic context.",
-      vocabToListen: ["currency", "exchange rate", "monetary value", "fiat money", "supply of currency"],
-      task: "After watching: explain what happens to a currency's value when the government prints too much money.",
+      description: "How loans work, what types exist (student, personal, secured), the role of interest rates and credit scores, and the risks of taking on too much debt.",
+      whyHelps: "You will hear 'loan', 'principal', 'interest rate', 'credit score', 'secured loan', and 'repay' explained with realistic borrower examples.",
+      vocabToListen: ["loan", "interest rate", "principal", "repay", "compound interest"],
+      task: "After watching: explain the difference between the principal and the interest of a loan, and name one risk of borrowing too much.",
       predictionTask: [
-        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["currency", "exchange rate", "monetary value", "fiat money", "supply of currency"] }
+        { type: "sentenceBuilder", q: "Before watching — build a sentence about this video:", tiles: ["This", "video", "explains", "how", "loans", "work", "and", "the", "role", "of", "interest", "rates.", "currency", "barter", "deposit"], answer: ["This", "video", "explains", "how", "loans", "work", "and", "the", "role", "of", "interest", "rates."] },
+        { type: "wordCheck", q: "Which words do you expect to hear?", options: ["loan", "interest", "principal", "credit score", "debt"] }
       ],
       postQuiz: [
-        { type: "trueFalse", q: "When a government prints too much money, the value of the currency usually falls.", answer: true, explanation: "Correct — increasing the supply of currency without matching economic growth causes inflation: more money chases the same goods, so each unit is worth less." },
-        { type: "choice", q: "What is an exchange rate?", options: ["The cost of opening a bank account", "The price of one currency in terms of another", "The interest rate set by the central bank", "The amount of currency in circulation"], answer: "The price of one currency in terms of another", explanation: "An exchange rate tells you how many units of one currency you need to buy one unit of another — for example, 1 USD = 0.82 GBP." },
-        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["The", "monetary", "value", "of", "a", "currency", "depends", "on", "how", "much", "is", "in", "supply.", "fiat", "bond", "account", "stock"], answer: ["The", "monetary", "value", "of", "a", "currency", "depends", "on", "how", "much", "is", "in", "supply."] }
+        { type: "trueFalse", q: "The principal of a loan is the original amount you borrow, before any interest is added.", answer: true, explanation: "Correct. Principal = the original sum. Interest is what the lender charges on top of it." },
+        { type: "choice", q: "What is most likely to happen if you fail to repay a loan on time?", options: ["The bank will forget about it", "Your credit score will fall and penalties may be added", "You receive a discount on the principal", "The loan disappears after one year"], answer: "Your credit score will fall and penalties may be added", explanation: "Missed payments lower your credit score and usually trigger late fees and higher interest — making the debt harder to escape." },
+        { type: "sentenceBuilder", q: "Build the sentence:", tiles: ["The", "borrower", "must", "repay", "the", "principal", "plus", "interest", "over", "the", "term", "of", "the", "loan.", "free", "deposit", "barter"], answer: ["The", "borrower", "must", "repay", "the", "principal", "plus", "interest", "over", "the", "term", "of", "the", "loan."] }
       ]
     }
   ],
@@ -1246,5 +1294,320 @@ export const unit3 = {
         ]
       }
     ]
-  }
+  },
+
+  moneyCompass: [
+    {
+      id: 'means_of_exchange',
+      title: 'Means of exchange',
+      titleRu: 'Средство обмена',
+      definition: 'Money is used to pay for goods and services instead of barter. It makes trade possible between any two people — even when they have nothing the other party wants directly.',
+      definitionRu: 'Деньги используются для оплаты товаров и услуг вместо бартера. Они делают торговлю возможной между любыми двумя людьми — даже если у них нет ничего, что нужно друг другу напрямую.',
+      example: "Jane pays $50 at the supermarket. Money is the medium — the store doesn't need to want anything Jane owns in return. Trade happens instantly.",
+      exampleRu: 'Джейн платит $50 в супермаркете. Деньги — посредник: магазину не нужно хотеть что-то из вещей Джейн. Обмен происходит мгновенно.',
+      icon: 'ArrowRightLeft',
+    },
+    {
+      id: 'store_of_value',
+      title: 'Store of value',
+      titleRu: 'Средство сбережения',
+      definition: 'Money keeps its purchasing power over time, allowing you to save today and spend in the future. Unlike perishable goods, money does not lose its value while you hold it.',
+      definitionRu: 'Деньги сохраняют покупательную способность со временем, позволяя копить сегодня и тратить в будущем. В отличие от скоропортящихся товаров, деньги не теряют ценности, пока вы их держите.',
+      example: "Jane puts $15 into her savings account in January. In July she withdraws it and can still buy the same things — the money has kept its value.",
+      exampleRu: 'Джейн кладёт $15 на сберегательный счёт в январе. В июле она снимает их и по-прежнему может купить то же самое — деньги сохранили свою ценность.',
+      icon: 'PiggyBank',
+    },
+    {
+      id: 'standard_of_value',
+      title: 'Standard of value',
+      titleRu: 'Мера стоимости',
+      definition: 'Money provides a single unit of measurement that lets us compare the value of completely different things — from a cup of coffee to a car to an hour of work.',
+      definitionRu: 'Деньги дают единую единицу измерения, которая позволяет сравнивать ценность совершенно разных вещей — от чашки кофе до автомобиля и часа работы.',
+      example: "A car costs $30,000 and a phone costs $600. Money lets us say the car is exactly 50 times more valuable — without needing to compare them any other way.",
+      exampleRu: 'Автомобиль стоит $30,000, телефон — $600. Деньги позволяют сказать, что машина ровно в 50 раз дороже — без какого-либо другого способа сравнения.',
+      icon: 'BarChart3',
+    },
+    {
+      id: 'near_money',
+      title: 'Near money',
+      titleRu: 'Квазиденьги',
+      definition: 'Assets that are almost as liquid as cash — savings accounts, bonds, and time deposits. They are not cash themselves but can be quickly and easily converted into cash.',
+      definitionRu: 'Активы, почти такие же ликвидные, как наличные: сберегательные счета, облигации, срочные вклады. Сами по себе не деньги, но легко и быстро конвертируются в наличные.',
+      example: "A demand deposit in a bank is 'near money' — you can withdraw it any working day, use it at an ATM, and spend it like cash. It is part of the broader money supply.",
+      exampleRu: 'Депозит до востребования в банке — это «квазиденьги»: его можно снять в любой рабочий день, использовать в банкомате и тратить как наличные. Он входит в широкую денежную массу.',
+      icon: 'CreditCard',
+    },
+  ],
+
+  worldBankingMap: {
+    intro: "Banking systems differ around the world. Click any highlighted country to see how its central bank, currency, and banking culture work.",
+    introRu: "Банковские системы разных стран устроены по-разному. Нажмите на выделенную страну, чтобы узнать про её центральный банк, валюту и банковскую культуру.",
+    // CDN-hosted TopoJSON of world countries (110m resolution)
+    geoUrl: 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json',
+    // Each entry highlights either a single country (isoCodes: [one code])
+    // or a bloc such as the EU (isoCodes: [many codes]).
+    countries: [
+      {
+        id: 'uk',
+        flag: '🇬🇧',
+        name: 'United Kingdom',
+        nameRu: 'Великобритания',
+        isoCodes: ['826'],
+        centralBank: 'Bank of England',
+        currency: 'Pound sterling (£)',
+        mainAccounts: 'Current, deposit, savings',
+        narrative: '90% of British adults have a bank account. Households save about 15% of their income; roughly 20% of the population own shares. Post Office banking is widespread — almost every village has a branch. The system is described as stable, extensive and complex.',
+        narrativeRu: '90% взрослых британцев имеют банковский счёт. Семьи откладывают около 15% дохода, 20% населения владеют акциями. Банковские услуги через Почту работают почти в каждой деревне. Система — стабильная, обширная, сложная.',
+      },
+      {
+        id: 'us',
+        flag: '🇺🇸',
+        name: 'United States',
+        nameRu: 'США',
+        isoCodes: ['840'],
+        centralBank: 'Federal Reserve (Fed)',
+        currency: 'US dollar ($)',
+        mainAccounts: 'Checking, savings, time deposit, CD',
+        narrative: 'The Fed is a system of 12 regional banks coordinated from Washington DC. Americans rely heavily on credit cards and personal loans. The cheque (check) remains a daily payment tool. Most households hold both a checking and a savings account; time deposits (CDs) are popular for retirement.',
+        narrativeRu: 'ФРС — система из 12 региональных банков с координацией в Вашингтоне. Американцы активно используют кредитные карты и потребительские кредиты. Чек до сих пор — повседневный способ оплаты. Срочные вклады (CD) популярны для пенсионных накоплений.',
+      },
+      {
+        id: 'eu',
+        flag: '🇪🇺',
+        name: 'European Union',
+        nameRu: 'Европейский Союз',
+        // All 27 EU member states by ISO numeric code — highlighted as a bloc
+        isoCodes: [
+          '040', '056', '100', '191', '196', '203', '208', '233', '246', '250',
+          '276', '300', '348', '372', '380', '428', '440', '442', '470', '528',
+          '616', '620', '642', '703', '705', '724', '752',
+        ],
+        centralBank: 'European Central Bank (ECB), Frankfurt',
+        currency: 'Euro (€) — used by 20 of 27 EU states',
+        mainAccounts: 'Girokonto · Compte courant · Conto corrente',
+        narrative: '27 countries, one central bank for the 20 that use the euro. The ECB sets a single key interest rate that applies from Lisbon to Helsinki. National central banks (Bundesbank, Banque de France, Banca d\'Italia) keep their names but follow ECB policy. Banking culture varies: Germans prefer cash, French use Livret A savings accounts, Estonians lead in digital banking.',
+        narrativeRu: '27 стран, один центральный банк для тех 20, что используют евро. ЕЦБ устанавливает единую ключевую ставку — она действует от Лиссабона до Хельсинки. Национальные ЦБ сохраняют названия (Bundesbank, Banque de France), но выполняют политику ЕЦБ. Культура разная: немцы предпочитают наличные, французы — сберегательные счета Livret A, эстонцы — лидеры цифрового банкинга.',
+      },
+      {
+        id: 'ru',
+        flag: '🇷🇺',
+        name: 'Russia',
+        nameRu: 'Россия',
+        isoCodes: ['643'],
+        centralBank: 'Bank of Russia (ЦБ РФ)',
+        currency: 'Ruble (₽)',
+        mainAccounts: 'Текущий счёт, депозит, вклад',
+        narrative: 'The Bank of Russia sets the key rate that drives all bank interest rates. Sberbank dominates the retail market with the largest branch network. Mobile banking adoption is very high — SBP instant transfers between any banks work 24/7. Time deposits (вклады) are popular when rates are high.',
+        narrativeRu: 'Банк России задаёт ключевую ставку, от которой пляшут все банковские проценты. Сбербанк доминирует в рознице с крупнейшей сетью отделений. Уровень мобильного банкинга очень высокий — СБП обеспечивает мгновенные переводы между любыми банками 24/7. При высоких ставках популярны вклады.',
+      },
+      {
+        id: 'cn',
+        flag: '🇨🇳',
+        name: 'China',
+        nameRu: 'Китай',
+        isoCodes: ['156'],
+        centralBank: "People's Bank of China (PBoC)",
+        currency: 'Yuan / Renminbi (¥, CNY)',
+        mainAccounts: 'Demand, fixed-term, structured deposits',
+        narrative: 'The PBoC operates under direct state guidance — monetary policy is closely coordinated with the government. Four state-owned giants (ICBC, CCB, ABC, BOC) hold most household savings. Cash is almost extinct in cities: Alipay and WeChat Pay dominate everyday payments. The digital yuan (e-CNY) is being rolled out as the world\'s first state-backed digital currency.',
+        narrativeRu: 'Народный банк Китая работает под прямым контролем государства — денежная политика тесно скоординирована с правительством. Четыре госбанка (ICBC, CCB, ABC, BOC) держат большинство депозитов населения. Наличные в городах почти исчезли: повсюду Alipay и WeChat Pay. Цифровой юань (e-CNY) разворачивается как первая в мире государственная цифровая валюта.',
+      },
+      {
+        id: 'jp',
+        flag: '🇯🇵',
+        name: 'Japan',
+        nameRu: 'Япония',
+        isoCodes: ['392'],
+        centralBank: 'Bank of Japan',
+        currency: 'Yen (¥)',
+        mainAccounts: 'Futsuu kouza, Teiki kouza',
+        narrative: 'Japan has had near-zero interest rates for decades — saving in a bank earns almost nothing. Cash is still king in everyday transactions; many small shops do not accept cards. Japan Post Bank is the largest financial institution by deposits, operating from every post office. In 2024 the Bank of Japan ended its negative-rate policy for the first time in 17 years.',
+        narrativeRu: 'В Японии ставки около нуля десятилетиями — вклад в банке почти ничего не приносит. Наличные по-прежнему правят в повседневных расчётах, многие магазины не принимают карты. Japan Post Bank — крупнейший по депозитам, работает в каждом почтовом отделении. В 2024 году Банк Японии впервые за 17 лет отменил отрицательную ставку.',
+      },
+      {
+        id: 'ch',
+        flag: '🇨🇭',
+        name: 'Switzerland',
+        nameRu: 'Швейцария',
+        isoCodes: ['756'],
+        centralBank: 'Swiss National Bank (SNB)',
+        currency: 'Swiss franc (CHF)',
+        mainAccounts: 'Privatkonto, Sparkonto, Säule 3a',
+        narrative: 'Switzerland is famous for banking secrecy and stability — though the secrecy was largely dismantled after international pressure in the 2010s. Two giants (UBS and Credit Suisse, merged in 2023) dominate global wealth management. The Swiss franc is a "safe-haven" currency: investors buy it when the world looks risky. The SNB famously held its policy rate negative from 2015 to 2022.',
+        narrativeRu: 'Швейцария знаменита банковской тайной и стабильностью — хотя сама тайна была во многом отменена под международным давлением в 2010-х. Два гиганта (UBS и Credit Suisse, объединившиеся в 2023) доминируют в управлении капиталом по всему миру. Швейцарский франк — «защитная» валюта: инвесторы скупают его, когда в мире становится тревожно. ШНБ держал отрицательную ставку с 2015 по 2022.',
+      },
+    ],
+  },
+
+  centralBankWheel: {
+    intro: "A central bank is not like a regular commercial bank — it is the bank that controls the country's money. It performs six core functions.",
+    introRu: "Центральный банк — не обычный коммерческий банк. Он контролирует деньги всей страны и выполняет шесть основных функций.",
+    functions: [
+      {
+        id: 'issue_currency',
+        title: 'Issue currency',
+        titleRu: 'Эмитировать деньги',
+        icon: 'Banknote',
+        description: 'Print banknotes and mint coins. Only the central bank can legally create new physical money for the country.',
+        descriptionRu: 'Печатать банкноты и чеканить монеты. Только центральный банк может законно выпускать новые наличные.',
+        example: 'The Bank of England prints all the pound notes you spend.',
+        exampleRu: 'Банк России выпускает все рублёвые банкноты и монеты — на банкнотах изображён герб ЦБ. Никакая другая организация в стране не имеет права чеканить рубль.',
+      },
+      {
+        id: 'control_supply',
+        title: 'Control money supply',
+        titleRu: 'Контролировать денежную массу',
+        icon: 'Gauge',
+        description: 'Increase or decrease how much money is circulating in the economy — through reserve requirements and open-market operations.',
+        descriptionRu: 'Увеличивать или уменьшать объём денег в обращении — через резервные требования и операции на открытом рынке.',
+        example: 'When inflation rises, the central bank reduces the money supply to slow it down.',
+        exampleRu: 'Через ключевую ставку Банк России регулирует, сколько денег в экономике. В феврале 2022 ставка была резко поднята до 20%, чтобы остановить отток рублей и сбить инфляцию.',
+      },
+      {
+        id: 'monetary_policy',
+        title: 'Implement monetary policy',
+        titleRu: 'Проводить денежно-кредитную политику',
+        icon: 'Activity',
+        description: 'Set the key interest rate to influence borrowing, spending, and inflation across the whole economy.',
+        descriptionRu: 'Устанавливать ключевую ставку для влияния на кредиты, расходы и инфляцию в экономике.',
+        example: 'If the Fed raises rates, mortgages and business loans become more expensive.',
+        exampleRu: 'Банк России решает уровень ключевой ставки 8 раз в год. Подняв её, ЦБ делает кредиты дороже — спрос замедляется, инфляция остывает.',
+      },
+      {
+        id: 'last_resort',
+        title: 'Lender of last resort',
+        titleRu: 'Кредитор последней инстанции',
+        icon: 'LifeBuoy',
+        description: 'Lend money to commercial banks that are short of cash, preventing a panic from spreading through the financial system.',
+        descriptionRu: 'Выдавать кредиты коммерческим банкам в кризис, предотвращая распространение паники по финансовой системе.',
+        example: 'In the 2008 crisis, central banks lent trillions to keep banks open.',
+        exampleRu: 'Во время паники 2008 и 2022 годов Банк России выдавал банкам стабилизационные кредиты под залог ценных бумаг, чтобы предотвратить волну банкротств.',
+      },
+      {
+        id: 'supervise',
+        title: 'Supervise banking system',
+        titleRu: 'Надзор за банковской системой',
+        icon: 'ShieldCheck',
+        description: 'Inspect commercial banks, enforce rules, and make sure customer deposits are safe.',
+        descriptionRu: 'Проверять коммерческие банки, контролировать правила и защищать вклады клиентов.',
+        example: 'The Bank of Russia revokes licences from banks that break the rules.',
+        exampleRu: 'С 2013 года Банк России отозвал более 400 банковских лицензий. Вкладчики получают компенсации через АСВ — Агентство страхования вкладов.',
+      },
+      {
+        id: 'reserves',
+        title: 'Impose reserve requirements',
+        titleRu: 'Резервные требования',
+        icon: 'Lock',
+        description: 'Force commercial banks to keep a fixed percentage of customer deposits in reserve — money they cannot lend out.',
+        descriptionRu: 'Обязывать банки держать фиксированный процент депозитов в резерве — деньги, которые нельзя выдавать в кредит.',
+        example: 'If reserve requirement is 10%, a bank with $1B in deposits must keep $100M unused.',
+        exampleRu: 'Норматив обязательных резервов в РФ — около 4–5%. Если банк собрал у клиентов 100 млрд рублей вкладов, 4–5 млрд должны лежать на счёте в Банке России, а не работать в кредитах.',
+      },
+    ],
+    examples: [
+      { flag: '🇬🇧', name: 'Bank of England',  country: 'United Kingdom', currency: '£' },
+      { flag: '🇺🇸', name: 'Federal Reserve',  country: 'United States',  currency: '$' },
+      { flag: '🇩🇪', name: 'Bundesbank / ECB', country: 'Germany / EU',   currency: '€' },
+      { flag: '🇷🇺', name: 'Bank of Russia',   country: 'Russia',         currency: '₽' },
+    ],
+  },
+
+  moneyForms: {
+    intro: "Money has taken many forms through history. Click each era to see what people used and why it changed.",
+    introRu: "Деньги принимали разные формы в истории. Нажмите на эпоху, чтобы увидеть, что использовали люди и почему всё менялось.",
+    eras: [
+      {
+        id: 'barter',
+        label: 'Barter',
+        labelRu: 'Бартер',
+        era: 'pre-3000 BC',
+        description: 'No money at all — people exchanged goods directly. You wanted bread, the baker wanted shoes, you traded.',
+        descriptionRu: 'Денег нет — обмен товарами напрямую. Хочешь хлеб, пекарь хочет обувь — обмен.',
+        why: 'Worked for small villages, but failed at scale: you had to find someone who wanted EXACTLY what you offered.',
+        vocab: ['exchange'],
+        icon: 'Repeat2',
+      },
+      {
+        id: 'commodity',
+        label: 'Commodity money',
+        labelRu: 'Товарные деньги',
+        era: 'cattle, shells',
+        description: 'Objects with their own value used as money: cattle, salt, shells, tobacco, even slaves.',
+        descriptionRu: 'Предметы со своей собственной ценностью: скот, соль, ракушки, табак.',
+        why: 'Hard to carry, hard to divide, and the supply was unpredictable.',
+        vocab: ['monetary value', 'means of exchange'],
+        icon: 'Wheat',
+      },
+      {
+        id: 'metal',
+        label: 'Metal coins',
+        labelRu: 'Металлические монеты',
+        era: 'gold & silver',
+        description: 'Gold and silver coins — small, durable, and valuable on their own. The textbook calls these "a favorite form of money".',
+        descriptionRu: 'Золотые и серебряные монеты — маленькие, прочные, с собственной ценностью.',
+        why: 'But mining limited supply, and carrying gold across borders was dangerous.',
+        vocab: ['currency', 'monetary value', 'standard of value'],
+        icon: 'Coins',
+      },
+      {
+        id: 'paper',
+        label: 'Paper notes',
+        labelRu: 'Бумажные деньги',
+        era: '17th c. →',
+        description: 'Paper banknotes backed by gold reserves at the central bank. Easy to carry, easy to print, easy to count.',
+        descriptionRu: 'Бумажные банкноты, обеспеченные золотом в банке. Удобно переносить и считать.',
+        why: 'Worked while gold backed the paper — but governments printed too much, and the gold standard collapsed.',
+        vocab: ['currency', 'legal tender'],
+        icon: 'Banknote',
+      },
+      {
+        id: 'fiat',
+        label: 'Fiat money',
+        labelRu: 'Фиатные деньги',
+        era: '1971 →',
+        description: 'Money whose value comes from government decree, not from gold. Modern dollars, euros, and roubles are all fiat money.',
+        descriptionRu: 'Деньги, ценность которых установлена государством, а не золотом. Современные доллары, евро, рубли — фиатные.',
+        why: 'Flexible: central banks can adjust the money supply. Risky: if trust in government drops, the money loses value.',
+        vocab: ['fiat money', 'legal tender', 'money supply'],
+        icon: 'Landmark',
+      },
+      {
+        id: 'digital',
+        label: 'Digital money',
+        labelRu: 'Цифровые деньги',
+        era: 'cards, apps',
+        description: 'Money that exists only as numbers in bank computers — debit cards, mobile payments, online transfers.',
+        descriptionRu: 'Деньги существуют только как цифры в компьютерах банка — карты, мобильные платежи, переводы.',
+        why: 'Most modern money is digital. Cash is becoming rare for large transactions.',
+        vocab: ['near money', 'demand deposit'],
+        icon: 'CreditCard',
+      },
+      {
+        id: 'crypto',
+        label: 'Crypto',
+        labelRu: 'Криптовалюты',
+        era: '2009 →',
+        description: 'Bitcoin and other cryptocurrencies — money issued by computer networks, not by governments.',
+        descriptionRu: 'Биткоин и другие криптовалюты — деньги, выпускаемые компьютерными сетями, а не государством.',
+        why: 'Decentralised and global. But values fluctuate wildly and most economies do not accept them as legal tender.',
+        vocab: ['currency', 'monetary value'],
+        icon: 'Bitcoin',
+      },
+    ],
+  },
+
+  crossword: {
+    words: [
+      // ACROSS — verified intersections at (0,4)=S, (2,4)=O, (4,4)=K, (4,1)=B, (5,1)=O
+      { number: 1, word: 'DEPOSIT',  dir: 'across', row: 0,  col: 0, clue: 'Money you put into a bank account.',                          clueRu: 'Сумма, которую вы вносите на банковский счёт.' },
+      { number: 2, word: 'LOAN',     dir: 'across', row: 2,  col: 3, clue: 'Money borrowed from a bank that must be repaid.',             clueRu: 'Деньги, взятые в банке, которые нужно вернуть.' },
+      { number: 3, word: 'BANK',     dir: 'across', row: 4,  col: 1, clue: 'An institution that keeps your money and gives loans.',       clueRu: 'Учреждение, которое хранит деньги и выдаёт кредиты.' },
+      { number: 4, word: 'BOND',     dir: 'across', row: 5,  col: 0, clue: 'A loan made by an investor to a company or government.',      clueRu: 'Облигация — заём инвестора компании или государству.' },
+      { number: 5, word: 'CURRENCY', dir: 'across', row: 11, col: 0, clue: 'The money system of a country — like the dollar or pound.',  clueRu: 'Валюта — денежная система страны.' },
+      // DOWN
+      { number: 6, word: 'STOCK',    dir: 'down',   row: 0,  col: 4, clue: 'A share of ownership in a company.',                          clueRu: 'Акция — доля владения в компании.' },
+      { number: 7, word: 'BORROW',   dir: 'down',   row: 4,  col: 1, clue: 'To take money you must give back later.',                     clueRu: 'Брать в долг — деньги нужно будет вернуть.' },
+      { number: 8, word: 'VALUE',    dir: 'down',   row: 5,  col: 5, clue: 'How much something is worth in money.',                       clueRu: 'Стоимость — сколько что-то стоит в деньгах.' },
+    ]
+  },
 };

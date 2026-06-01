@@ -506,18 +506,21 @@ function ComicCard({ comic, index, isCompleted, onMarkComplete }) {
 }
 
 /* ─── Main ComicsBlock ───────────────────────────────────────────────────── */
-export default function ComicsBlock({ comics }) {
+export default function ComicsBlock({ comics, unitId = 1 }) {
   const { progress, markSectionComplete } = useProgress();
+  // Per-unit localStorage key — was hardcoded to u1, which silently dropped
+  // comics-completion for any other unit. Now it's scoped by unit id.
+  const storageKey = `u${unitId}_comics_done`;
   const [completedComics, setCompletedComics] = useState(
-    () => JSON.parse(localStorage.getItem('u1_comics_done') || '{}')
+    () => JSON.parse(localStorage.getItem(storageKey) || '{}')
   );
 
   const handleMarkComplete = (comicId) => {
     const next = { ...completedComics, [comicId]: true };
     setCompletedComics(next);
-    localStorage.setItem('u1_comics_done', JSON.stringify(next));
+    localStorage.setItem(storageKey, JSON.stringify(next));
     if (comics.every(c => next[c.id])) {
-      markSectionComplete?.(1, 'comics');
+      markSectionComplete?.(unitId, 'comics');
     }
   };
 

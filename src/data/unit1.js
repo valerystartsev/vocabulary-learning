@@ -1,5 +1,14 @@
 export const unit1 = {
   id: 1,
+  // Flags that toggle data-driven optional sections (Phase 3 / R2)
+  mediaQuest: true,           // → renders MediaQuest section after MediaLab
+  // R3: declarative section list — drives nav strip + render loop order
+  sections: [
+    'header', 'keyideas', 'marketstructures', 'dictionary', 'comics', 'exercises',
+    'reading', 'comprehension', 'media', 'mediaquest', 'crossword',
+    'complaintpath', 'dialogue', 'writing', 'scenario', 'totaltest',
+    'answerkey', 'summary',
+  ],
   title: "Markets & Monopolies",
   subtitle: "How buyers, sellers, and companies shape the economy",
   description: "Learn key business terms about markets, competition, and monopolies. Understand how companies compete and what happens when one company controls everything.",
@@ -27,6 +36,118 @@ export const unit1 = {
       icon: "Crown"
     }
   ],
+
+  // Market Structure Compass — 4 textbook market structures along the
+  // spectrum from many sellers to one. Renders as a 2×2 expandable grid.
+  marketStructures: [
+    {
+      id: 'perfect-competition',
+      title: 'Perfect Competition',
+      titleRu: 'Совершенная конкуренция',
+      icon: 'Users',
+      sellers: 'Many small sellers, identical products',
+      sellersRu: 'Много мелких продавцов, одинаковые товары',
+      priceControl: 'None — every seller is a price-taker',
+      priceControlRu: 'Нет — каждый продавец принимает рыночную цену',
+      barriers: 'Very low — anyone can enter or leave the market',
+      barriersRu: 'Очень низкие — любой может выйти на рынок и уйти с него',
+      example: "Local farmers selling tomatoes at a street market. No single farmer can charge more than the others — buyers would simply switch.",
+      exampleRu: 'Местные фермеры на уличном рынке: ни один не может назначить цену выше других — покупатели уйдут к соседу.',
+    },
+    {
+      id: 'monopolistic-competition',
+      title: 'Monopolistic Competition',
+      titleRu: 'Монополистическая конкуренция',
+      icon: 'Layers',
+      sellers: 'Many sellers, but each offers a slightly different product',
+      sellersRu: 'Много продавцов, но у каждого товар чуть-чуть другой',
+      priceControl: 'Some — sellers compete on quality, brand, location',
+      priceControlRu: 'Небольшой — конкурируют качеством, брендом, расположением',
+      barriers: 'Low — branding takes time but legal entry is open',
+      barriersRu: 'Низкие — нужен бренд, но законодательно вход открыт',
+      example: 'Coffee shops on the same street: each has its own brand, atmosphere and price, yet they all compete for similar customers.',
+      exampleRu: 'Кофейни на одной улице: у каждой свой бренд, атмосфера и цена, но конкурируют за одних и тех же клиентов.',
+    },
+    {
+      id: 'oligopoly',
+      title: 'Oligopoly',
+      titleRu: 'Олигополия',
+      icon: 'Users2',
+      sellers: 'A few large sellers dominate the market',
+      sellersRu: 'Несколько крупных продавцов доминируют на рынке',
+      priceControl: 'Significant — sellers watch each other and react',
+      priceControlRu: 'Значительный — продавцы следят друг за другом и реагируют',
+      barriers: 'High — huge capital, technology or licences required',
+      barriersRu: 'Высокие — нужны капитал, технологии или лицензии',
+      example: 'Mobile network operators: usually 3–4 in any country. They compete fiercely but rarely undercut each other for long.',
+      exampleRu: 'Сотовые операторы: обычно 3–4 в стране. Конкурируют жёстко, но долгие ценовые войны редки.',
+    },
+    {
+      id: 'monopoly',
+      title: 'Monopoly',
+      titleRu: 'Монополия',
+      icon: 'Crown',
+      sellers: 'One seller controls the whole market',
+      sellersRu: 'Один продавец контролирует весь рынок',
+      priceControl: 'Full — the monopolist sets the price',
+      priceControlRu: 'Полный — монополист сам назначает цену',
+      barriers: 'Very high — often a patent, a state licence or natural barrier',
+      barriersRu: 'Очень высокие — часто патент, государственная лицензия или естественный барьер',
+      example: "A railway company that owns the only line between two cities. Travellers either pay its price or don't travel.",
+      exampleRu: 'Железная дорога, которой принадлежит единственная линия между двумя городами: либо платишь её цену, либо не едешь.',
+    },
+  ],
+
+  // Complaint Resolution Path — 4-step horizontal stepper showing how
+  // a customer complaint is handled, with Unit 1 vocab surfaced
+  // naturally at each step.
+  complaintPath: {
+    intro: "When a customer is unhappy, the resolution follows four standard steps. Tap each step to see the vocabulary used in real shops.",
+    introRu: "Когда клиент недоволен, разбор жалобы проходит четыре стандартных шага. Нажмите на шаг, чтобы увидеть лексику, которую используют в реальных магазинах.",
+    steps: [
+      {
+        id: 'complaint',
+        title: 'Complaint received',
+        titleRu: 'Жалоба получена',
+        icon: 'AlertCircle',
+        what: 'The customer files a formal complaint about a damaged or undesirable product.',
+        whatRu: 'Клиент подаёт официальную жалобу на повреждённый или некачественный товар.',
+        vocab: 'The customer **complains** that the delivered product was **damaged** in transit and files a written **complaint**.',
+        vocabRu: 'Клиент **жалуется**, что товар был **повреждён** при доставке, и подаёт письменную **жалобу**.',
+      },
+      {
+        id: 'investigation',
+        title: 'Investigation',
+        titleRu: 'Рассмотрение',
+        icon: 'Search',
+        what: 'The shop checks the circumstances — was the damage caused by the supplier, the courier, or the customer?',
+        whatRu: 'Магазин выясняет обстоятельства — кто виноват в повреждении: поставщик, курьер или сам клиент?',
+        vocab: 'Under these **circumstances**, the manager **communicates** with the courier to find out what **caused** the damage.',
+        vocabRu: 'При данных **обстоятельствах** менеджер **связывается** с курьером, чтобы выяснить, что **вызвало** повреждение.',
+      },
+      {
+        id: 'decision',
+        title: 'Decision',
+        titleRu: 'Решение',
+        icon: 'Scale',
+        what: 'The authority decides whether the customer is entitled to a refund, a replacement, or an apology only.',
+        whatRu: 'Уполномоченное лицо решает, имеет ли клиент право на возврат, замену или только извинение.',
+        vocab: 'The store **authority** confirms the customer is **entitled** to a full **refund** under the original **deal**.',
+        vocabRu: 'Руководство магазина подтверждает, что клиент **имеет право** на полный **возврат** по условиям первоначальной **сделки**.',
+      },
+      {
+        id: 'outcome',
+        title: 'Outcome',
+        titleRu: 'Итог',
+        icon: 'CheckCircle2',
+        what: 'The shop refunds the money, replaces the product, or — if the order is no longer needed — cancels it.',
+        whatRu: 'Магазин возвращает деньги, заменяет товар или, если заказ больше не нужен, отменяет его.',
+        vocab: 'The shop processes the **refund** within 5 working days. The original order is **cancelled** and a new product is dispatched.',
+        vocabRu: 'Магазин обрабатывает **возврат** в течение 5 рабочих дней. Первоначальный заказ **отменён**, новый товар отправлен.',
+      },
+    ],
+  },
+
   vocabulary: [
     {
       id: "u1_accept",
@@ -1066,6 +1187,17 @@ export const unit1 = {
           }
         ]
       }
+    ]
+  },
+  crossword: {
+    words: [
+      { number: 1, word: 'DAMAGE',     dir: 'across', row: 0, col: 0, clue: 'To physically harm or break something.',                 clueRu: 'Повредить — причинить физический вред.' },
+      { number: 2, word: 'MARKET',     dir: 'across', row: 2, col: 0, clue: 'A place where buyers and sellers meet to trade.',         clueRu: 'Рынок — место встречи покупателей и продавцов.' },
+      { number: 3, word: 'PREVAIL',    dir: 'across', row: 7, col: 0, clue: 'To be the most common or to win in the end.',             clueRu: 'Преобладать — быть самым распространённым.' },
+      { number: 4, word: 'CANCEL',     dir: 'across', row: 9, col: 6, clue: 'To stop something that was planned.',                    clueRu: 'Отменить — остановить запланированное.' },
+      { number: 5, word: 'DEMAND',     dir: 'down',   row: 0, col: 0, clue: 'How much customers want to buy a product.',              clueRu: 'Спрос — желание покупателей купить товар.' },
+      { number: 6, word: 'MERGER',     dir: 'down',   row: 0, col: 2, clue: 'Two companies joining to become one bigger company.',    clueRu: 'Слияние — два предприятия объединяются в одно.' },
+      { number: 7, word: 'ENTERPRISE', dir: 'down',   row: 0, col: 5, clue: 'A business, or the initiative and courage to start one.', clueRu: 'Предприятие — бизнес или инициатива его создать.' },
     ]
   }
 };

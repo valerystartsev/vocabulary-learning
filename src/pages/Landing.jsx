@@ -206,11 +206,17 @@ const howItWorks = [
   { step:'04', title:'Take the Total Test',  titleRu:'Пройдите итоговый тест', desc:'Check your knowledge. Weak words are tracked automatically.',                   path:'/unit/1' },
 ];
 
+// Hero stats — derived from real course data so they update automatically
+// when units, vocabulary or exercises are added/removed.
+const totalVocabCount = units.reduce((acc, u) => acc + (u.vocabulary?.length || 0), 0);
+const totalExerciseCount = units.reduce((acc, u) => acc + (u.exercises?.length || 0), 0);
+const roundDown = (n, step) => Math.floor(n / step) * step;
+
 const stats = [
-  { value:2,   suffix:' units', label:'Course Content', labelRu:'Раздела курса' },
-  { value:100, suffix:'+',      label:'Key Terms',      labelRu:'Ключевых слов' },
-  { value:50,  suffix:'+',      label:'Exercises',      labelRu:'Упражнений'    },
-  { value:100, suffix:'%',      label:'Bilingual',      labelRu:'Двуязычный'    },
+  { value: units.length,                       suffix: ' units', label: 'Course Content', labelRu: 'Раздела курса' },
+  { value: roundDown(totalVocabCount, 50),     suffix: '+',      label: 'Key Terms',      labelRu: 'Ключевых слов' },
+  { value: roundDown(totalExerciseCount, 10),  suffix: '+',      label: 'Exercises',      labelRu: 'Упражнений'    },
+  { value: 100,                                suffix: '%',      label: 'Bilingual',      labelRu: 'Двуязычный'    },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

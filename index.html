@@ -2,13 +2,71 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+
+    <!-- Theme & meta -->
+    <meta name="theme-color" content="#5E9E89" />
+    <meta name="apple-mobile-web-app-title" content="Adaptation" />
+    <meta name="description" content="Business English course — Adaptation · A1–A2" />
+
     <title>Adaptation — Business English Course · A1–A2</title>
+
+    <!-- Splash style: shown until React mounts so the user never sees a blank white page -->
+    <style>
+      html, body { margin: 0; padding: 0; background: #F4F5F3; }
+      #initial-splash {
+        position: fixed; inset: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        background: #F4F5F3;
+        z-index: 9999;
+        transition: opacity 0.35s ease;
+      }
+      #initial-splash img {
+        width: 96px; height: 96px;
+        animation: splash-pulse 1.6s ease-in-out infinite;
+      }
+      #initial-splash p {
+        margin-top: 18px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        font-size: 13px; color: #79A08C;
+        letter-spacing: 0.04em;
+      }
+      @keyframes splash-pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.7; transform: scale(0.96); }
+      }
+      #initial-splash.fade-out { opacity: 0; pointer-events: none; }
+    </style>
   </head>
   <body>
+    <div id="initial-splash">
+      <img src="/favicon/web-app-manifest-192x192.png" alt="Adaptation" />
+      <p>Loading…</p>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Hide the splash once React has rendered something into #root.
+      const splash = document.getElementById('initial-splash');
+      const root = document.getElementById('root');
+      const hideSplash = () => {
+        splash.classList.add('fade-out');
+        setTimeout(() => splash.remove(), 400);
+      };
+      const obs = new MutationObserver(() => {
+        if (root.childElementCount > 0) { hideSplash(); obs.disconnect(); }
+      });
+      obs.observe(root, { childList: true });
+      // Safety fallback — never leave the splash for more than 6 s.
+      setTimeout(hideSplash, 6000);
+    </script>
   </body>
 </html>

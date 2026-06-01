@@ -1,41 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useProgress } from '../../context/ProgressContext';
-import { CheckCircle, XCircle, Eye, RotateCcw, Lightbulb, Trophy, AlertTriangle, ChevronDown, ChevronUp, GraduationCap, Globe } from 'lucide-react';
-
-/* ── Crossword data ── */
-const CROSSWORD_WORDS = [
-  // ── ACROSS ──
-  { number: 1, word: 'DAMAGE',     dir: 'across', row: 0, col: 0,
-    clue: 'To physically harm or break something.',
-    clueRu: 'Повредить — причинить физический вред.' },
-  { number: 2, word: 'MARKET',     dir: 'across', row: 2, col: 0,
-    clue: 'A place where buyers and sellers meet to trade.',
-    clueRu: 'Рынок — место встречи покупателей и продавцов.' },
-  { number: 3, word: 'PREVAIL',    dir: 'across', row: 7, col: 0,
-    clue: 'To be the most common or to win in the end.',
-    clueRu: 'Преобладать — быть самым распространённым.' },
-  { number: 4, word: 'CANCEL',     dir: 'across', row: 9, col: 6,
-    clue: 'To stop something that was planned.',
-    clueRu: 'Отменить — остановить запланированное.' },
-  // ── DOWN ──
-  { number: 5, word: 'DEMAND',     dir: 'down',   row: 0, col: 0,
-    clue: 'How much customers want to buy a product.',
-    clueRu: 'Спрос — желание покупателей купить товар.' },
-  { number: 6, word: 'MERGER',     dir: 'down',   row: 0, col: 2,
-    clue: 'Two companies joining to become one bigger company.',
-    clueRu: 'Слияние — два предприятия объединяются в одно.' },
-  { number: 7, word: 'ENTERPRISE', dir: 'down',   row: 0, col: 5,
-    clue: 'A business, or the initiative and courage to start one.',
-    clueRu: 'Предприятие — бизнес или инициатива его создать.' },
-];
-// ── All 7 intersections verified, 0 conflicts, compact grid rows 0-9 ──
-// (0,0)=D: DAMAGE ∩ DEMAND     ✓
-// (0,2)=M: DAMAGE ∩ MERGER     ✓
-// (0,5)=E: DAMAGE ∩ ENTERPRISE ✓
-// (2,0)=M: MARKET ∩ DEMAND     ✓
-// (2,2)=R: MARKET ∩ MERGER     ✓
-// (2,5)=T: MARKET ∩ ENTERPRISE ✓
-// (7,5)=I: PREVAIL ∩ ENTERPRISE ✓
+import {
+  CheckCircle, Eye, RotateCcw, Lightbulb, Trophy,
+  AlertTriangle, ChevronDown, ChevronUp, GraduationCap, Globe,
+} from 'lucide-react';
 
 function buildGrid(words) {
   let maxRow = 0, maxCol = 0;
@@ -62,36 +30,24 @@ function buildGrid(words) {
   return { grid, rows, cols };
 }
 
-const { grid: GRID, rows: GRID_ROWS, cols: GRID_COLS } = buildGrid(CROSSWORD_WORDS);
-
-function getWordAtCell(r, c, dir) {
-  const cell = GRID[r]?.[c];
-  if (!cell || cell.isBlack) return null;
-  const match = cell.wordIds.find(wid => CROSSWORD_WORDS[wid.wordIdx].dir === dir);
-  return match ? match.wordIdx : null;
-}
-
-function getWordCells(wordIdx) {
-  const w = CROSSWORD_WORDS[wordIdx];
-  return Array.from({ length: w.word.length }, (_, i) => ({
-    r: w.dir === 'across' ? w.row : w.row + i,
-    c: w.dir === 'across' ? w.col + i : w.col,
-    pos: i,
-  }));
-}
-
-/* Responsive cell size — computed at mount */
 function getCellSize() {
-  if (typeof window === 'undefined') return 36;
+  if (typeof window === 'undefined') return 34;
   const vw = window.innerWidth;
-  if (vw < 400) return 26;
-  if (vw < 640) return 30;
-  return 38;
+  if (vw < 400) return 24;
+  if (vw < 640) return 28;
+  return 36;
 }
 
-export default function CrosswordChallenge({ unitId, isTeacherMode }) {
+export default function CrosswordChallenge({ unit, unitId, isTeacherMode }) {
+  const words = useMemo(() => unit?.crossword?.words || [], [unit]);
+  const { grid, rows: GRID_ROWS, cols: GRID_COLS } = useMemo(
+    () => words.length ? buildGrid(words) : { grid: [], rows: 0, cols: 0 },
+    [words]
+  );
+
   const { addWeakWordsFromExercise, markSectionComplete, saveCrosswordScore } = useProgress();
   const [cellSize, setCellSize] = useState(getCellSize);
+  const inputRefs = useRef({});
   const [userInput, setUserInput] = useState({});
   const [checked, setChecked] = useState({});
   const [revealed, setRevealed] = useState(new Set());
@@ -102,18 +58,28 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
   const [showClues, setShowClues] = useState(false);
   const [showRu, setShowRu] = useState(false);
   const [teacherRevealed, setTeacherRevealed] = useState(false);
-  const clueListRef = useRef(null);
 
   useEffect(() => {
-    const handleResize = () => setCellSize(getCellSize());
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const h = () => setCellSize(getCellSize());
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
   }, []);
+
+  // Reset all state when navigating between units
+  useEffect(() => {
+    setUserInput({});
+    setChecked({});
+    setRevealed(new Set());
+    setCompletionState(null);
+    setSelectedCell(null);
+    setSelectedWordIdx(null);
+    setTeacherRevealed(false);
+  }, [unitId]);
 
   useEffect(() => {
     if (isTeacherMode && teacherRevealed) {
       const inp = {};
-      CROSSWORD_WORDS.forEach(w => {
+      words.forEach(w => {
         for (let i = 0; i < w.word.length; i++) {
           const r = w.dir === 'across' ? w.row : w.row + i;
           const c = w.dir === 'across' ? w.col + i : w.col;
@@ -123,18 +89,36 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
       setUserInput(inp);
       setChecked({});
     }
-  }, [isTeacherMode, teacherRevealed]);
+  }, [isTeacherMode, teacherRevealed, words]);
 
-  // Auto-scroll active clue into view
+  // Imperatively focus the selected cell's input
   useEffect(() => {
-    if (selectedWordIdx !== null && clueListRef.current) {
-      const el = clueListRef.current.querySelector(`[data-clue-idx="${selectedWordIdx}"]`);
-      if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    if (selectedCell) {
+      const k = `${selectedCell.r},${selectedCell.c}`;
+      const inp = inputRefs.current[k];
+      if (inp) setTimeout(() => inp.focus(), 0);
     }
-  }, [selectedWordIdx]);
+  }, [selectedCell]);
+
+  const getWordAtCell = useCallback((r, c, dir) => {
+    const cell = grid[r]?.[c];
+    if (!cell || cell.isBlack) return null;
+    const match = cell.wordIds.find(wid => words[wid.wordIdx].dir === dir);
+    return match ? match.wordIdx : null;
+  }, [grid, words]);
+
+  const getWordCells = useCallback((wordIdx) => {
+    const w = words[wordIdx];
+    if (!w) return [];
+    return Array.from({ length: w.word.length }, (_, i) => ({
+      r: w.dir === 'across' ? w.row : w.row + i,
+      c: w.dir === 'across' ? w.col + i : w.col,
+      pos: i,
+    }));
+  }, [words]);
 
   const selectCell = useCallback((r, c) => {
-    if (GRID[r]?.[c]?.isBlack) return;
+    if (grid[r]?.[c]?.isBlack) return;
     if (selectedCell?.r === r && selectedCell?.c === c) {
       const newDir = selectedDir === 'across' ? 'down' : 'across';
       const wIdx = getWordAtCell(r, c, newDir) ?? getWordAtCell(r, c, selectedDir);
@@ -148,17 +132,27 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
       setSelectedDir(dir);
       setSelectedWordIdx(wIdx);
     }
-  }, [selectedCell, selectedDir]);
+  }, [grid, selectedCell, selectedDir, getWordAtCell]);
 
   const moveToNext = useCallback((r, c, dir) => {
-    if (dir === 'across') { const nc = c + 1; if (nc < GRID_COLS && !GRID[r]?.[nc]?.isBlack) { setSelectedCell({ r, c: nc }); setSelectedWordIdx(getWordAtCell(r, nc, dir)); } }
-    else { const nr = r + 1; if (nr < GRID_ROWS && !GRID[nr]?.[c]?.isBlack) { setSelectedCell({ r: nr, c }); setSelectedWordIdx(getWordAtCell(nr, c, dir)); } }
-  }, []);
+    if (dir === 'across') {
+      const nc = c + 1;
+      if (nc < GRID_COLS && !grid[r]?.[nc]?.isBlack) { setSelectedCell({ r, c: nc }); setSelectedWordIdx(getWordAtCell(r, nc, dir)); }
+    } else {
+      const nr = r + 1;
+      if (nr < GRID_ROWS && !grid[nr]?.[c]?.isBlack) { setSelectedCell({ r: nr, c }); setSelectedWordIdx(getWordAtCell(nr, c, dir)); }
+    }
+  }, [grid, GRID_ROWS, GRID_COLS, getWordAtCell]);
 
   const moveToPrev = useCallback((r, c, dir) => {
-    if (dir === 'across') { const nc = c - 1; if (nc >= 0 && !GRID[r]?.[nc]?.isBlack) { setSelectedCell({ r, c: nc }); setSelectedWordIdx(getWordAtCell(r, nc, dir)); } }
-    else { const nr = r - 1; if (nr >= 0 && !GRID[nr]?.[c]?.isBlack) { setSelectedCell({ r: nr, c }); setSelectedWordIdx(getWordAtCell(nr, c, dir)); } }
-  }, []);
+    if (dir === 'across') {
+      const nc = c - 1;
+      if (nc >= 0 && !grid[r]?.[nc]?.isBlack) { setSelectedCell({ r, c: nc }); setSelectedWordIdx(getWordAtCell(r, nc, dir)); }
+    } else {
+      const nr = r - 1;
+      if (nr >= 0 && !grid[nr]?.[c]?.isBlack) { setSelectedCell({ r: nr, c }); setSelectedWordIdx(getWordAtCell(nr, c, dir)); }
+    }
+  }, [grid, getWordAtCell]);
 
   const handleCellInput = useCallback((r, c, letter) => {
     const k = `${r},${c}`;
@@ -173,8 +167,12 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
     if (key === 'Backspace') {
       e.preventDefault();
       const k = `${r},${c}`;
-      if (userInput[k]) { setUserInput(p => { const n = { ...p }; delete n[k]; return n; }); setChecked(p => { const n = { ...p }; delete n[k]; return n; }); }
-      else moveToPrev(r, c, selectedDir);
+      if (userInput[k]) {
+        setUserInput(p => { const n = { ...p }; delete n[k]; return n; });
+        setChecked(p => { const n = { ...p }; delete n[k]; return n; });
+      } else {
+        moveToPrev(r, c, selectedDir);
+      }
       return;
     }
     if (key === 'ArrowRight') { e.preventDefault(); selectCell(r, Math.min(c + 1, GRID_COLS - 1)); return; }
@@ -183,13 +181,15 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
     if (key === 'ArrowUp')    { e.preventDefault(); selectCell(Math.max(r - 1, 0), c); return; }
     if (key === 'Tab')        { e.preventDefault(); advanceWord(e.shiftKey ? -1 : 1); return; }
     if (/^[a-zA-Z]$/.test(key)) { e.preventDefault(); handleCellInput(r, c, key); }
-  }, [userInput, selectedDir, selectCell, moveToPrev, handleCellInput]);
+  }, [userInput, selectedDir, selectCell, moveToPrev, handleCellInput, GRID_COLS, GRID_ROWS]);
 
   const advanceWord = (delta) => {
     if (selectedWordIdx === null) return;
-    const next = (selectedWordIdx + delta + CROSSWORD_WORDS.length) % CROSSWORD_WORDS.length;
-    const w = CROSSWORD_WORDS[next];
-    setSelectedWordIdx(next); setSelectedDir(w.dir); setSelectedCell({ r: w.row, c: w.col });
+    const next = (selectedWordIdx + delta + words.length) % words.length;
+    const w = words[next];
+    setSelectedWordIdx(next);
+    setSelectedDir(w.dir);
+    setSelectedCell({ r: w.row, c: w.col });
   };
 
   const isInSelectedWord = (r, c) => {
@@ -199,7 +199,7 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
 
   const checkAll = () => {
     const newChecked = {};
-    CROSSWORD_WORDS.forEach(w => {
+    words.forEach(w => {
       for (let i = 0; i < w.word.length; i++) {
         const r = w.dir === 'across' ? w.row : w.row + i;
         const c = w.dir === 'across' ? w.col + i : w.col;
@@ -208,7 +208,7 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
       }
     });
     setChecked(newChecked);
-    const wordResults = CROSSWORD_WORDS.map((w, wi) => {
+    const wordResults = words.map((w, wi) => {
       const cells = getWordCells(wi);
       const allCorrect = cells.every(({ r, c, pos }) => (userInput[`${r},${c}`] || '') === w.word[pos]);
       const usedReveal = cells.some(({ r, c }) => revealed.has(`${r},${c}`));
@@ -217,10 +217,12 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
     if (wordResults.every(r => r.allCorrect)) {
       const solved = wordResults.filter(r => r.allCorrect && !r.usedReveal).length;
       const helped = wordResults.filter(r => r.allCorrect && r.usedReveal).length;
-      setCompletionState({ solved, helped, total: CROSSWORD_WORDS.length });
+      setCompletionState({ solved, helped, total: words.length });
       markSectionComplete?.(unitId, 'crossword');
-      saveCrosswordScore?.(unitId, { solved, helped, total: CROSSWORD_WORDS.length });
-      const weakIds = CROSSWORD_WORDS.filter((_, wi) => wordResults[wi].usedReveal || !wordResults[wi].allCorrect).map(w => `u1_${w.word.toLowerCase()}`);
+      saveCrosswordScore?.(unitId, { solved, helped, total: words.length });
+      const weakIds = words
+        .filter((_, wi) => wordResults[wi].usedReveal || !wordResults[wi].allCorrect)
+        .map(w => `u${unitId}_${w.word.toLowerCase()}`);
       if (weakIds.length > 0) addWeakWordsFromExercise(weakIds);
     }
   };
@@ -231,7 +233,7 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
     const newChecked = { ...checked };
     cells.forEach(({ r, c, pos }) => {
       const k = `${r},${c}`;
-      if (userInput[k]) newChecked[k] = userInput[k] === CROSSWORD_WORDS[selectedWordIdx].word[pos] ? 'correct' : 'wrong';
+      if (userInput[k]) newChecked[k] = userInput[k] === words[selectedWordIdx].word[pos] ? 'correct' : 'wrong';
     });
     setChecked(newChecked);
   };
@@ -239,7 +241,7 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
   const revealLetter = () => {
     if (!selectedCell) return;
     const { r, c } = selectedCell;
-    const letter = GRID[r]?.[c]?.letter;
+    const letter = grid[r]?.[c]?.letter;
     if (!letter) return;
     const k = `${r},${c}`;
     setUserInput(p => ({ ...p, [k]: letter }));
@@ -255,11 +257,17 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
     const newRevealed = new Set(revealed);
     cells.forEach(({ r, c, pos }) => {
       const k = `${r},${c}`;
-      newInput[k] = CROSSWORD_WORDS[selectedWordIdx].word[pos];
+      newInput[k] = words[selectedWordIdx].word[pos];
       newRevealed.add(k);
     });
-    setUserInput(newInput); setRevealed(newRevealed);
+    setUserInput(newInput);
+    setRevealed(newRevealed);
     setChecked(p => { const n = { ...p }; cells.forEach(({ r, c }) => delete n[`${r},${c}`]); return n; });
+    // Immediately flag the revealed word as weak (don't wait for full completion)
+    const revealedWord = words[selectedWordIdx];
+    if (revealedWord && addWeakWordsFromExercise) {
+      addWeakWordsFromExercise([`u${unitId}_${revealedWord.word.toLowerCase()}`]);
+    }
   };
 
   const resetPuzzle = () => {
@@ -267,179 +275,163 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
     setCompletionState(null); setSelectedCell(null); setSelectedWordIdx(null); setTeacherRevealed(false);
   };
 
-  const uniqueCells = new Set(CROSSWORD_WORDS.flatMap(w => Array.from({ length: w.word.length }, (_, i) => w.dir === 'across' ? `${w.row},${w.col + i}` : `${w.row + i},${w.col}`))).size;
-  const filledCount = Object.keys(userInput).length;
-  const pct = Math.round((filledCount / uniqueCells) * 100);
-  const selectedWordData = selectedWordIdx !== null ? CROSSWORD_WORDS[selectedWordIdx] : null;
+  const uniqueCells = useMemo(() => new Set(
+    words.flatMap(w => Array.from({ length: w.word.length }, (_, i) =>
+      w.dir === 'across' ? `${w.row},${w.col + i}` : `${w.row + i},${w.col}`
+    ))
+  ).size, [words]);
 
-  const getCellStyle = (r, c) => {
+  const filledCount = Object.keys(userInput).length;
+  const selectedWordData = selectedWordIdx !== null ? words[selectedWordIdx] : null;
+
+  const getCellStyleFn = (r, c) => {
     const k = `${r},${c}`;
     const isSelected = selectedCell?.r === r && selectedCell?.c === c;
     const inWord = isInSelectedWord(r, c);
     const isCorrect = checked[k] === 'correct';
     const isWrong = checked[k] === 'wrong';
     const isRev = revealed.has(k);
-
-    if (isCorrect) return { bg: '#4A8C6A', border: `${cellSize >= 36 ? 2 : 1}px solid #3A7A5A`, textColor: 'white' };
-    if (isWrong)   return { bg: '#C05050', border: `${cellSize >= 36 ? 2 : 1}px solid #A03A3A`, textColor: 'white' };
-    if (isRev)     return { bg: '#FEF9EE', border: `${cellSize >= 36 ? 2 : 1}px solid #D4B86A`, textColor: '#8B6914' };
-    if (isSelected)return { bg: '#FFFFFF', border: `2px solid #C9955A`, textColor: 'var(--col-heading)' };
-    if (inWord)    return { bg: 'var(--col-accent-light)', border: `1px solid var(--col-divider)`, textColor: 'var(--col-heading)' };
-    return { bg: 'var(--col-surface)', border: `1px solid #C8C4B8`, textColor: 'var(--col-heading)' };
+    let bg = 'var(--col-surface)', border = '1px solid #2C3B3C', textColor = 'var(--col-heading)';
+    if (isCorrect)       { bg = 'var(--col-accent)';    textColor = 'white'; border = '1px solid var(--col-accent)'; }
+    else if (isWrong)    { bg = 'var(--col-incorrect)'; textColor = 'white'; border = '1px solid var(--col-incorrect)'; }
+    else if (isRev)      { bg = '#FFF8E7'; textColor = '#856404'; border = '1px solid #ECD9A0'; }
+    else if (isSelected) { bg = '#F0F7F4'; border = '2px solid var(--col-accent)'; }
+    else if (inWord)     { bg = 'var(--col-accent-light)'; border = '1px solid var(--col-divider)'; }
+    return { bg, border, textColor };
   };
 
-  const gridWidth = GRID_COLS * cellSize;
+  // Empty state
+  if (!words.length) {
+    return (
+      <div className="mb-8 p-6 rounded-xl text-center text-sm"
+        style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)', color: 'var(--col-muted)' }}>
+        Crossword coming soon for this unit.
+      </div>
+    );
+  }
 
-  const ClueList = () => (
-    <div ref={clueListRef} className="space-y-4 overflow-y-auto" style={{ maxHeight: 420 }}>
-      {['across', 'down'].map(dir => (
-        <div key={dir}>
-          <h4 className="text-xs font-bold uppercase tracking-widest mb-2 sticky top-0 py-1"
-            style={{ color: 'var(--col-muted)', backgroundColor: 'var(--col-surface)', zIndex: 1 }}>
-            {dir === 'across' ? 'Across →' : 'Down ↓'}
-          </h4>
-          <div className="space-y-0.5">
-            {CROSSWORD_WORDS.filter(w => w.dir === dir).map(w => {
-              const wIdx = CROSSWORD_WORDS.indexOf(w);
-              const isActive = selectedWordIdx === wIdx;
-              const cells = getWordCells(wIdx);
-              const solved = cells.every(({ r, c, pos }) => (userInput[`${r},${c}`] || '') === w.word[pos]);
-              return (
-                <button
-                  key={w.number}
-                  data-clue-idx={wIdx}
-                  onClick={() => { setSelectedWordIdx(wIdx); setSelectedDir(dir); setSelectedCell({ r: w.row, c: w.col }); }}
-                  className="w-full text-left px-3 py-2.5 rounded-lg transition-all"
-                  style={{
-                    minHeight: 44,
-                    backgroundColor: isActive ? 'var(--col-accent-light)' : solved ? '#F0FAF5' : 'transparent',
-                    borderLeft: isActive ? '3px solid #C9955A' : '3px solid transparent',
-                    fontWeight: isActive ? 600 : 400,
-                  }}
-                >
-                  <span className="text-xs font-bold mr-1.5" style={{ color: '#C9955A' }}>{w.number}.</span>
-                  <span className="text-xs" style={{ color: solved ? '#2D6050' : 'var(--col-body)' }}>{w.clue}</span>
-                  {showRu && <span className="block text-[10px] italic mt-0.5" style={{ color: 'var(--col-muted)' }}>{w.clueRu}</span>}
-                  {solved && <span className="ml-1.5 text-[10px] font-semibold" style={{ color: '#4A8C6A' }}>✓ solved</span>}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+  const ClueList = ({ direction }) => (
+    <div>
+      <h4 className="text-xs font-bold uppercase mb-2 tracking-wider" style={{ color: 'var(--col-muted)' }}>
+        {direction === 'across' ? 'Across →' : 'Down ↓'}
+      </h4>
+      <div className="space-y-0.5">
+        {words.filter(w => w.dir === direction).map(w => {
+          const wIdx = words.indexOf(w);
+          const isActive = selectedWordIdx === wIdx;
+          const cells = getWordCells(wIdx);
+          const solved = cells.every(({ r, c, pos }) => (userInput[`${r},${c}`] || '') === w.word[pos]);
+          return (
+            <button
+              key={w.number}
+              onClick={() => { setSelectedWordIdx(wIdx); setSelectedDir(direction); setSelectedCell({ r: w.row, c: w.col }); }}
+              className="w-full text-left px-3 py-2.5 rounded-lg text-xs transition-all"
+              style={{
+                minHeight: 44,
+                backgroundColor: isActive ? 'var(--col-accent-light)' : solved ? '#F0FAF5' : 'transparent',
+                borderLeft: isActive ? '3px solid var(--col-accent)' : '3px solid transparent',
+                color: solved ? '#2D6050' : 'var(--col-body)',
+                fontWeight: isActive ? 600 : 400,
+              }}
+            >
+              <span className="font-bold mr-1" style={{ color: 'var(--col-accent)' }}>{w.number}.</span>
+              {w.clue}
+              {showRu && <span className="block text-[10px] italic mt-0.5" style={{ color: 'var(--col-muted)' }}>{w.clueRu}</span>}
+              {solved && <span className="ml-1 text-[10px] font-medium" style={{ color: 'var(--col-correct)' }}>✓</span>}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 
-  const ActionBar = ({ mobile = false }) => {
-    const btns = [
-      { label: 'Check Word',    short: 'Check Word',  icon: CheckCircle, fn: checkWord,    disabled: selectedWordIdx === null, primary: false },
-      { label: 'Check All',     short: 'Check All',   icon: CheckCircle, fn: checkAll,     disabled: false, primary: true },
-      { label: 'Reveal Letter', short: 'Letter',      icon: Lightbulb,   fn: revealLetter, disabled: !selectedCell, primary: false },
-      { label: 'Reveal Word',   short: 'Word',        icon: Eye,         fn: revealWord,   disabled: selectedWordIdx === null, primary: false },
-      { label: 'Reset',         short: 'Reset',       icon: RotateCcw,   fn: resetPuzzle,  disabled: false, ghost: true },
-    ];
-
-    if (mobile) {
-      return (
-        <div className="grid grid-cols-2 gap-2 mt-3">
-          {btns.map(btn => (
-            <button
-              key={btn.label}
-              onClick={btn.fn}
-              disabled={btn.disabled}
-              className="flex items-center justify-center gap-2 rounded-xl font-semibold text-sm transition-colors disabled:opacity-40"
-              style={{
-                minHeight: 50,
-                backgroundColor: btn.primary ? '#C9955A' : btn.ghost ? 'transparent' : 'var(--col-surface-secondary)',
-                border: btn.ghost ? '1px solid var(--col-border)' : btn.primary ? 'none' : '1px solid var(--col-border)',
-                color: btn.primary ? 'white' : 'var(--col-body)',
-                gridColumn: btn.label === 'Check All' ? 'span 2' : undefined,
-              }}
+  const renderGrid = () =>
+    Array.from({ length: GRID_ROWS }).map((_, r) => (
+      <div key={r} style={{ display: 'flex' }}>
+        {Array.from({ length: GRID_COLS }).map((_, c) => {
+          const cell = grid[r]?.[c];
+          if (!cell || cell.isBlack) {
+            return <div key={c} style={{ width: cellSize, height: cellSize, minWidth: cellSize, backgroundColor: 'var(--col-sidebar)', flexShrink: 0 }} />;
+          }
+          const { bg, border, textColor } = getCellStyleFn(r, c);
+          const k = `${r},${c}`;
+          const isSelected = selectedCell?.r === r && selectedCell?.c === c;
+          return (
+            <div
+              key={c}
+              className="crossword-cell relative select-none"
+              style={{ width: cellSize, height: cellSize, minWidth: cellSize, flexShrink: 0, backgroundColor: bg, border, cursor: 'pointer' }}
+              onClick={() => selectCell(r, c)}
             >
-              <btn.icon className="h-4 w-4 shrink-0" />
-              {btn.short}
-            </button>
-          ))}
-          <button
-            className="col-span-2 flex items-center justify-center gap-2 rounded-xl text-sm py-3 transition-colors"
-            style={{ backgroundColor: 'var(--col-surface-secondary)', border: '1px solid var(--col-border)', color: 'var(--col-secondary)', minHeight: 44 }}
-            onClick={() => setShowRu(!showRu)}
-          >
-            <Globe className="h-3.5 w-3.5" />
-            {showRu ? 'Hide Russian hints' : 'Show Russian hints'}
-          </button>
-        </div>
-      );
-    }
-
-    return (
-      <div className="flex flex-wrap gap-2 mt-3">
-        {btns.map(btn => (
-          <button
-            key={btn.label}
-            onClick={btn.fn}
-            disabled={btn.disabled}
-            className="flex items-center gap-1.5 px-4 rounded-xl font-medium text-sm transition-colors disabled:opacity-40"
-            style={{
-              minHeight: 44,
-              backgroundColor: btn.primary ? '#C9955A' : btn.ghost ? 'transparent' : 'var(--col-surface-secondary)',
-              border: btn.ghost ? 'none' : btn.primary ? 'none' : '1px solid var(--col-border)',
-              color: btn.primary ? 'white' : 'var(--col-secondary)',
-            }}
-          >
-            <btn.icon className="h-4 w-4" />
-            {btn.label}
-          </button>
-        ))}
-        <button
-          className="flex items-center gap-1.5 px-3 rounded-xl text-sm transition-colors"
-          style={{ color: 'var(--col-muted)', minHeight: 44 }}
-          onClick={() => setShowRu(!showRu)}
-        >
-          <Globe className="h-3.5 w-3.5" />
-          {showRu ? 'Hide RU' : 'Show RU'}
-        </button>
+              {cell.number && (
+                <span className="absolute leading-none font-bold"
+                  style={{ top: 1, left: 2, fontSize: Math.max(7, cellSize * 0.22), color: isSelected ? 'var(--col-accent)' : 'var(--col-muted)', zIndex: 1, pointerEvents: 'none' }}>
+                  {cell.number}
+                </span>
+              )}
+              <input
+                key={`input-${k}`}
+                ref={el => { inputRefs.current[k] = el; }}
+                type="text"
+                maxLength={1}
+                value={userInput[k] || ''}
+                readOnly
+                onKeyDown={(e) => handleCellKeyDown(e, r, c)}
+                onFocus={() => selectCell(r, c)}
+                className="hidden sm:block absolute inset-0 w-full h-full text-center font-bold uppercase bg-transparent border-none outline-none cursor-pointer"
+                style={{ color: textColor, fontSize: Math.max(11, cellSize * 0.38), caretColor: 'transparent' }}
+                tabIndex={isSelected ? 0 : -1}
+              />
+              <span
+                className="sm:hidden absolute inset-0 flex items-center justify-center font-bold uppercase"
+                style={{ color: textColor, fontSize: Math.max(9, cellSize * 0.38), pointerEvents: 'none' }}
+              >
+                {userInput[k] || ''}
+              </span>
+            </div>
+          );
+        })}
       </div>
-    );
-  };
+    ));
+
+  const actionBtns = [
+    { label: 'Check Word',    short: 'Check',   icon: CheckCircle, fn: checkWord,    disabled: selectedWordIdx === null },
+    { label: 'Check All',     short: 'Check All', icon: CheckCircle, fn: checkAll,   disabled: false, primary: true },
+    { label: 'Reveal Letter', short: 'Letter',  icon: Lightbulb,   fn: revealLetter, disabled: !selectedCell },
+    { label: 'Reveal Word',   short: 'Word',    icon: Eye,         fn: revealWord,   disabled: selectedWordIdx === null },
+    { label: 'Reset',         short: 'Reset',   icon: RotateCcw,   fn: resetPuzzle,  disabled: false, ghost: true },
+  ];
 
   return (
-    <div className="mb-8 rounded-2xl overflow-hidden" style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>
-      <div className="p-4 sm:p-6">
+    <div className="mb-8 rounded-xl overflow-hidden" style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>
+      <div className="p-5">
 
         {/* Header */}
-        <div className="flex items-start justify-between flex-wrap gap-3 mb-3">
+        <div className="flex items-start justify-between flex-wrap gap-3 mb-1">
           <div>
-            <h2 className="font-bold text-lg" style={{ color: 'var(--col-heading)' }}>Crossword Challenge</h2>
-            <p className="text-xs" style={{ color: 'var(--col-muted)' }}>Кроссворд · Unit 1 vocabulary reinforcement</p>
+            <h2 className="font-semibold text-lg" style={{ color: 'var(--col-heading)' }}>Crossword Challenge</h2>
+            <p className="text-xs" style={{ color: 'var(--col-muted)' }}>
+              Кроссворд · Unit {unitId} vocabulary reinforcement
+            </p>
           </div>
-          <span className="text-xs font-semibold px-3 py-1.5 rounded-full" style={{ backgroundColor: 'var(--col-tag-bg)', color: 'var(--col-tag-text)' }}>
+          <span className="text-xs font-medium px-2 py-1 rounded-full" style={{ backgroundColor: 'var(--col-tag-bg)', color: 'var(--col-tag-text)' }}>
             {filledCount}/{uniqueCells} filled
           </span>
         </div>
 
-        <p className="text-sm mb-3 hidden sm:block" style={{ color: 'var(--col-secondary)' }}>
-          Click a cell and type. Tab moves to the next word. Tap a cell twice to switch Across/Down.
+        <p className="text-sm mb-1" style={{ color: 'var(--col-secondary)' }}>
+          Click a cell and type. Tab moves to the next word. Click twice to switch Across/Down.
         </p>
-        <p className="text-sm mb-3 sm:hidden" style={{ color: 'var(--col-secondary)' }}>
-          Tap a cell to select it, then use the keyboard below. Tap twice to switch direction.
+        <p className="text-xs italic mb-4" style={{ color: 'var(--col-muted)' }}>
+          Нажмите на ячейку и начните печатать. Tab переходит к следующему слову.
         </p>
-
-        {/* Progress bar */}
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--col-divider)' }}>
-            <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: '#C9955A' }} />
-          </div>
-          <span className="text-xs font-semibold whitespace-nowrap" style={{ color: 'var(--col-secondary)', minWidth: 36, textAlign: 'right' }}>{pct}%</span>
-        </div>
 
         {/* Teacher controls */}
         {isTeacherMode && (
-          <div className="mb-4 p-4 rounded-xl flex flex-wrap items-center gap-3"
-            style={{ backgroundColor: 'var(--col-accent-light)', border: '1px solid var(--col-divider)' }}>
-            <GraduationCap className="h-4 w-4 shrink-0" style={{ color: '#C9955A' }} />
+          <div className="mb-4 p-4 rounded-xl flex flex-wrap items-center gap-3" style={{ backgroundColor: 'var(--col-accent-light)', border: '1px solid var(--col-divider)' }}>
+            <GraduationCap className="h-4 w-4 shrink-0" style={{ color: 'var(--col-accent)' }} />
             <span className="text-sm font-semibold" style={{ color: 'var(--col-accent-text)' }}>Teacher Mode</span>
-            <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold" style={{ backgroundColor: '#C9955A', color: 'white', minHeight: 44 }} onClick={() => setTeacherRevealed(true)}>
+            <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold" style={{ backgroundColor: 'var(--col-accent)', color: 'white', minHeight: 44 }} onClick={() => setTeacherRevealed(true)}>
               <Eye className="h-4 w-4" /> Reveal All Answers
             </button>
             <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm" style={{ border: '1px solid var(--col-border)', color: 'var(--col-secondary)', minHeight: 44 }} onClick={resetPuzzle}>
@@ -448,76 +440,39 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
           </div>
         )}
 
+        {/* Progress bar */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--col-divider)' }}>
+            <div className="h-full rounded-full transition-all" style={{ width: `${Math.round((filledCount / uniqueCells) * 100)}%`, backgroundColor: 'var(--col-accent)' }} />
+          </div>
+          <span className="text-xs whitespace-nowrap" style={{ color: 'var(--col-muted)' }}>
+            {Math.round((filledCount / uniqueCells) * 100)}%
+          </span>
+        </div>
+
         {/* Active clue banner */}
         {selectedWordData && (
-          <div className="mb-4 px-4 py-3 rounded-xl" style={{ backgroundColor: 'var(--col-accent-light)', borderLeft: '4px solid #C9955A' }}>
+          <div className="mb-4 px-4 py-3 rounded-lg" style={{ backgroundColor: 'var(--col-accent-light)', borderLeft: '3px solid var(--col-accent)' }}>
             <div className="flex items-start gap-2">
-              <span className="text-xs font-bold px-2 py-1 rounded-lg shrink-0" style={{ backgroundColor: '#C9955A', color: 'white', marginTop: 1 }}>
+              <span className="text-xs font-bold px-1.5 py-0.5 rounded shrink-0 mt-0.5" style={{ backgroundColor: 'var(--col-accent)', color: 'white' }}>
                 {selectedWordData.number} {selectedWordData.dir === 'across' ? '→' : '↓'}
               </span>
               <div>
-                <p className="text-sm font-semibold leading-snug" style={{ color: 'var(--col-heading)' }}>{selectedWordData.clue}</p>
+                <p className="text-sm font-medium" style={{ color: 'var(--col-heading)' }}>{selectedWordData.clue}</p>
                 {showRu && <p className="text-xs italic mt-0.5" style={{ color: 'var(--col-muted)' }}>{selectedWordData.clueRu}</p>}
               </div>
             </div>
           </div>
         )}
 
-        {/* Grid + clues — side by side on desktop, stacked on mobile */}
+        {/* Grid + clues */}
         <div className="flex flex-col lg:flex-row lg:gap-6">
 
           {/* Grid */}
           <div className="shrink-0 mb-4 lg:mb-0">
             <div className="overflow-x-auto">
-              <div
-                style={{ display: 'inline-block', border: '2px solid var(--col-border)', borderRadius: 12, overflow: 'hidden', minWidth: gridWidth }}
-              >
-                {Array.from({ length: GRID_ROWS }).map((_, r) => (
-                  <div key={r} style={{ display: 'flex' }}>
-                    {Array.from({ length: GRID_COLS }).map((_, c) => {
-                      const cell = GRID[r]?.[c];
-                      if (!cell || cell.isBlack) {
-                        return <div key={c} style={{ width: cellSize, height: cellSize, minWidth: cellSize, backgroundColor: 'var(--col-sidebar)', flexShrink: 0 }} />;
-                      }
-                      const { bg, border, textColor } = getCellStyle(r, c);
-                      const k = `${r},${c}`;
-                      const isSelected = selectedCell?.r === r && selectedCell?.c === c;
-                      return (
-                        <div
-                          key={c}
-                          className="crossword-cell relative select-none"
-                          style={{ width: cellSize, height: cellSize, minWidth: cellSize, flexShrink: 0, backgroundColor: bg, border, cursor: 'pointer', position: 'relative' }}
-                          onClick={() => selectCell(r, c)}
-                        >
-                          {cell.number && (
-                            <span className="absolute leading-none font-bold" style={{ top: 1, left: 2, fontSize: Math.max(7, cellSize * 0.22), color: isSelected ? '#C9955A' : 'var(--col-muted)', zIndex: 1, pointerEvents: 'none' }}>
-                              {cell.number}
-                            </span>
-                          )}
-                          {/* Desktop: real input for keyboard */}
-                          <input
-                            type="text"
-                            maxLength={1}
-                            value={userInput[k] || ''}
-                            readOnly
-                            onKeyDown={(e) => handleCellKeyDown(e, r, c)}
-                            onFocus={() => selectCell(r, c)}
-                            className="hidden sm:block absolute inset-0 w-full h-full text-center font-bold uppercase bg-transparent border-none outline-none cursor-pointer"
-                            style={{ color: textColor, fontSize: Math.max(11, cellSize * 0.38), caretColor: 'transparent' }}
-                            tabIndex={isSelected ? 0 : -1}
-                          />
-                          {/* Mobile: plain text display */}
-                          <span
-                            className="sm:hidden absolute inset-0 flex items-center justify-center font-bold uppercase"
-                            style={{ color: textColor, fontSize: Math.max(10, cellSize * 0.38), pointerEvents: 'none' }}
-                          >
-                            {userInput[k] || ''}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
+              <div style={{ display: 'inline-block', border: '2px solid var(--col-border)', borderRadius: 12, overflow: 'hidden', minWidth: GRID_COLS * cellSize }}>
+                {renderGrid()}
               </div>
             </div>
 
@@ -557,44 +512,64 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
               >
                 ← Backspace
               </button>
-              <ActionBar mobile />
+              {/* Mobile action buttons */}
+              <div className="grid grid-cols-2 gap-2 mt-3">
+                {actionBtns.map(btn => (
+                  <button key={btn.label} onClick={btn.fn} disabled={btn.disabled}
+                    className="flex items-center justify-center gap-2 rounded-xl font-semibold text-sm disabled:opacity-40"
+                    style={{ minHeight: 50, backgroundColor: btn.primary ? 'var(--col-accent)' : 'var(--col-surface-secondary)', border: btn.primary ? 'none' : '1px solid var(--col-border)', color: btn.primary ? 'white' : 'var(--col-body)', gridColumn: btn.label === 'Check All' ? 'span 2' : undefined }}>
+                    <btn.icon className="h-4 w-4 shrink-0" />{btn.short}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Desktop action bar */}
-            <div className="hidden sm:block">
-              <ActionBar />
+            {/* Desktop action buttons */}
+            <div className="hidden sm:flex flex-wrap gap-2 mt-3">
+              {actionBtns.map(btn => (
+                <button key={btn.label} onClick={btn.fn} disabled={btn.disabled}
+                  className="flex items-center gap-1.5 px-4 rounded-xl font-medium text-sm disabled:opacity-40"
+                  style={{ minHeight: 44, backgroundColor: btn.primary ? 'var(--col-accent)' : btn.ghost ? 'transparent' : 'var(--col-surface-secondary)', border: btn.ghost ? 'none' : btn.primary ? 'none' : '1px solid var(--col-border)', color: btn.primary ? 'white' : 'var(--col-secondary)' }}>
+                  <btn.icon className="h-4 w-4" />{btn.label}
+                </button>
+              ))}
+              <button className="flex items-center gap-1.5 px-3 rounded-xl text-sm" style={{ color: 'var(--col-muted)', minHeight: 44 }} onClick={() => setShowRu(!showRu)}>
+                <Globe className="h-3.5 w-3.5 mr-1" />
+                {showRu ? 'Hide RU' : 'Show RU'}
+              </button>
             </div>
           </div>
 
           {/* Clues panel */}
           <div className="flex-1 min-w-0">
-            {/* Mobile clues toggle */}
             <button
-              className="w-full flex items-center justify-between px-4 py-3 rounded-xl lg:hidden"
+              className="w-full flex items-center justify-between px-4 rounded-xl mb-2 lg:hidden"
               style={{ backgroundColor: 'var(--col-surface-secondary)', border: '1px solid var(--col-border)', minHeight: 52 }}
               onClick={() => setShowClues(!showClues)}
             >
               <span className="text-sm font-semibold" style={{ color: 'var(--col-heading)' }}>Clues · Подсказки</span>
               {showClues ? <ChevronUp className="h-5 w-5" style={{ color: 'var(--col-muted)' }} /> : <ChevronDown className="h-5 w-5" style={{ color: 'var(--col-muted)' }} />}
             </button>
-
-            <div className={`${showClues ? 'block' : 'hidden'} lg:block mt-2 lg:mt-0`}>
-              <ClueList />
+            <div className={`${showClues ? 'block' : 'hidden'} lg:block`}>
+              <div className="space-y-4 max-h-[520px] overflow-y-auto pr-1">
+                <ClueList direction="across" />
+                <ClueList direction="down" />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap gap-3 mt-4 mb-2">
+        <div className="flex flex-wrap gap-3 mt-3 mb-4">
           {[
             { color: 'var(--col-accent-light)', label: 'Selected word' },
-            { color: '#FFFFFF', border: '2px solid #C9955A', label: 'Active cell' },
-            { color: '#4A8C6A', label: 'Correct', textW: true },
-            { color: '#C05050', label: 'Wrong', textW: true },
-            { color: '#FEF9EE', border: '1px solid #D4B86A', label: 'Revealed' },
+            { color: '#F0F7F4', border: '2px solid var(--col-accent)', label: 'Active cell' },
+            { color: 'var(--col-accent)', label: 'Correct', textW: true },
+            { color: 'var(--col-incorrect)', label: 'Wrong', textW: true },
+            { color: '#FFF8E7', label: 'Revealed', border: '1px solid #ECD9A0' },
           ].map(item => (
             <span key={item.label} className="flex items-center gap-1.5 text-[10px]" style={{ color: 'var(--col-muted)' }}>
-              <span className="w-4 h-4 rounded-sm shrink-0 inline-block" style={{ backgroundColor: item.color, border: item.border || '1px solid var(--col-border)' }} />
+              <span className="w-3.5 h-3.5 rounded shrink-0 inline-block" style={{ backgroundColor: item.color, border: item.border || '1px solid var(--col-border)' }} />
               {item.label}
             </span>
           ))}
@@ -602,33 +577,39 @@ export default function CrosswordChallenge({ unitId, isTeacherMode }) {
 
         {/* Completion card */}
         {completionState && (
-          <div className="rounded-2xl p-6 text-center mt-4" style={{ backgroundColor: 'var(--col-accent-light)', border: '2px solid var(--col-divider)' }}>
-            <Trophy className="h-14 w-14 mx-auto mb-3" style={{ color: '#C9955A' }} />
-            <h3 className="text-2xl font-bold mb-3" style={{ color: 'var(--col-heading)' }}>Crossword Complete!</h3>
+          <div className="rounded-xl p-6 text-center mt-3" style={{ backgroundColor: 'var(--col-accent-light)', border: '2px solid var(--col-divider)' }}>
+            <Trophy className="h-12 w-12 mx-auto mb-3" style={{ color: 'var(--col-accent)' }} />
+            <h3 className="text-2xl font-bold mb-1" style={{ color: 'var(--col-heading)' }}>Crossword Complete!</h3>
+            <p className="text-xs mb-4" style={{ color: 'var(--col-muted)' }}>Unit {unitId} · Кроссворд завершён!</p>
             <div className="flex flex-wrap justify-center gap-3 mb-4">
               {[
-                { value: completionState.solved, label: 'Solved alone', color: '#C9955A' },
-                { value: completionState.helped, label: 'Used hints', color: '#B87820' },
-                { value: completionState.total,  label: 'Total words', color: 'var(--col-heading)' },
+                { value: completionState.solved, label: 'Solved alone', color: 'var(--col-accent-text)' },
+                { value: completionState.helped, label: 'Used hints',   color: 'var(--col-warning)' },
+                { value: completionState.total,  label: 'Total words',  color: 'var(--col-heading)' },
               ].map(item => (
-                <div key={item.label} className="px-4 py-3 rounded-xl" style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)', minWidth: 90 }}>
+                <div key={item.label} className="px-4 py-2 rounded-xl" style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>
                   <p className="text-2xl font-bold" style={{ color: item.color }}>{item.value}</p>
                   <p className="text-xs" style={{ color: 'var(--col-muted)' }}>{item.label}</p>
                 </div>
               ))}
             </div>
             {completionState.helped > 0 && (
-              <div className="flex items-center justify-center gap-1.5 text-xs px-4 py-2.5 rounded-xl mb-4" style={{ backgroundColor: '#FEF9EE', border: '1px solid #D4B86A', color: '#8B6914' }}>
-                <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
-                Words where you used hints have been added to Weak Words for review.
+              <div className="flex items-center justify-center gap-1.5 text-xs px-3 py-2 rounded-lg mb-4"
+                style={{ backgroundColor: '#FFF8E7', border: '1px solid #ECD9A0', color: '#856404' }}>
+                <AlertTriangle className="h-3.5 w-3.5" />
+                Words where you needed hints added to Weak Words.
               </div>
             )}
-            <p className="text-sm font-medium mb-5" style={{ color: 'var(--col-body)' }}>
-              {completionState.solved === completionState.total ? '⭐ Perfect — solved everything without help!' : completionState.solved >= completionState.total * 0.7 ? '✓ Well done! Review hinted words in Glossary.' : 'Practice the vocabulary more and try again.'}
+            <p className="text-sm font-medium mb-4" style={{ color: 'var(--col-body)' }}>
+              {completionState.solved === completionState.total
+                ? 'Perfect — all words solved without help.'
+                : completionState.solved >= completionState.total * 0.7
+                ? 'Well done. Review hinted words in the Glossary.'
+                : 'Practice the vocabulary more and try again.'}
             </p>
             <button
               className="flex items-center gap-2 mx-auto px-6 py-3 rounded-xl text-sm font-semibold"
-              style={{ border: '2px solid #C9955A', color: '#C9955A', minHeight: 48 }}
+              style={{ border: '2px solid var(--col-accent)', color: 'var(--col-accent)', minHeight: 48 }}
               onClick={resetPuzzle}
             >
               <RotateCcw className="h-4 w-4" /> Try Again

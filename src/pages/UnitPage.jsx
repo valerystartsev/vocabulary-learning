@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getUnit, units } from '../data/courseData';
 import { useProgress } from '../context/ProgressContext';
@@ -6,76 +6,537 @@ import { getSectionStatus, getNextRecommendedSection, getSectionSummary } from '
 import { useMode } from '../context/ModeContext';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, GraduationCap } from 'lucide-react';
-import { computeUnitProgress } from '../context/ProgressContext';
+import { computeUnitProgress, VISIT_TRACKED_SECTIONS } from '../context/ProgressContext';
 
-import UnitHeader from '../components/unit/UnitHeader';
-import KeyIdeas from '../components/unit/KeyIdeas';
-import Dictionary from '../components/unit/Dictionary';
-import ComicsBlock from '../components/unit/ComicsBlock';
-import ReadingSection from '../components/unit/ReadingSection';
-import ComprehensionQuestions from '../components/unit/ComprehensionQuestions';
-import MediaLab from '../components/unit/MediaLab';
-import MediaQuest from '../components/unit/MediaQuest';
-import DialogueBlock from '../components/unit/DialogueBlock';
-import WritingBlock from '../components/unit/WritingBlock';
-import TotalTest from '../components/unit/TotalTest';
-import ExerciseEngine from '../components/exercises/ExerciseEngine';
-import VocabularyRadar from '../components/unit/VocabularyRadar';
-import ScenarioLoop from '../components/unit/ScenarioLoop';
-import CrosswordChallenge from '../components/unit/CrosswordChallenge';
-import Unit2Crossword from '../components/unit/Unit2Crossword';
+// Sections that DON'T track themselves via their own markSectionComplete
+// call. For these the page auto-marks completion once the student has
+// spent a few seconds with the section in view (IntersectionObserver
+// based — pure scrolling past does NOT count). All the interactive
+// widgets (compass, calculators, sliders) keep their own stricter
+// completion criteria and are not in this set.
+// AUTO_MARK is reserved for pure-content sections without any interaction.
+// Reading and Comprehension are intentionally excluded because they now
+// score themselves on the Check My Answers / Check buttons — auto-marking
+// them on top would let a student get credit without engaging with the
+// quiz at the bottom of each section.
+const AUTO_MARK_SECTIONS = new Set([
+  'keyideas', 'dictionary',
+  'dialogue', 'writing', 'memo', 'grammar',
+  'casestudy', 'roleperspectives', 'labourmarket',
+  'timeline', 'impactmap', 'mediaquest',
+]);
+
+// AutoSectionMarker — invisible 1px tracker placed inside the section
+// container. Marks the section as completed only when:
+//   (1) at least 40% of the marker has been visible in the viewport
+//   (2) for a continuous 10 seconds
+//   (3) AND the user has interacted with the page during that window
+//       (scroll, click, key press)
+// Without (3) a student who briefly glanced at the page on the way to
+// another unit could accidentally trigger completion for sections they
+// never actually engaged with — the source of the cross-unit
+// "appears done" perception. With all three guards in place a
+// completion fire requires deliberate engagement on the current page.
+function AutoSectionMarker({ unitId, sectionId, dwellMs = 10000 }) {
+  const { progress, markSectionComplete } = useProgress();
+  const ref = useRef(null);
+  const firedRef = useRef(false);
+  const interactedRef = useRef(false);
+  const already = !!progress?.completedSections?.[unitId]?.[sectionId];
+
+  useEffect(() => {
+    if (already || firedRef.current || !ref.current) return;
+
+    // Track any meaningful user interaction on the page
+    const markInteraction = () => { interactedRef.current = true; };
+    window.addEventListener('scroll', markInteraction, { passive: true });
+    window.addEventListener('click', markInteraction);
+    window.addEventListener('keydown', markInteraction);
+    window.addEventListener('pointermove', markInteraction);
+
+    let timer = null;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        timer = setTimeout(() => {
+          if (firedRef.current) return;
+          // Hard requirement: deliberate engagement on this page
+          if (!interactedRef.current) return;
+          firedRef.current = true;
+          markSectionComplete?.(unitId, sectionId);
+        }, dwellMs);
+      } else if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    }, { threshold: 0.4 });
+    obs.observe(ref.current);
+
+    return () => {
+      obs.disconnect();
+      if (timer) clearTimeout(timer);
+      window.removeEventListener('scroll', markInteraction);
+      window.removeEventListener('click', markInteraction);
+      window.removeEventListener('keydown', markInteraction);
+      window.removeEventListener('pointermove', markInteraction);
+    };
+  }, [already, unitId, sectionId, dwellMs, markSectionComplete]);
+
+  return <div ref={ref} aria-hidden style={{ width: 1, height: 1 }} />;
+}
+
 import SectionBanner from '../components/unit/SectionBanner';
-import GrowthImpactMap from '../components/unit/GrowthImpactMap';
-import GrowthTimeline from '../components/unit/GrowthTimeline';
-import MemoSection from '../components/unit/MemoSection';
-import LabourMarketSection from '../components/unit/LabourMarketSection';
-import CaseStudySection from '../components/unit/CaseStudySection';
-import RolePerspectives from '../components/unit/RolePerspectives';
-import GrammarSection from '../components/unit/GrammarSection';
-import PeopleProgressCards from '../components/unit/PeopleProgressCards';
-import EmploymentSnapshot from '../components/unit/EmploymentSnapshot';
+import LabBanner from '../components/unit/LabBanner';
+import ExerciseEngine from '../components/exercises/ExerciseEngine';
+import {
+  SECTION_COMPONENTS,
+  SECTION_LABELS,
+  PeopleProgressCards,
+  EmploymentSnapshot,
+  VocabularyRadar,
+} from '../components/unit/sectionRegistry';
 
-const SECTIONS_UNIT1 = [
-  { id: 'header',      label: 'Intro',       labelRu: '' },
-  { id: 'keyideas',    label: 'Key Ideas',   labelRu: 'Идеи' },
-  { id: 'dictionary',  label: 'Dictionary',  labelRu: 'Словарь' },
-  { id: 'comics',      label: 'Comics',      labelRu: 'Комикс' },
-  { id: 'exercises',   label: 'Exercises',   labelRu: 'Задания' },
-  { id: 'reading',     label: 'Reading',     labelRu: 'Чтение' },
-  { id: 'comprehension', label: 'Questions', labelRu: 'Вопросы' },
-  { id: 'media',       label: 'Media Lab',   labelRu: 'Медиа' },
-  { id: 'mediaquest',  label: 'Media Quest', labelRu: 'Квест' },
-  { id: 'crossword',   label: 'Crossword',   labelRu: 'Кроссворд' },
-  { id: 'dialogue',    label: 'Dialogue',    labelRu: 'Диалог' },
-  { id: 'writing',     label: 'Writing',     labelRu: 'Письмо' },
-  { id: 'scenario',    label: 'Scenario',    labelRu: 'Сценарий' },
-  { id: 'totaltest',   label: 'Total Test',  labelRu: 'Тест' },
-  { id: 'answerkey',   label: 'Answer Key',  labelRu: 'Ответы' },
-  { id: 'summary',     label: 'Summary',     labelRu: 'Итог' },
-];
+// Pull specific components from the registry for use in inline JSX
+const UnitHeader              = SECTION_COMPONENTS.header;
+const KeyIdeas                = SECTION_COMPONENTS.keyideas;
+const Dictionary              = SECTION_COMPONENTS.dictionary;
+const ComicsBlock             = SECTION_COMPONENTS.comics;
+const ReadingSection          = SECTION_COMPONENTS.reading;
+const ComprehensionQuestions  = SECTION_COMPONENTS.comprehension;
+const MediaLab                = SECTION_COMPONENTS.media;
+const MediaQuest              = SECTION_COMPONENTS.mediaquest;
+const DialogueBlock           = SECTION_COMPONENTS.dialogue;
+const WritingBlock            = SECTION_COMPONENTS.writing;
+const TotalTest               = SECTION_COMPONENTS.totaltest;
+const ScenarioLoop            = SECTION_COMPONENTS.scenario;
+const CrosswordChallenge      = SECTION_COMPONENTS.crossword;
+const MoneyCompass            = SECTION_COMPONENTS.moneycompass;
+const GrowthTimeline          = SECTION_COMPONENTS.timeline;
+const MemoSection             = SECTION_COMPONENTS.memo;
+const LabourMarketSection     = SECTION_COMPONENTS.labourmarket;
+const CaseStudySection        = SECTION_COMPONENTS.casestudy;
+const RolePerspectives        = SECTION_COMPONENTS.roleperspectives;
+const GrammarSection          = SECTION_COMPONENTS.grammar;
 
-const SECTIONS_UNIT2 = [
-  { id: 'header',      label: 'Intro',       labelRu: '' },
-  { id: 'keyideas',    label: 'Key Ideas',   labelRu: 'Идеи' },
-  { id: 'dictionary',  label: 'Dictionary',  labelRu: 'Словарь' },
-  { id: 'impactmap',   label: 'Timeline',    labelRu: 'Шкала' },
-  { id: 'exercises',   label: 'Exercises',   labelRu: 'Задания' },
-  { id: 'reading',     label: 'Reading',     labelRu: 'Чтение' },
-  { id: 'comprehension', label: 'Questions', labelRu: 'Вопросы' },
-  { id: 'media',       label: 'Media Lab',   labelRu: 'Медиа' },
-  { id: 'crossword',   label: 'Crossword',   labelRu: 'Кроссворд' },
-  { id: 'casestudy',   label: 'Case Study',  labelRu: 'Кейс' },
-  { id: 'roleperspectives', label: 'Perspectives', labelRu: 'Роли' },
-  { id: 'labourmarket', label: 'Labour',     labelRu: 'Труд' },
-  { id: 'dialogue',    label: 'Dialogue',    labelRu: 'Диалог' },
-  { id: 'memo',        label: 'Memo',        labelRu: 'Меморандум' },
-  { id: 'grammar',     label: 'Grammar',     labelRu: 'Грамматика' },
-  { id: 'writing',     label: 'Writing',     labelRu: 'Письмо' },
-  { id: 'scenario',    label: 'Scenario',    labelRu: 'Сценарий' },
-  { id: 'totaltest',   label: 'Total Test',  labelRu: 'Тест' },
-  { id: 'answerkey',   label: 'Answer Key',  labelRu: 'Ответы' },
-  { id: 'summary',     label: 'Summary',     labelRu: 'Итог' },
-];
+// Build the section navigation list.
+// Preferred path (Phase 3 / R3): the unit's data file declares
+// `sections: ['header', 'keyideas', ...]` — we map IDs to labels via the
+// shared SECTION_LABELS registry.
+// Legacy fallback: synthesize the list from optional-field flags. Both
+// paths produce identical output for the existing Units 1 / 2.
+function buildSections(unit) {
+  const s = (id, label, labelRu) => ({ id, label, labelRu });
+
+  // R3 path — declarative list from unit data
+  if (Array.isArray(unit.sections) && unit.sections.length > 0) {
+    return unit.sections
+      .map(id => {
+        // Lab-pointer banners use the pattern "labbanner:<tool-id>".
+        // They have no nav label — the nav strip filters them out.
+        if (id.startsWith('labbanner:')) return s(id, '', '');
+        const meta = SECTION_LABELS[id];
+        if (!meta) {
+          console.warn(`[UnitPage] Unknown section id "${id}" for unit ${unit.id}`);
+          return null;
+        }
+        return s(id, meta.label, meta.labelRu);
+      })
+      .filter(Boolean);
+  }
+
+  // Legacy fallback — keeps behaviour identical for any unit lacking `sections`.
+  // Course-wide rule: dictionary always appears immediately after keyideas.
+  return [
+    s('header',           'Intro',        ''),
+    s('keyideas',         'Key Ideas',    'Идеи'),
+    s('dictionary',       'Dictionary',   'Словарь'),
+    ...(unit.moneyCompass  ? [s('moneycompass',   'Money Compass', 'Компас денег')] : []),
+    ...(unit.moneyForms    ? [s('moneyforms',     'Money Forms',   'Формы денег')]  : []),
+    ...(unit.comics && unit.comics.length > 0 ? [s('comics',     'Comics',       'Комикс')]      : []),
+    ...(unit.timeline             ? [s('impactmap',        'Timeline',     'Шкала')]       : []),
+    s('exercises',        'Exercises',    'Задания'),
+    s('reading',          'Reading',      'Чтение'),
+    s('comprehension',    'Questions',    'Вопросы'),
+    s('media',            'Media Lab',    'Медиа'),
+    ...(unit.mediaQuest           ? [s('mediaquest',       'Media Quest',  'Квест')]       : []),
+    s('crossword',        'Crossword',    'Кроссворд'),
+    ...(unit.caseStudy            ? [s('casestudy',        'Case Study',   'Кейс')]        : []),
+    ...(unit.rolePerspectives     ? [s('roleperspectives', 'Perspectives', 'Роли')]        : []),
+    ...(unit.labourMarketSection  ? [s('labourmarket',     'Labour',       'Труд')]        : []),
+    s('dialogue',         'Dialogue',     'Диалог'),
+    ...(unit.memoSection          ? [s('memo',             'Memo',         'Меморандум')]  : []),
+    ...(unit.grammarSection       ? [s('grammar',          'Grammar',      'Грамматика')]  : []),
+    s('writing',          'Writing',      'Письмо'),
+    s('scenario',         'Scenario',     'Сценарий'),
+    s('totaltest',        'Total Test',   'Тест'),
+    s('answerkey',        'Answer Key',   'Ответы'),
+    s('summary',          'Summary',      'Итог'),
+  ];
+}
+
+// R4: declarative section renderer.
+// Each case below is a self-contained JSX block for one section ID.
+// Adding a new section means: 1) build the component, 2) register it in
+// sectionRegistry, 3) add a case here, 4) add the ID to a unit's sections.
+function renderSection(id, unit, ctx) {
+  // Lab pointer banners — handled before the switch because the section
+  // ID is dynamic (labbanner:<tool-id>). No SectionDivider above; the
+  // banner is intentionally subtle and isn't a unit section in its own right.
+  if (id.startsWith('labbanner:')) {
+    const toolId = id.slice('labbanner:'.length);
+    return <LabBanner toolId={toolId} />;
+  }
+
+  const { isTeacherMode, sectionDone, radarWords, radarWordsMedia } = ctx;
+  const Banner = <SectionDivider id={id} isDone={sectionDone(id)} />;
+
+  switch (id) {
+    case 'header':
+      return <div id="section-header"><UnitHeader unit={unit} /></div>;
+
+    case 'keyideas':
+      return <>{Banner}<KeyIdeas unit={unit} /></>;
+
+    case 'marketstructures':
+      if (!unit.marketStructures) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.marketstructures, {
+            data: unit.marketStructures,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'complaintpath':
+      if (!unit.complaintPath) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.complaintpath, {
+            data: unit.complaintPath,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'growthdrivers':
+      if (!unit.growthDrivers) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.growthdrivers, {
+            data: unit.growthDrivers,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'techjobsflow':
+      if (!unit.techJobsFlow) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.techjobsflow, {
+            data: unit.techJobsFlow,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'moneycompass':
+      if (!unit.moneyCompass) return null;
+      return (
+        <>
+          {Banner}
+          <MoneyCompass data={unit.moneyCompass} unitId={unit.id} isTeacherMode={isTeacherMode} />
+        </>
+      );
+
+    case 'moneyforms':
+      if (!unit.moneyForms) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.moneyforms, {
+            data: unit.moneyForms,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'currency':
+      if (!unit.currencyComparator) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.currency, {
+            data: unit.currencyComparator,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'centralbank':
+      if (!unit.centralBankWheel) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.centralbank, {
+            data: unit.centralBankWheel,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'bankaccounts':
+      if (!unit.bankAccountSection) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.bankaccounts, {
+            data: unit.bankAccountSection,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'worldbanking':
+      if (!unit.worldBankingMap) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.worldbanking, {
+            data: unit.worldBankingMap,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'loansim':
+      if (!unit.loanSimulator) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.loansim, {
+            data: unit.loanSimulator,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'gdpcalc':
+      if (!unit.gdpTwoApproaches) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.gdpcalc, {
+            data: unit.gdpTwoApproaches,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'indicators':
+      if (!unit.economicIndicatorsDashboard) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.indicators, {
+            data: unit.economicIndicatorsDashboard,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'businesscycle':
+      if (!unit.businessCycle) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.businesscycle, {
+            data: unit.businessCycle,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'balancesheet': {
+      // Prefer the new drag-and-drop data shape (`balanceSheet`), fall back
+      // to the legacy editable-inputs shape (`balanceSheetBuilder`) for any
+      // unit data file that hasn't been migrated yet.
+      const bsData = unit.balanceSheet || unit.balanceSheetBuilder;
+      if (!bsData) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.balancesheet, {
+            data: bsData,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+    }
+
+    case 'annualreport':
+      if (!unit.annualReportReader) return null;
+      return (
+        <>
+          {Banner}
+          {React.createElement(SECTION_COMPONENTS.annualreport, {
+            data: unit.annualReportReader,
+            unitId: unit.id,
+            isTeacherMode,
+          })}
+        </>
+      );
+
+    case 'dictionary':
+      return (
+        <>
+          {Banner}
+          <Dictionary vocabulary={unit.vocabulary} />
+          {unit.radarAfterDictionary && (
+            <VocabularyRadar
+              words={unit.vocabulary.slice(0, 8)}
+              contextLabel={`After Dictionary — Unit ${unit.id}`}
+              unitId={unit.id}
+            />
+          )}
+        </>
+      );
+
+    case 'comics':
+      if (!unit.comics || unit.comics.length === 0) return null;
+      return (
+        <>
+          {Banner}
+          <ComicsBlock comics={unit.comics} unitId={unit.id} />
+          <VocabularyRadar
+            words={unit.vocabulary.filter(v => unit.comics.flatMap(c => c.vocabTags || []).includes(v.term)).slice(0, 8)}
+            contextLabel="After Comics"
+            unitId={unit.id}
+          />
+        </>
+      );
+
+    case 'impactmap':
+    case 'timeline':
+      if (!unit.timeline) return null;
+      return <>{Banner}<GrowthTimeline /></>;
+
+    case 'exercises':
+      return (
+        <>
+          {Banner}
+          <p className="text-sm mb-5" style={{ color: 'var(--col-secondary)' }}>
+            Complete all exercises. After each one, review your score and check the correct answers.
+            Mistakes are automatically added to your Weak Words list.
+          </p>
+          <p className="text-xs mb-6 italic" style={{ color: 'var(--col-muted)' }}>
+            Выполните все задания. Ошибки добавляются в список слабых слов.
+          </p>
+          {unit.exercises.map(ex => (
+            <ExerciseEngine key={ex.id} exercise={ex} unitId={unit.id} />
+          ))}
+        </>
+      );
+
+    case 'reading':
+      return <>{Banner}<ReadingSection reading={unit.reading} unitId={unit.id} /></>;
+
+    case 'comprehension':
+      return <>{Banner}<ComprehensionQuestions questions={unit.comprehension} unitId={unit.id} /></>;
+
+    case 'media':
+      return (
+        <>
+          {Banner}
+          <MediaLab media={unit.media} unitId={unit.id} />
+          {unit.media && unit.media.length > 0 && (
+            <VocabularyRadar words={radarWordsMedia} contextLabel="After Media Lab" unitId={unit.id} />
+          )}
+        </>
+      );
+
+    case 'mediaquest':
+      if (!unit.mediaQuest || !unit.media || unit.media.length === 0) return null;
+      return <>{Banner}<MediaQuest media={unit.media} unitId={unit.id} /></>;
+
+    case 'crossword':
+      return <>{Banner}<CrosswordChallenge unit={unit} unitId={unit.id} isTeacherMode={isTeacherMode} /></>;
+
+    case 'casestudy':
+      if (!unit.caseStudy) return null;
+      return <>{Banner}<CaseStudySection data={unit.caseStudy} unitId={unit.id} /></>;
+
+    case 'roleperspectives':
+      if (!unit.rolePerspectives) return null;
+      return <>{Banner}<PeopleProgressCards /><RolePerspectives data={unit.rolePerspectives} /></>;
+
+    case 'labourmarket':
+      if (!unit.labourMarketSection) return null;
+      return <>{Banner}<EmploymentSnapshot /><LabourMarketSection data={unit.labourMarketSection} unitId={unit.id} /></>;
+
+    case 'dialogue':
+      return <>{Banner}<DialogueBlock dialogue={unit.dialogue} /></>;
+
+    case 'memo':
+      if (!unit.memoSection) return null;
+      return <>{Banner}<MemoSection data={unit.memoSection} unitId={unit.id} /></>;
+
+    case 'grammar':
+      if (!unit.grammarSection) return null;
+      return <>{Banner}<GrammarSection data={unit.grammarSection} unitId={unit.id} /></>;
+
+    case 'writing':
+      return <>{Banner}<WritingBlock writing={unit.writing} /></>;
+
+    case 'scenario':
+      return (
+        <>
+          {Banner}
+          {unit.scenario ? (
+            <ScenarioLoop scenario={unit.scenario} unitId={unit.id} />
+          ) : (
+            <div
+              className="mb-8 p-4 rounded-lg text-center text-sm"
+              style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)', color: 'var(--col-muted)' }}
+            >
+              Scenario Loop coming soon for this unit.
+            </div>
+          )}
+        </>
+      );
+
+    case 'totaltest':
+      return (
+        <>
+          {Banner}
+          <TotalTest totalTest={unit.totalTest} unitId={unit.id} />
+          <VocabularyRadar words={radarWords} contextLabel="After Total Test — Self Assessment" unitId={unit.id} />
+        </>
+      );
+
+    default:
+      console.warn(`[UnitPage] No render handler for section "${id}"`);
+      return null;
+  }
+}
 
 function SectionDivider({ id, isDone }) {
   return (
@@ -110,14 +571,19 @@ export default function UnitPage() {
   const nextUnit = units.find(u => u.id === unit.id + 1);
   const prevUnit = units.find(u => u.id === unit.id - 1);
   const radarWords = unit.vocabulary.slice(0, 8);
-  const radarWordsMedia = unit.media?.flatMap(m => m.vocabToListen || [])
+  // Dedupe terms before lookup — a single vocab word can appear in
+  // vocabToListen across multiple media items, which used to produce the
+  // same vocabulary object twice and trigger a React duplicate-key warning
+  // inside VocabularyRadar.
+  const radarWordsMedia = [...new Set(unit.media?.flatMap(m => m.vocabToListen || []) || [])]
     .map(term => unit.vocabulary.find(v => v.term === term))
-    .filter(Boolean).slice(0, 8) || radarWords.slice(0, 6);
+    .filter(Boolean).slice(0, 8);
+  const radarWordsMediaFinal = radarWordsMedia.length > 0 ? radarWordsMedia : radarWords.slice(0, 6);
 
   const sectionDone = (secId) => !!progress.completedSections[unit.id]?.[secId];
   const unitProg = computeUnitProgress(progress, unit.id, unit);
 
-  const SECTIONS = unit.id === 2 ? SECTIONS_UNIT2 : SECTIONS_UNIT1;
+  const SECTIONS = buildSections(unit);
 
   return (
     <div
@@ -168,7 +634,7 @@ export default function UnitPage() {
         style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}
       >
         <div className="flex gap-0 min-w-max px-2 py-2">
-          {SECTIONS.map((sec) => {
+          {SECTIONS.filter(sec => !sec.id.startsWith('labbanner:')).map((sec) => {
             const SKIP_STATUS = new Set(['header', 'answerkey', 'summary']);
             const status = SKIP_STATUS.has(sec.id)
               ? null
@@ -241,8 +707,11 @@ export default function UnitPage() {
 
       {/* ── Next recommended + section summary ── */}
       {(() => {
-        const summary = getSectionSummary(SECTIONS, unit.id, progress, unit);
-        const next = getNextRecommendedSection(SECTIONS, unit.id, progress, unit);
+        // Banners are decorative pointers, not tracked sections — exclude
+        // them from the progress summary and "next recommended" pick.
+        const trackedSections = SECTIONS.filter(s => !s.id.startsWith('labbanner:'));
+        const summary = getSectionSummary(trackedSections, unit.id, progress, unit);
+        const next = getNextRecommendedSection(trackedSections, unit.id, progress, unit);
         const allDone = summary.not_started === 0 && summary.in_progress === 0 && summary.review_needed === 0;
         const hasStarted = summary.completed > 0 || summary.in_progress > 0;
         if (!hasStarted && !next) return null;
@@ -269,139 +738,26 @@ export default function UnitPage() {
         );
       })()}
 
-      {/* ══ SECTION 1: Header ══ */}
-      <div id="section-header">
-        <UnitHeader unit={unit} />
-      </div>
-
-      {/* ══ SECTION 2: Key Ideas ══ */}
-      <SectionDivider id="keyideas" isDone={sectionDone('keyideas')} />
-      <KeyIdeas unit={unit} />
-
-      {/* ══ SECTION 3: Dictionary ══ */}
-      <SectionDivider id="dictionary" isDone={sectionDone('dictionary')} />
-      <Dictionary vocabulary={unit.vocabulary} />
-
-      {/* VocabularyRadar after Dictionary — Unit 2 only (доработки п.1) */}
-      {unit.id === 2 && (
-        <VocabularyRadar
-          words={unit.vocabulary.slice(0, 8)}
-          contextLabel="After Dictionary — Unit 2"
-        />
-      )}
-
-      {/* ══ SECTION 4: Comics (Unit 1) / Growth Impact Map (Unit 2) ══ */}
-      {unit.id === 1 ? (
-        <>
-          <SectionDivider id="comics" isDone={sectionDone('comics')} />
-          <ComicsBlock comics={unit.comics} />
-          <VocabularyRadar
-            words={unit.vocabulary.filter(v => unit.comics.flatMap(c => c.vocabTags || []).includes(v.term)).slice(0, 8)}
-            contextLabel="After Comics"
-          />
-        </>
-      ) : (
-        <>
-          <SectionDivider id="impactmap" isDone={sectionDone('impactmap')} />
-          <GrowthTimeline />
-        </>
-      )}
-
-      {/* ══ SECTION 5: Exercises ══ */}
-      <SectionDivider id="exercises" isDone={sectionDone('exercises')} />
-      <p className="text-sm mb-5" style={{ color: 'var(--col-secondary)' }}>
-        Complete all exercises. After each one, review your score and check the correct answers.
-        Mistakes are automatically added to your Weak Words list.
-      </p>
-      <p className="text-xs mb-6 italic" style={{ color: 'var(--col-muted)' }}>
-        Выполните все задания. Ошибки добавляются в список слабых слов.
-      </p>
-      {unit.exercises.map(ex => (
-        <ExerciseEngine key={ex.id} exercise={ex} unitId={unit.id} />
-      ))}
-
-      {/* ══ SECTION 6: Reading ══ */}
-      <SectionDivider id="reading" isDone={sectionDone('reading')} />
-      <ReadingSection reading={unit.reading} />
-
-      {/* ══ SECTION 7: Comprehension ══ */}
-      <SectionDivider id="comprehension" isDone={sectionDone('comprehension')} />
-      <ComprehensionQuestions questions={unit.comprehension} />
-
-      {/* ══ SECTION 8: Media Lab ══ */}
-      <SectionDivider id="media" isDone={sectionDone('media')} />
-      <MediaLab media={unit.media} unitId={unit.id} />
-      {unit.media && unit.media.length > 0 && (
-        <VocabularyRadar words={radarWordsMedia} contextLabel="After Media Lab" />
-      )}
-
-      {/* ══ SECTION 9: Media Quest (Unit 1 only) ══ */}
-      {unit.id === 1 && unit.media && unit.media.length > 0 && (
-        <>
-          <SectionDivider id="mediaquest" isDone={sectionDone('mediaquest')} />
-          <MediaQuest media={unit.media} unitId={unit.id} />
-        </>
-      )}
-
-      {/* ══ SECTION 10: Crossword ══ */}
-      <SectionDivider id="crossword" isDone={sectionDone('crossword')} />
-      {unit.id === 2
-        ? <Unit2Crossword isTeacherMode={isTeacherMode} />
-        : <CrosswordChallenge unitId={unit.id} isTeacherMode={isTeacherMode} />
-      }
-
-      {/* ══ Unit 2 extra sections: Case Study, Role Perspectives, Labour Market ══ */}
-      {unit.id === 2 && (
-        <>
-          <SectionDivider id="casestudy" isDone={sectionDone('casestudy')} />
-          <CaseStudySection data={unit.caseStudy} unitId={unit.id} />
-
-          <SectionDivider id="roleperspectives" isDone={sectionDone('roleperspectives')} />
-          <PeopleProgressCards />
-          <RolePerspectives data={unit.rolePerspectives} />
-
-          <SectionDivider id="labourmarket" isDone={sectionDone('labourmarket')} />
-          <EmploymentSnapshot />
-          <LabourMarketSection data={unit.labourMarketSection} unitId={unit.id} />
-        </>
-      )}
-
-      {/* ══ SECTION 11: Dialogue ══ */}
-      <SectionDivider id="dialogue" isDone={sectionDone('dialogue')} />
-      <DialogueBlock dialogue={unit.dialogue} />
-
-      {/* ══ Unit 2 Memo & Grammar sections ══ */}
-      {unit.id === 2 && (
-        <>
-          <SectionDivider id="memo" isDone={sectionDone('memo')} />
-          <MemoSection data={unit.memoSection} unitId={unit.id} />
-
-          <SectionDivider id="grammar" isDone={sectionDone('grammar')} />
-          <GrammarSection data={unit.grammarSection} unitId={unit.id} />
-        </>
-      )}
-
-      {/* ══ SECTION 12: Writing ══ */}
-      <SectionDivider id="writing" isDone={sectionDone('writing')} />
-      <WritingBlock writing={unit.writing} />
-
-      {/* ══ SECTION 13: Scenario ══ */}
-      <SectionDivider id="scenario" isDone={sectionDone('scenario')} />
-      {unit.scenario ? (
-        <ScenarioLoop scenario={unit.scenario} unitId={unit.id} />
-      ) : (
-        <div
-          className="mb-8 p-4 rounded-lg text-center text-sm"
-          style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)', color: 'var(--col-muted)' }}
-        >
-          Scenario Loop coming soon for this unit.
-        </div>
-      )}
-
-      {/* ══ SECTION 14: Total Test ══ */}
-      <SectionDivider id="totaltest" isDone={sectionDone('totaltest')} />
-      <TotalTest totalTest={unit.totalTest} unitId={unit.id} />
-      <VocabularyRadar words={radarWords} contextLabel="After Total Test — Self Assessment" />
+      {/* R4: declarative render loop — one entry per section.
+          AnswerKey and Summary are still rendered inline below because
+          they are not standalone components. */}
+      {SECTIONS
+        .filter(({ id }) => id !== 'answerkey' && id !== 'summary')
+        .map(({ id }) => (
+          // Key MUST combine unit.id with section id. Without the unit
+          // prefix React reconciles the Fragment from the previous unit
+          // with the same section id (e.g. 'media' in both Unit 1 and
+          // Unit 2) and reuses the inner component instance — that's
+          // how local state like MediaLab's `stages` carried "done"
+          // pills across units, making unrelated items look completed.
+          // Per-unit keys force a full remount on unit navigation.
+          <React.Fragment key={`u${unit.id}-${id}`}>
+            {renderSection(id, unit, { isTeacherMode, sectionDone, radarWords, radarWordsMedia: radarWordsMediaFinal })}
+            {AUTO_MARK_SECTIONS.has(id) && VISIT_TRACKED_SECTIONS.has(id) && (
+              <AutoSectionMarker unitId={unit.id} sectionId={id} />
+            )}
+          </React.Fragment>
+        ))}
 
       {/* ══ SECTION 15: Answer Key (Teacher Only) ══ */}
       <div id="section-answerkey">

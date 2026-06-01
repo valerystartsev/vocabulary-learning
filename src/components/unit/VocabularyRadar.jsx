@@ -13,13 +13,23 @@ const STATUS_OPTIONS = [
   { key: 'difficult', label: 'Still difficult', labelRu: 'Ещё сложно', color: 'bg-red-100 border-red-300 text-red-700' },
 ];
 
-export default function VocabularyRadar({ words, contextLabel }) {
+export default function VocabularyRadar({ words, contextLabel, unitId }) {
   const { progress, updateVocabRadar, markWordWeak, markWordLearned } = useProgress();
   const [expanded, setExpanded] = useState(true);
   const [saved, setSaved] = useState(false);
 
+  // Scope radar state by both wordId and unitId. Previously the state
+  // was keyed only by word.id, so marking a word in Unit 1 lit up the
+  // same word in Unit 3's radar — which made the section look
+  // pre-completed even though the student never touched it there.
+  // The fallback (no unitId) keeps backward compatibility with any
+  // legacy data that was stored under the raw word.id key.
+  const radarKey = (wordId) => unitId ? `u${unitId}_${wordId}` : wordId;
+
   const handleStatus = (wordId, key) => {
-    updateVocabRadar(wordId, key, true);
+    updateVocabRadar(radarKey(wordId), key, true);
+    // weak/learned remain global because they describe knowledge of
+    // the word itself, not per-unit visibility
     if (key === 'difficult') {
       markWordWeak(wordId);
     }
@@ -32,7 +42,7 @@ export default function VocabularyRadar({ words, contextLabel }) {
     setSaved(true);
     // mark difficult ones as weak
     words.forEach(w => {
-      const radar = progress.vocabRadar[w.id] || {};
+      const radar = progress.vocabRadar[radarKey(w.id)] || {};
       if (radar.difficult) markWordWeak(w.id);
       if (radar.canUse) markWordLearned(w.id);
     });
@@ -61,7 +71,7 @@ export default function VocabularyRadar({ words, contextLabel }) {
         <CardContent>
           <div className="space-y-3">
             {words.map(word => {
-              const radar = progress.vocabRadar[word.id] || {};
+              const radar = progress.vocabRadar[radarKey(word.id)] || {};
               const isWeak = progress.weakWords.includes(word.id);
               const isLearned = progress.learnedWords.includes(word.id);
               return (

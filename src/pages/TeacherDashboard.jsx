@@ -8,9 +8,72 @@ import {
   GraduationCap, Users, Search, ChevronRight, ArrowLeft,
   BarChart3, BookOpen, Brain, AlertTriangle, LogOut, CheckCircle,
 } from 'lucide-react';
+import { units } from '../data/courseData';
+import { computeUnitProgress, VISIT_TRACKED_SECTIONS } from '../context/ProgressContext';
+import { SECTION_LABELS } from '../components/unit/sectionRegistry';
 
 const TEACHER_EMAIL = 'emzakhtser@mail.ru';
 const isTeacherUser = user => user?.email?.toLowerCase().trim() === TEACHER_EMAIL;
+
+// Palette for per-unit progress bars in the teacher dashboard. Cycles
+// through these colours so each unit's bar is visually distinct.
+const UNIT_COLORS = ['var(--col-accent)', '#3B6EA5', '#C9955A', '#8C5BA3', '#D08A3C'];
+
+// Derive everything the teacher view needs from saved_progress — the
+// same JSONB column ProgressContext writes for the student. No
+// dependency on the legacy profiles.progress aggregate or any DB
+// trigger; what the student sees is what the teacher sees.
+function deriveProgress(savedProgress, courseUnits) {
+  const sp = savedProgress || {};
+  const unitProgs = courseUnits.map(u => ({
+    id: u.id,
+    title: u.title,
+    pct: computeUnitProgress(sp, u.id, u),
+  }));
+  const overall = courseUnits.length
+    ? Math.round(unitProgs.reduce((acc, u) => acc + u.pct, 0) / courseUnits.length)
+    : 0;
+  return {
+    unitProgs,
+    overall,
+    testsDoneCount: Object.keys(sp.totalTestScores || {}).length,
+    wordsLearnedCount: (sp.learnedWords || []).length,
+    weakWordsCount: (sp.weakWords || []).length,
+    mediaCompleted: (sp.completedMedia || []).length,
+    completedExercisesCount: (sp.completedExercises || []).length,
+    exerciseScores: sp.exerciseScores || {},
+    exerciseBestScores: sp.exerciseBestScores || {},
+    exerciseAttempts: sp.exerciseAttempts || {},
+    scenarioScores: sp.scenarioScores || {},
+    crosswordScores: sp.crosswordScores || {},
+    completedSections: sp.completedSections || {},
+    sectionScores: sp.sectionScores || {},
+    totalTestScores: sp.totalTestScores || {},
+    mediaTaskScores: sp.mediaTaskScores || {},
+    completedMedia: sp.completedMedia || [],
+    learnedWords: sp.learnedWords || [],
+    weakWords: sp.weakWords || [],
+  };
+}
+
+// Build a per-unit section activity report: for every section the unit
+// lists, mark whether it's done and surface the score if one exists.
+// Restricted to visit-tracked sections (interactive widgets, comics,
+// reading etc.) — the exercise/test/scenario/crossword/media activities
+// are already reported in their own blocks.
+function buildSectionActivity(unit, completedSections, sectionScores) {
+  const done = completedSections?.[unit.id] || {};
+  const scores = sectionScores?.[unit.id] || {};
+  return (unit.sections || [])
+    .filter(sId => VISIT_TRACKED_SECTIONS.has(sId))
+    .map(sId => ({
+      id: sId,
+      label: SECTION_LABELS[sId]?.label || sId,
+      labelRu: SECTION_LABELS[sId]?.labelRu || '',
+      done: !!done[sId],
+      score: typeof scores[sId] === 'number' ? scores[sId] : null,
+    }));
+}
 
 function ProgressBar({ value, color = 'var(--col-accent)' }) {
   return (
@@ -26,12 +89,11 @@ function getStudentName(student) {
 }
 
 function StudentCard({ student, onClick }) {
-  const prog = student.progress || {};
-  const overall = prog.overallPercent || 0;
-  const unit1 = prog.unit1Percent || 0;
-  const unit2 = prog.unit2Percent || 0;
-  const tests = prog.testsDoneCount || 0;
-  const lastActive = prog.lastActiveAt;
+  const derived = deriveProgress(student.savedProgress, units);
+  const overall = derived.overall;
+  const tests = derived.testsDoneCount;
+  const lastActive = student.lastActiveAt;
+  const unitProgs = derived.unitProgs;
   return (
     <button onClick={onClick} className="w-full text-left rounded-2xl p-5 transition-all"
       style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}
@@ -60,10 +122,13 @@ function StudentCard({ student, onClick }) {
         </div>
       </div>
       <ProgressBar value={overall} color={overall >= 70 ? 'var(--col-correct)' : 'var(--col-accent)'} />
-      <div className="flex gap-4 mt-2.5 text-xs" style={{ color: 'var(--col-muted)' }}>
-        <span>Unit 1: <strong style={{ color: 'var(--col-heading)' }}>{unit1}%</strong></span>
-        <span>Unit 2: <strong style={{ color: 'var(--col-heading)' }}>{unit2}%</strong></span>
-        <span>Tests: <strong style={{ color: 'var(--col-heading)' }}>{tests}/2</strong></span>
+      <div className="flex gap-3 mt-2.5 text-xs flex-wrap" style={{ color: 'var(--col-muted)' }}>
+        {unitProgs.map(u => (
+          <span key={u.id}>
+            Unit {u.id}: <strong style={{ color: 'var(--col-heading)' }}>{u.pct}%</strong>
+          </span>
+        ))}
+        <span>Tests: <strong style={{ color: 'var(--col-heading)' }}>{tests}/{units.length}</strong></span>
       </div>
     </button>
   );
@@ -82,7 +147,7 @@ function StudentDetail({ student, onBack }) {
       try {
         const { data: profile } = await supabase
           .from('profiles')
-          .select('id, display_name, full_name, email, university_tracking, progress')
+          .select('id, display_name, full_name, email, university_tracking, saved_progress, updated_at')
           .eq('id', student.id)
           .single();
         if (profile && !cancelled) {
@@ -91,7 +156,8 @@ function StudentDetail({ student, onBack }) {
             email: profile.email || '—',
             displayName: profile.display_name || profile.full_name || profile.email || '—',
             isFinancialUniversity: profile.university_tracking,
-            progress: profile.progress || {},
+            savedProgress: profile.saved_progress || {},
+            lastActiveAt: profile.updated_at,
           });
         }
       } catch {}
@@ -102,22 +168,24 @@ function StudentDetail({ student, onBack }) {
   }, [student.id]);
 
   const s = localStudent;
-  const prog = s.progress || {};
-  const overall = prog.overallPercent || 0;
-  const unit1 = prog.unit1Percent || 0;
-  const unit2 = prog.unit2Percent || 0;
-  const learned = prog.wordsLearnedCount || 0;
-  const weak = prog.weakWordsCount || 0;
-  const tests = prog.testsDoneCount || 0;
-  const mediaCompleted = prog.mediaCompleted || 0;
-  const exerciseScores = prog.exerciseScores || {};
-  const exerciseBestScores = prog.exerciseBestScores || {};
-  const exerciseAttempts = prog.exerciseAttempts || {};
+  const derived = deriveProgress(s.savedProgress, units);
+  const overall = derived.overall;
+  const unitProgs = derived.unitProgs.map((u, i) => ({
+    ...u,
+    color: UNIT_COLORS[i % UNIT_COLORS.length],
+  }));
+  const learned = derived.wordsLearnedCount;
+  const weak = derived.weakWordsCount;
+  const tests = derived.testsDoneCount;
+  const mediaCompleted = derived.mediaCompleted;
+  const exerciseScores = derived.exerciseScores;
+  const exerciseBestScores = derived.exerciseBestScores;
+  const exerciseAttempts = derived.exerciseAttempts;
   const allExIds = [...new Set([...Object.keys(exerciseScores), ...Object.keys(exerciseBestScores)])];
-  const scenarioScores = prog.scenarioScores || {};
-  const crosswordScores = prog.crosswordScores || {};
-  const learnedWords = Array.isArray(prog.learnedWords) ? prog.learnedWords : [];
-  const weakWords = Array.isArray(prog.weakWords) ? prog.weakWords : [];
+  const scenarioScores = derived.scenarioScores;
+  const crosswordScores = derived.crosswordScores;
+  const learnedWords = derived.learnedWords;
+  const weakWords = derived.weakWords;
 
   return (
     <div>
@@ -143,9 +211,9 @@ function StudentDetail({ student, onBack }) {
               {getStudentName(s)}
             </h2>
             <p className="text-sm" style={{ color: 'var(--col-muted)' }}>{s.email}</p>
-            {prog.lastActiveAt && (
+            {s.lastActiveAt && (
               <p className="text-xs mt-1" style={{ color: 'var(--col-tertiary)' }}>
-                Last active: {new Date(prog.lastActiveAt).toLocaleString('ru-RU')}
+                Last active: {new Date(s.lastActiveAt).toLocaleString('ru-RU')}
               </p>
             )}
           </div>
@@ -160,13 +228,17 @@ function StudentDetail({ student, onBack }) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
             { label: 'Overall', value: `${overall}%`, icon: BarChart3, color: overall >= 70 ? 'var(--col-correct)' : 'var(--col-accent)' },
-            { label: 'Unit 1', value: `${unit1}%`, icon: BookOpen, color: 'var(--col-accent)' },
-            { label: 'Unit 2', value: `${unit2}%`, icon: BookOpen, color: '#3B6EA5' },
-            { label: 'Tests Done', value: `${tests}/2`, icon: CheckCircle, color: tests === 2 ? 'var(--col-correct)' : 'var(--col-muted)' },
+            ...unitProgs.map(u => ({
+              label: `Unit ${u.id}`,
+              value: `${u.pct}%`,
+              icon: BookOpen,
+              color: u.color,
+            })),
+            { label: 'Tests Done', value: `${tests}/${units.length}`, icon: CheckCircle, color: tests === units.length ? 'var(--col-correct)' : 'var(--col-muted)' },
             { label: 'Words Learned', value: learned, icon: Brain, color: 'var(--col-correct)' },
             { label: 'Weak Words', value: weak, icon: AlertTriangle, color: 'var(--col-warning)' },
             { label: 'Media Done', value: mediaCompleted, icon: CheckCircle, color: mediaCompleted > 0 ? 'var(--col-correct)' : 'var(--col-muted)' },
-            { label: 'Exercises Done', value: prog.completedExercisesCount || allExIds.length, icon: CheckCircle, color: 'var(--col-accent)' },
+            { label: 'Exercises Done', value: derived.completedExercisesCount || allExIds.length, icon: CheckCircle, color: 'var(--col-accent)' },
           ].map((m, i) => (
             <div key={i} className="p-3 rounded-xl"
               style={{ backgroundColor: 'var(--col-surface-secondary)', border: '1px solid var(--col-border)' }}>
@@ -180,10 +252,17 @@ function StudentDetail({ student, onBack }) {
         </div>
 
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--col-muted)' }}>Unit 1</p>
-          <ProgressBar value={unit1} />
-          <p className="text-xs font-semibold uppercase tracking-wider mb-1 mt-3" style={{ color: 'var(--col-muted)' }}>Unit 2</p>
-          <ProgressBar value={unit2} color="#3B6EA5" />
+          {unitProgs.map((u, i) => (
+            <React.Fragment key={u.id}>
+              <p
+                className="text-xs font-semibold uppercase tracking-wider mb-1"
+                style={{ color: 'var(--col-muted)', marginTop: i === 0 ? 0 : 12 }}
+              >
+                Unit {u.id}
+              </p>
+              <ProgressBar value={u.pct} color={u.color} />
+            </React.Fragment>
+          ))}
           <p className="text-xs font-semibold uppercase tracking-wider mb-1 mt-3" style={{ color: 'var(--col-muted)' }}>Overall</p>
           <ProgressBar value={overall} color={overall >= 70 ? 'var(--col-correct)' : 'var(--col-accent)'} />
         </div>
@@ -239,6 +318,176 @@ function StudentDetail({ student, onBack }) {
           </div>
         </div>
       )}
+
+      {/* Total Test scores — one row per unit with the actual %.
+          Previously the dashboard only showed a "1/4" counter, which
+          told the teacher nothing about how well the student did. */}
+      <div className="rounded-2xl overflow-hidden mb-4"
+        style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>
+        <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--col-border)' }}>
+          <h3 className="font-semibold text-sm" style={{ color: 'var(--col-heading)' }}>
+            Total Test Scores
+          </h3>
+          <p className="text-xs mt-0.5" style={{ color: 'var(--col-muted)' }}>
+            Итоговый тест по каждому юниту — реальный балл
+          </p>
+        </div>
+        <div className="divide-y" style={{ borderColor: 'var(--col-border)' }}>
+          {units.map(unit => {
+            const score = derived.totalTestScores?.[unit.id];
+            const taken = typeof score === 'number';
+            const badgeBg = !taken ? 'var(--col-surface-secondary)'
+              : score >= 80 ? '#D0EDD8'
+              : score >= 60 ? '#FEF3C7'
+              : '#FEE2E2';
+            const badgeFg = !taken ? 'var(--col-muted)'
+              : score >= 80 ? '#27500A'
+              : score >= 60 ? '#854F0B'
+              : '#7F1D1D';
+            return (
+              <div key={unit.id} className="flex items-center justify-between px-5 py-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium" style={{ color: 'var(--col-heading)' }}>
+                    Unit {unit.id}
+                  </p>
+                  <p className="text-xs truncate" style={{ color: 'var(--col-muted)' }}>
+                    {unit.title}
+                  </p>
+                </div>
+                <span className="text-xs font-bold px-2.5 py-1 rounded shrink-0"
+                  style={{ backgroundColor: badgeBg, color: badgeFg }}>
+                  {taken ? `${score}%` : 'Not taken'}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Media Performance — per-video post-quiz scores. Mirrors the
+          Exercise Performance table so the teacher can spot which
+          videos a student actually watched and how well they did. */}
+      {(() => {
+        const rows = [];
+        units.forEach(unit => {
+          (unit.media || []).forEach((m, idx) => {
+            const mediaId = m.mediaId || `${unit.id}_media_${m.title?.toLowerCase?.().replace(/[^a-z0-9]+/g, '_').slice(0, 40)}`;
+            const done = derived.completedMedia.includes(mediaId);
+            const score = derived.mediaTaskScores?.[mediaId];
+            if (done || typeof score === 'number') {
+              rows.push({ unitId: unit.id, title: m.title || `Item ${idx + 1}`, score, done });
+            }
+          });
+        });
+        if (rows.length === 0) return null;
+        return (
+          <div className="rounded-2xl overflow-hidden mb-4"
+            style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>
+            <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--col-border)' }}>
+              <h3 className="font-semibold text-sm" style={{ color: 'var(--col-heading)' }}>
+                Media Performance
+              </h3>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--col-muted)' }}>
+                Видео в Media Lab + post-quiz balls
+              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr style={{ backgroundColor: 'var(--col-surface-secondary)', borderBottom: '1px solid var(--col-border)' }}>
+                    <th className="text-left px-5 py-2.5 font-semibold" style={{ color: 'var(--col-muted)' }}>Video</th>
+                    <th className="text-center px-3 py-2.5 font-semibold" style={{ color: 'var(--col-muted)' }}>Unit</th>
+                    <th className="text-center px-3 py-2.5 font-semibold" style={{ color: 'var(--col-muted)' }}>Done</th>
+                    <th className="text-center px-3 py-2.5 font-semibold" style={{ color: 'var(--col-muted)' }}>Quiz Score</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y" style={{ borderColor: 'var(--col-border)' }}>
+                  {rows.map((r, i) => (
+                    <tr key={i}>
+                      <td className="px-5 py-3" style={{ color: 'var(--col-body)' }}>{r.title}</td>
+                      <td className="px-3 py-3 text-center font-semibold" style={{ color: 'var(--col-secondary)' }}>
+                        U{r.unitId}
+                      </td>
+                      <td className="px-3 py-3 text-center">
+                        {r.done ? (
+                          <span className="px-2 py-0.5 rounded font-bold"
+                            style={{ backgroundColor: '#D0EDD8', color: '#27500A' }}>✓</span>
+                        ) : (
+                          <span style={{ color: 'var(--col-muted)' }}>—</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-3 text-center">
+                        {typeof r.score === 'number' ? (
+                          <span className="font-bold px-2 py-0.5 rounded"
+                            style={{ backgroundColor: r.score >= 70 ? 'var(--col-accent-light)' : 'rgba(199,154,74,0.1)',
+                                     color: r.score >= 70 ? 'var(--col-accent-text)' : 'var(--col-warning)' }}>
+                            {r.score}%
+                          </span>
+                        ) : (
+                          <span style={{ color: 'var(--col-muted)' }}>—</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Per-unit section activity — visit-tracked sections (comics,
+          dictionary, all interactive widgets). Shows what the student
+          actually engaged with beyond exercises/tests. */}
+      <div className="rounded-2xl overflow-hidden mb-4"
+        style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>
+        <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--col-border)' }}>
+          <h3 className="font-semibold text-sm" style={{ color: 'var(--col-heading)' }}>
+            Section Activity
+          </h3>
+          <p className="text-xs mt-0.5" style={{ color: 'var(--col-muted)' }}>
+            Comics, interactive widgets, reading — что студент открывал и проходил
+          </p>
+        </div>
+        <div className="divide-y" style={{ borderColor: 'var(--col-border)' }}>
+          {units.map(unit => {
+            const items = buildSectionActivity(unit, derived.completedSections, derived.sectionScores);
+            if (items.length === 0) return null;
+            const doneCount = items.filter(i => i.done).length;
+            return (
+              <div key={unit.id} className="px-5 py-3">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--col-muted)' }}>
+                    Unit {unit.id}
+                  </p>
+                  <span className="text-xs font-bold" style={{ color: doneCount === items.length ? 'var(--col-correct)' : 'var(--col-secondary)' }}>
+                    {doneCount}/{items.length}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                  {items.map(it => (
+                    <div key={it.id}
+                      className="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs"
+                      style={{
+                        backgroundColor: it.done ? 'var(--col-accent-light)' : 'var(--col-surface-secondary)',
+                        border: `1px solid ${it.done ? 'var(--col-divider)' : 'var(--col-border)'}`,
+                      }}>
+                      <span style={{ color: it.done ? 'var(--col-accent-text)' : 'var(--col-muted)' }}>
+                        {it.done ? '✓ ' : ''}{it.label}
+                      </span>
+                      {it.score !== null && (
+                        <span className="font-bold" style={{ color: 'var(--col-accent-text)' }}>
+                          {it.score}%
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       {(Object.keys(scenarioScores).length > 0 || Object.keys(crosswordScores).length > 0) && (
         <div className="rounded-2xl overflow-hidden mb-4"
@@ -331,7 +580,7 @@ export default function TeacherDashboard() {
       setLoading(true);
       const { data: profiles, error } = await supabase
         .from('profiles')
-        .select('id, display_name, full_name, email, university_tracking, progress')
+        .select('id, display_name, full_name, email, university_tracking, saved_progress, updated_at')
         .eq('university_tracking', true);
       if (error) throw error;
       const tracked = (profiles || [])
@@ -341,11 +590,12 @@ export default function TeacherDashboard() {
           email: p.email || '—',
           displayName: p.display_name || p.full_name || p.email || '—',
           isFinancialUniversity: p.university_tracking,
-          progress: p.progress || {},
+          savedProgress: p.saved_progress || {},
+          lastActiveAt: p.updated_at,
         }))
         .sort((a, b) => {
-          const at = a.progress?.lastActiveAt ? new Date(a.progress.lastActiveAt).getTime() : 0;
-          const bt = b.progress?.lastActiveAt ? new Date(b.progress.lastActiveAt).getTime() : 0;
+          const at = a.lastActiveAt ? new Date(a.lastActiveAt).getTime() : 0;
+          const bt = b.lastActiveAt ? new Date(b.lastActiveAt).getTime() : 0;
           return bt - at;
         });
       setStudents(tracked);
@@ -396,7 +646,7 @@ export default function TeacherDashboard() {
   });
 
   const avgProgress = students.length > 0
-    ? Math.round(students.reduce((acc, st) => acc + (st.progress?.overallPercent || 0), 0) / students.length)
+    ? Math.round(students.reduce((acc, st) => acc + deriveProgress(st.savedProgress, units).overall, 0) / students.length)
     : 0;
 
   return (
@@ -456,7 +706,7 @@ export default function TeacherDashboard() {
               {[
                 { label: 'Tracked Students', labelRu: 'Студентов', value: students.length, icon: Users },
                 { label: 'Avg. Progress', labelRu: 'Средний прогресс', value: `${avgProgress}%`, icon: BarChart3 },
-                { label: 'With Test Scores', labelRu: 'Тесты пройдены', value: students.filter(st => (st.progress?.testsDoneCount || 0) > 0).length, icon: CheckCircle },
+                { label: 'With Test Scores', labelRu: 'Тесты пройдены', value: students.filter(st => Object.keys(st.savedProgress?.totalTestScores || {}).length > 0).length, icon: CheckCircle },
               ].map((card, i) => (
                 <div key={i} className="p-5 rounded-2xl"
                   style={{ backgroundColor: 'var(--col-surface)', border: '1px solid var(--col-border)' }}>

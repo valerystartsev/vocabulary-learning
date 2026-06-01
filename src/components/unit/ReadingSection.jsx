@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { BookOpen, Info, CheckCircle, XCircle, Eye, EyeOff, Settings } from 'lucide-react';
+import { useProgress } from '../../context/ProgressContext';
 
 function RenderParagraph({ text, glossary, supportMode }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -38,7 +39,8 @@ function RenderParagraph({ text, glossary, supportMode }) {
   );
 }
 
-function PostReadingTasks({ tasks }) {
+function PostReadingTasks({ tasks, unitId }) {
+  const { saveSectionScore, markSectionComplete } = useProgress();
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [showModel, setShowModel] = useState({});
@@ -54,6 +56,14 @@ function PostReadingTasks({ tasks }) {
     });
     setResults({ correct, total });
     setSubmitted(true);
+    // Persist the result: 'reading' section is now scored, the score
+    // feeds into Teacher Dashboard's Section Activity grid (with the
+    // % shown next to the chip) and into the unit progress %.
+    if (typeof unitId === 'number') {
+      const score = total > 0 ? Math.round((correct / total) * 100) : 100;
+      saveSectionScore?.(unitId, 'reading', score);
+      markSectionComplete?.(unitId, 'reading');
+    }
   };
 
   return (
@@ -161,7 +171,7 @@ function PostReadingTasks({ tasks }) {
   );
 }
 
-export default function ReadingSection({ reading }) {
+export default function ReadingSection({ reading, unitId }) {
   const [supportMode, setSupportMode] = useState(false);
   const [showGuidance, setShowGuidance] = useState(true);
 
@@ -260,7 +270,7 @@ export default function ReadingSection({ reading }) {
         </CardContent>
       </Card>
 
-      <PostReadingTasks tasks={defaultTasks} />
+      <PostReadingTasks tasks={defaultTasks} unitId={unitId} />
     </div>
   );
 }

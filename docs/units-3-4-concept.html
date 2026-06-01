@@ -1,0 +1,2932 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adaptation · Units 3–4 Concept Document</title>
+<style>
+:root {
+  --sidebar: #2C3B3C;
+  --accent: #5E9E89;
+  --accent-hover: #548E7B;
+  --accent-light: #E5F0EC;
+  --page-bg: #F4F5F3;
+  --surface: #FCFCFA;
+  --border: #E2E8E6;
+  --heading: #1A2828;
+  --body: #3A4A48;
+  --muted: #79A08C;
+  --amber-1: #C9955A;
+  --amber-2: #E0B07A;
+  --amber-light: #FAEEDA;
+  --amber-text: #633806;
+  --shadow-sm: 0 1px 3px rgba(26, 40, 40, 0.04);
+  --shadow-md: 0 4px 12px rgba(26, 40, 40, 0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, sans-serif;
+  background: var(--page-bg);
+  color: var(--body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  width: 260px;
+  background: var(--sidebar);
+  color: #C8D4D2;
+  padding: 24px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.sidebar-brand {
+  padding: 0 24px 20px;
+  border-bottom: 1px solid #3A4A48;
+  margin-bottom: 16px;
+}
+.sidebar-brand h1 {
+  font-size: 18px;
+  color: #FFF;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+.sidebar-brand p {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.sidebar-section {
+  padding: 12px 24px 6px;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+.sidebar-link {
+  display: block;
+  padding: 8px 24px;
+  font-size: 13px;
+  color: #C8D4D2;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.15s ease;
+  line-height: 1.4;
+}
+.sidebar-link:hover {
+  background: rgba(94, 158, 137, 0.1);
+  color: #FFF;
+}
+.sidebar-link.active {
+  border-left-color: var(--accent);
+  background: rgba(94, 158, 137, 0.12);
+  color: #FFF;
+}
+.sidebar-link .num {
+  display: inline-block;
+  width: 22px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* === MAIN === */
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 32px 48px 80px;
+}
+
+/* === HERO === */
+.hero {
+  background: linear-gradient(135deg, var(--amber-1) 0%, var(--amber-2) 100%);
+  border-radius: 16px;
+  padding: 36px 40px;
+  color: #FFF;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  right: 80px;
+  width: 140px;
+  height: 140px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+.hero-label {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+.hero h1 {
+  font-size: 30px;
+  color: #FFF;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.hero p {
+  font-size: 15px;
+  opacity: 0.95;
+  max-width: 680px;
+  line-height: 1.55;
+}
+.hero-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  position: relative;
+  z-index: 1;
+}
+.hero-pill {
+  background: rgba(255,255,255,0.18);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  backdrop-filter: blur(8px);
+}
+
+/* === SECTION HEADERS === */
+.section-divider {
+  margin: 48px 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.section-divider h2 {
+  font-size: 24px;
+  color: var(--heading);
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+.section-divider .badge {
+  background: var(--accent-light);
+  color: var(--heading);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+/* === FEATURE CARD === */
+.feature {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  scroll-margin-top: 24px;
+}
+.feature-head {
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--accent-light);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.feature-icon svg { width: 22px; height: 22px; }
+.feature-head-text { flex: 1; min-width: 0; }
+.feature-head-text .feature-num {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.feature-head-text h3 {
+  font-size: 19px;
+  color: var(--heading);
+  font-weight: 600;
+  margin: 2px 0 4px;
+  letter-spacing: -0.2px;
+}
+.feature-head-text .subtitle {
+  font-size: 13px;
+  color: var(--muted);
+}
+.feature-tag {
+  background: var(--amber-light);
+  color: var(--amber-text);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.feature-body { padding: 24px 28px; }
+
+.intro-text {
+  font-size: 14px;
+  color: var(--body);
+  margin-bottom: 20px;
+  line-height: 1.65;
+}
+
+.why-better {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--heading);
+  line-height: 1.55;
+}
+.why-better strong { color: var(--accent-hover); }
+
+/* === MOCKUP CONTAINER === */
+.mockup {
+  background: var(--page-bg);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 8px;
+}
+.mockup-label {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* === FEATURE 1: MONEY COMPASS === */
+.compass {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--accent);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--accent);
+}
+.compass-cell {
+  background: #FFF;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 130px;
+}
+.compass-cell:hover {
+  background: var(--accent-light);
+  transform: scale(1.01);
+}
+.compass-cell-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.compass-cell-head svg { width: 18px; height: 18px; color: var(--accent); }
+.compass-cell h4 {
+  font-size: 14px;
+  color: var(--heading);
+  font-weight: 600;
+}
+.compass-cell .ru {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-style: italic;
+}
+.compass-cell .desc {
+  font-size: 12px;
+  color: var(--body);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+.compass-cell .example {
+  font-size: 11px;
+  color: var(--accent-hover);
+  font-style: italic;
+}
+
+/* === FEATURE 2: FORMS OF MONEY SPECTRUM === */
+.spectrum {
+  display: flex;
+  gap: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #FFF;
+  border: 1px solid var(--border);
+}
+.spectrum-item {
+  flex: 1;
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.spectrum-item:last-child { border-right: none; }
+.spectrum-item:hover { background: var(--accent-light); }
+.spectrum-item.active {
+  background: var(--accent);
+  color: #FFF;
+}
+.spectrum-item .icon-wrap {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 6px;
+  background: var(--accent-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+.spectrum-item.active .icon-wrap {
+  background: rgba(255,255,255,0.2);
+  color: #FFF;
+}
+.spectrum-item .icon-wrap svg { width: 18px; height: 18px; }
+.spectrum-item .label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--heading);
+  line-height: 1.2;
+}
+.spectrum-item.active .label { color: #FFF; }
+.spectrum-item .era {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.spectrum-item.active .era { color: rgba(255,255,255,0.85); }
+
+.spectrum-detail {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 12px;
+}
+.spectrum-detail h5 {
+  font-size: 14px;
+  color: var(--heading);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.spectrum-detail p {
+  font-size: 13px;
+  color: var(--body);
+  line-height: 1.55;
+}
+.spectrum-detail .vocab-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.vocab-pill {
+  background: var(--accent-light);
+  color: var(--heading);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* === FEATURE 3: COIN COMPARATOR === */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.compare-col {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.compare-col.uk { border-top: 3px solid #C8102E; }
+.compare-col.us { border-top: 3px solid #0A3161; }
+.compare-col h4 {
+  font-size: 14px;
+  color: var(--heading);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.flag {
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.flag.uk { background: linear-gradient(45deg, #00247D 25%, #FFF 25% 35%, #CF142B 35% 65%, #FFF 65% 75%, #00247D 75%); }
+.flag.us { background: linear-gradient(to bottom, #B22234 0 20%, #FFF 20% 40%, #B22234 40% 60%, #FFF 60% 80%, #B22234 80%); }
+.compare-col .currency-name {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.coin-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.coin-row:last-child { border-bottom: none; }
+.coin {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 10px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.coin.copper { background: linear-gradient(135deg, #C7894F, #8C5B2E); color: #FFF; }
+.coin.silver { background: linear-gradient(135deg, #DCDCDC, #A8A8A8); color: #1A2828; }
+.coin.gold { background: linear-gradient(135deg, #E5C158, #B8941F); color: #FFF; }
+.coin-info { flex: 1; }
+.coin-info .val { font-weight: 600; color: var(--heading); }
+.coin-info .nick {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+}
+.notes-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.note {
+  padding: 4px 8px;
+  background: var(--accent-light);
+  color: var(--heading);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.compare-fact {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--page-bg);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--body);
+  border-left: 2px solid var(--accent);
+}
+.compare-fact strong { color: var(--heading); }
+
+/* === FEATURE 4: CENTRAL BANK WHEEL === */
+.cb-wheel {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.cb-func {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cb-func:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.cb-func-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--accent-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.cb-func-icon svg { width: 18px; height: 18px; }
+.cb-func h5 {
+  font-size: 13px;
+  color: var(--heading);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.cb-func .ru {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-style: italic;
+}
+.cb-func .desc {
+  font-size: 11px;
+  color: var(--body);
+  line-height: 1.4;
+}
+
+.banks-row {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: var(--page-bg);
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 12px;
+}
+.banks-row .label {
+  color: var(--muted);
+  font-size: 11px;
+}
+.bank-pill {
+  background: #FFF;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: var(--heading);
+  font-weight: 500;
+  font-size: 11px;
+}
+
+/* === FEATURE 5: BANK ACCOUNT PICKER === */
+.acc-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.filter-pill {
+  padding: 6px 12px;
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--body);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.filter-pill:hover { border-color: var(--accent); color: var(--accent); }
+.filter-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #FFF;
+}
+.acc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.acc-card {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.acc-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.acc-card h5 {
+  font-size: 13px;
+  color: var(--heading);
+  font-weight: 600;
+}
+.acc-card .acc-region {
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--page-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.acc-card .acc-desc {
+  font-size: 11px;
+  color: var(--body);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.acc-card .acc-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.acc-stat {
+  font-size: 10px;
+  color: var(--muted);
+}
+.acc-stat strong {
+  color: var(--heading);
+  font-weight: 600;
+}
+
+/* === FEATURE 6: WORLD MAP === */
+.world-map {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.world-map svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.country-dot {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.country-dot:hover { filter: brightness(1.1); }
+
+.country-detail {
+  margin-top: 12px;
+  background: var(--accent-light);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: none;
+}
+.country-detail.show { display: block; }
+.country-detail h5 {
+  font-size: 15px;
+  color: var(--heading);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.country-detail .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+.stat-block {
+  background: #FFF;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+.stat-block .k {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.stat-block .v {
+  font-size: 13px;
+  color: var(--heading);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.country-detail .narrative {
+  font-size: 12px;
+  color: var(--body);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+/* === FEATURE 7: LOAN SIMULATOR === */
+.loan-sim {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.loan-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.loan-control label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.loan-control input[type=range] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.loan-control .val {
+  font-size: 17px;
+  color: var(--heading);
+  font-weight: 600;
+}
+.loan-out {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 14px;
+  background: var(--accent-light);
+  border-radius: 10px;
+}
+.loan-out-cell {
+  text-align: center;
+}
+.loan-out-cell .k {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.loan-out-cell .v {
+  font-size: 18px;
+  color: var(--accent-hover);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.loan-narrative {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--page-bg);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--body);
+  line-height: 1.55;
+  border-left: 2px solid var(--amber-1);
+}
+.loan-narrative strong { color: var(--heading); }
+
+/* === FEATURE 8: GDP CALCULATOR === */
+.gdp-calc {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.gdp-col {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.gdp-col.earnings { border-top: 3px solid var(--accent); }
+.gdp-col.product { border-top: 3px solid var(--amber-1); }
+.gdp-col h5 {
+  font-size: 13px;
+  color: var(--heading);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.gdp-col .method-ru {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.gdp-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--page-bg);
+  font-size: 13px;
+}
+.gdp-line input {
+  width: 70px;
+  text-align: right;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 12px;
+  color: var(--heading);
+  font-variant-numeric: tabular-nums;
+  font-family: inherit;
+}
+.gdp-line input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 0;
+  border-color: var(--accent);
+}
+.gdp-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 2px solid;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--heading);
+}
+.gdp-col.earnings .gdp-total { border-color: var(--accent); }
+.gdp-col.product .gdp-total { border-color: var(--amber-1); }
+.gdp-total .num { font-variant-numeric: tabular-nums; }
+
+.gdp-verdict {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.gdp-verdict.match {
+  background: var(--accent-light);
+  color: var(--heading);
+}
+.gdp-verdict.mismatch {
+  background: #FCEBEB;
+  color: #A32D2D;
+}
+.gdp-verdict svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* === FEATURE 9: INDICATORS DASHBOARD === */
+.indic-pool {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.indic-pool-title {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.indic-list {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.indic-chip {
+  padding: 6px 12px;
+  background: var(--page-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--heading);
+  cursor: grab;
+  transition: all 0.15s ease;
+}
+.indic-chip:hover { border-color: var(--accent); }
+.indic-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.indic-col {
+  background: #FFF;
+  border: 1px dashed;
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 180px;
+}
+.indic-col.leading { border-color: var(--accent); }
+.indic-col.coincident { border-color: var(--amber-1); }
+.indic-col.lagging { border-color: var(--muted); }
+.indic-col-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.indic-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.indic-col.leading .indic-dot { background: var(--accent); }
+.indic-col.coincident .indic-dot { background: var(--amber-1); }
+.indic-col.lagging .indic-dot { background: var(--muted); }
+.indic-col h5 {
+  font-size: 13px;
+  color: var(--heading);
+  font-weight: 600;
+}
+.indic-col .col-desc {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.indic-placed {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.indic-placed-chip {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.indic-col.leading .indic-placed-chip { background: var(--accent-light); color: var(--heading); }
+.indic-col.coincident .indic-placed-chip { background: var(--amber-light); color: var(--amber-text); }
+.indic-col.lagging .indic-placed-chip { background: var(--page-bg); color: var(--heading); }
+
+/* === FEATURE 10: BUSINESS CYCLE === */
+.cycle-vis {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.cycle-stage-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.cycle-tab {
+  padding: 8px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+  font-family: inherit;
+}
+.cycle-tab.active {
+  color: var(--accent-hover);
+  border-bottom-color: var(--accent);
+}
+.cycle-svg {
+  width: 100%;
+  height: 140px;
+  margin-bottom: 12px;
+}
+.cycle-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.cycle-metric {
+  background: var(--page-bg);
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+.cycle-metric .k {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.cycle-metric .arrow {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 2px 0;
+}
+.cycle-metric .arrow.up { color: var(--accent); }
+.cycle-metric .arrow.down { color: #A32D2D; }
+.cycle-metric .arrow.flat { color: var(--muted); }
+.cycle-metric .v {
+  font-size: 11px;
+  color: var(--body);
+}
+
+/* === FEATURE 11: BALANCE SHEET === */
+.bs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.bs-col {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.bs-col.assets { border-left: 3px solid var(--accent); }
+.bs-col.liabs { border-left: 3px solid var(--amber-1); }
+.bs-col h5 {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.bs-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--page-bg);
+  font-size: 13px;
+  color: var(--body);
+}
+.bs-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 2px solid var(--border);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--heading);
+}
+.bs-status {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 500;
+}
+.bs-status.balanced { background: var(--accent-light); color: var(--accent-hover); }
+.bs-status.unbalanced { background: #FCEBEB; color: #A32D2D; }
+.equation {
+  font-family: "SFMono-Regular", Menlo, monospace;
+  background: var(--page-bg);
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--heading);
+}
+
+/* === FEATURE 12: ANNUAL REPORT READER === */
+.ar-reader {
+  background: #FFF;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.ar-tabs {
+  display: flex;
+  background: var(--page-bg);
+  border-bottom: 1px solid var(--border);
+}
+.ar-tab {
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-weight: 500;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.ar-tab.active { background: #FFF; color: var(--heading); }
+.ar-content { padding: 18px 22px; }
+.ar-highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.ar-stat {
+  background: var(--page-bg);
+  padding: 12px;
+  border-radius: 8px;
+}
+.ar-stat .k {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.ar-stat .v {
+  font-size: 18px;
+  color: var(--heading);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.ar-stat .change {
+  font-size: 10px;
+  margin-top: 2px;
+}
+.ar-stat .change.up { color: var(--accent); }
+.ar-stat .change.down { color: #A32D2D; }
+.ar-passage {
+  font-size: 13px;
+  color: var(--body);
+  line-height: 1.7;
+}
+.ar-passage mark {
+  background: var(--amber-light);
+  color: var(--amber-text);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+.ar-vocab {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: var(--accent-light);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--heading);
+}
+
+/* === SENTENCE BUILDER PREVIEW === */
+.sb-preview {
+  background: var(--page-bg);
+  border-left: 3px solid var(--amber-1);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 14px;
+}
+.sb-preview-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.sb-tiles {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.sb-tile {
+  background: #FFF;
+  border: 1px solid var(--border);
+  padding: 4px 9px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: var(--heading);
+}
+.sb-tile.gap {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent-hover);
+  font-weight: 500;
+}
+
+/* === CAPSTONE === */
+.capstone {
+  background: linear-gradient(135deg, var(--sidebar) 0%, #1E2A2B 100%);
+  border-radius: 14px;
+  padding: 32px;
+  color: #FFF;
+  margin-bottom: 24px;
+}
+.capstone-label {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.capstone h3 {
+  font-size: 22px;
+  color: #FFF;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+.capstone p {
+  font-size: 14px;
+  color: #C8D4D2;
+  line-height: 1.6;
+  max-width: 720px;
+}
+.capstone-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 22px;
+}
+.cap-step {
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.cap-step .step-num {
+  width: 24px;
+  height: 24px;
+  background: var(--accent);
+  color: #FFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.cap-step h6 {
+  font-size: 12px;
+  color: #FFF;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.cap-step p {
+  font-size: 11px;
+  color: #A8B5B3;
+  line-height: 1.5;
+}
+
+/* === COMPARISON TABLE === */
+.compare-table {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.compare-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.compare-table th {
+  background: var(--page-bg);
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.compare-table td {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--body);
+  border-bottom: 1px solid var(--border);
+  line-height: 1.5;
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table .col-ours {
+  background: var(--accent-light);
+  color: var(--heading);
+  font-weight: 500;
+}
+
+/* === ROADMAP === */
+.roadmap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+.roadmap-item {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.roadmap-item:last-child { border-bottom: none; }
+.roadmap-priority {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #FFF;
+  flex-shrink: 0;
+}
+.priority-1 { background: var(--accent); }
+.priority-2 { background: var(--amber-1); }
+.priority-3 { background: var(--muted); }
+.roadmap-content { flex: 1; }
+.roadmap-content h5 {
+  font-size: 14px;
+  color: var(--heading);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.roadmap-content p {
+  font-size: 12px;
+  color: var(--body);
+  line-height: 1.5;
+}
+.roadmap-time {
+  font-size: 11px;
+  color: var(--muted);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: relative; }
+  .main { padding: 20px; }
+  .compass, .compare-grid, .gdp-calc, .bs-grid, .acc-grid { grid-template-columns: 1fr; }
+  .cb-wheel { grid-template-columns: 1fr 1fr; }
+  .indic-cols { grid-template-columns: 1fr; }
+  .capstone-steps { grid-template-columns: 1fr 1fr; }
+}
+
+.scroll-hint {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: italic;
+  margin-top: 6px;
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <h1>Adaptation</h1>
+    <p>Units 3–4 · Concept document</p>
+  </div>
+
+  <div class="sidebar-section">Overview</div>
+  <a class="sidebar-link" href="#hero"><span class="num">·</span>Hero</a>
+  <a class="sidebar-link" href="#progression"><span class="num">·</span>Course progression map</a>
+
+  <div class="sidebar-section">Unit 3 · Money &amp; Banking</div>
+  <a class="sidebar-link" href="#f1"><span class="num">3.1</span>Money Functions Compass</a>
+  <a class="sidebar-link" href="#f2"><span class="num">3.2</span>Forms of Money Spectrum</a>
+  <a class="sidebar-link" href="#f3"><span class="num">3.3</span>£ vs $ Comparator</a>
+  <a class="sidebar-link" href="#f4"><span class="num">3.4</span>Central Bank Functions</a>
+  <a class="sidebar-link" href="#f5"><span class="num">3.5</span>Bank Account Picker</a>
+  <a class="sidebar-link" href="#f6"><span class="num">3.6</span>World Banking Map</a>
+  <a class="sidebar-link" href="#f7"><span class="num">3.7</span>Loan Simulator</a>
+
+  <div class="sidebar-section">Unit 4 · Measuring the Economy</div>
+  <a class="sidebar-link" href="#f8"><span class="num">4.1</span>GDP Two Approaches</a>
+  <a class="sidebar-link" href="#f9"><span class="num">4.2</span>Indicators Dashboard</a>
+  <a class="sidebar-link" href="#f10"><span class="num">4.3</span>Business Cycle</a>
+  <a class="sidebar-link" href="#f11"><span class="num">4.4</span>Balance Sheet Builder</a>
+  <a class="sidebar-link" href="#f12"><span class="num">4.5</span>Annual Report Reader</a>
+
+  <div class="sidebar-section">Wrap-up</div>
+  <a class="sidebar-link" href="#capstone"><span class="num">·</span>Capstone project</a>
+  <a class="sidebar-link" href="#why"><span class="num">·</span>Why this beats the textbook</a>
+  <a class="sidebar-link" href="#roadmap"><span class="num">·</span>Implementation roadmap</a>
+  <a class="sidebar-link" href="#iterations"><span class="num">·</span>Concept iterations</a>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main class="main">
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <p class="hero-label">Concept document · Adaptation · v1.0</p>
+  <h1>Units 3 &amp; 4 — Money, Banking &amp; Measuring the Economy</h1>
+  <p>From cash and central banks to GDP and balance sheets. 12 interactive features built around the official exam vocabulary, designed to teach the same concepts faster than the printed textbook.</p>
+  <div class="hero-meta">
+    <span class="hero-pill">A1–A2 CEFR</span>
+    <span class="hero-pill">Russian-speaking economics students</span>
+    <span class="hero-pill">React 18 · Vite · Supabase</span>
+  </div>
+</section>
+
+<!-- ============ COURSE PROGRESSION MAP ============ -->
+<div class="section-divider" id="progression">
+  <h2>Course progression · 4 units</h2>
+  <span class="badge">From micro to macro</span>
+</div>
+
+<section class="feature" style="padding: 4px;">
+  <div class="feature-body" style="padding: 24px 28px;">
+    <p class="intro-text">Each unit builds on the previous. Unit 1 zooms in on a single market. Unit 2 zooms into the firm operating inside it. Unit 3 zooms out to the financial system that surrounds the firm. Unit 4 zooms out to the whole economy. The same scaffolding repeats in every unit so students always know where they are.</p>
+    <div class="mockup" style="padding: 24px 16px;">
+      <svg width="100%" viewBox="0 0 720 440" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+        <!-- axis label -->
+        <text x="40" y="28" fill="#79A08C" font-size="11" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="500" letter-spacing="1">MICRO LEVEL</text>
+        <text x="680" y="28" text-anchor="end" fill="#79A08C" font-size="11" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="500" letter-spacing="1">MACRO LEVEL</text>
+        <line x1="40" y1="40" x2="680" y2="40" stroke="#E2E8E6" stroke-width="0.5"/>
+
+        <!-- Unit 1: existing -->
+        <rect x="40" y="60" width="148" height="140" rx="12" fill="#E5F0EC" stroke="#5E9E89" stroke-width="0.5"/>
+        <text x="56" y="84" fill="#79A08C" font-size="10" font-family="sans-serif" font-weight="600" letter-spacing="1">DONE</text>
+        <text x="114" y="106" text-anchor="middle" fill="#1A2828" font-size="15" font-family="sans-serif" font-weight="600">Unit 1</text>
+        <text x="114" y="124" text-anchor="middle" fill="#3A4A48" font-size="11" font-family="sans-serif">Market &amp; competition</text>
+        <text x="114" y="150" text-anchor="middle" fill="#548E7B" font-size="11" font-family="sans-serif" font-weight="500">monopoly</text>
+        <text x="114" y="166" text-anchor="middle" fill="#548E7B" font-size="11" font-family="sans-serif" font-weight="500">merger · deal</text>
+        <text x="114" y="182" text-anchor="middle" fill="#548E7B" font-size="11" font-family="sans-serif" font-weight="500">compete</text>
+
+        <!-- Unit 2: existing -->
+        <rect x="208" y="60" width="148" height="140" rx="12" fill="#E5F0EC" stroke="#5E9E89" stroke-width="0.5"/>
+        <text x="224" y="84" fill="#79A08C" font-size="10" font-family="sans-serif" font-weight="600" letter-spacing="1">DONE</text>
+        <text x="282" y="106" text-anchor="middle" fill="#1A2828" font-size="15" font-family="sans-serif" font-weight="600">Unit 2</text>
+        <text x="282" y="124" text-anchor="middle" fill="#3A4A48" font-size="11" font-family="sans-serif">Economic growth</text>
+        <text x="282" y="150" text-anchor="middle" fill="#548E7B" font-size="11" font-family="sans-serif" font-weight="500">overheads · hire</text>
+        <text x="282" y="166" text-anchor="middle" fill="#548E7B" font-size="11" font-family="sans-serif" font-weight="500">insurance · rent</text>
+        <text x="282" y="182" text-anchor="middle" fill="#548E7B" font-size="11" font-family="sans-serif" font-weight="500">revenue · output</text>
+
+        <!-- Unit 3: new -->
+        <rect x="376" y="60" width="148" height="140" rx="12" fill="#FAEEDA" stroke="#C9955A" stroke-width="1"/>
+        <text x="392" y="84" fill="#C9955A" font-size="10" font-family="sans-serif" font-weight="600" letter-spacing="1">NOW</text>
+        <text x="450" y="106" text-anchor="middle" fill="#1A2828" font-size="15" font-family="sans-serif" font-weight="600">Unit 3</text>
+        <text x="450" y="124" text-anchor="middle" fill="#3A4A48" font-size="11" font-family="sans-serif">Money &amp; banking</text>
+        <text x="450" y="150" text-anchor="middle" fill="#854F0B" font-size="11" font-family="sans-serif" font-weight="500">deposit · loan</text>
+        <text x="450" y="166" text-anchor="middle" fill="#854F0B" font-size="11" font-family="sans-serif" font-weight="500">interest · bond</text>
+        <text x="450" y="182" text-anchor="middle" fill="#854F0B" font-size="11" font-family="sans-serif" font-weight="500">currency · stock</text>
+
+        <!-- Unit 4: new -->
+        <rect x="544" y="60" width="148" height="140" rx="12" fill="#FAEEDA" stroke="#C9955A" stroke-width="1"/>
+        <text x="560" y="84" fill="#C9955A" font-size="10" font-family="sans-serif" font-weight="600" letter-spacing="1">NEXT</text>
+        <text x="618" y="106" text-anchor="middle" fill="#1A2828" font-size="15" font-family="sans-serif" font-weight="600">Unit 4</text>
+        <text x="618" y="124" text-anchor="middle" fill="#3A4A48" font-size="11" font-family="sans-serif">Measuring economy</text>
+        <text x="618" y="150" text-anchor="middle" fill="#854F0B" font-size="11" font-family="sans-serif" font-weight="500">GDP · indicators</text>
+        <text x="618" y="166" text-anchor="middle" fill="#854F0B" font-size="11" font-family="sans-serif" font-weight="500">assets · equity</text>
+        <text x="618" y="182" text-anchor="middle" fill="#854F0B" font-size="11" font-family="sans-serif" font-weight="500">contraction</text>
+
+        <!-- arrows -->
+        <path d="M 188 130 L 204 130" stroke="#79A08C" stroke-width="1" fill="none" marker-end="url(#arr)"/>
+        <path d="M 356 130 L 372 130" stroke="#79A08C" stroke-width="1" fill="none" marker-end="url(#arr)"/>
+        <path d="M 524 130 L 540 130" stroke="#79A08C" stroke-width="1" fill="none" marker-end="url(#arr)"/>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="#79A08C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- carries-through divider -->
+        <line x1="40" y1="232" x2="680" y2="232" stroke="#E2E8E6" stroke-width="0.5"/>
+        <text x="360" y="258" text-anchor="middle" fill="#1A2828" font-size="13" font-family="sans-serif" font-weight="600">Same scaffolding in every unit</text>
+
+        <!-- carries-through cards (row 1) -->
+        <rect x="40" y="280" width="200" height="64" rx="10" fill="#FCFCFA" stroke="#E2E8E6" stroke-width="0.5"/>
+        <text x="140" y="306" text-anchor="middle" fill="#1A2828" font-size="13" font-family="sans-serif" font-weight="600">Sentence Builder</text>
+        <text x="140" y="326" text-anchor="middle" fill="#79A08C" font-size="11" font-family="sans-serif">Signature feature</text>
+
+        <rect x="260" y="280" width="200" height="64" rx="10" fill="#FCFCFA" stroke="#E2E8E6" stroke-width="0.5"/>
+        <text x="360" y="306" text-anchor="middle" fill="#1A2828" font-size="13" font-family="sans-serif" font-weight="600">Reading + comprehension</text>
+        <text x="360" y="326" text-anchor="middle" fill="#79A08C" font-size="11" font-family="sans-serif">700–900 words</text>
+
+        <rect x="480" y="280" width="200" height="64" rx="10" fill="#FCFCFA" stroke="#E2E8E6" stroke-width="0.5"/>
+        <text x="580" y="306" text-anchor="middle" fill="#1A2828" font-size="13" font-family="sans-serif" font-weight="600">Scenario Loop</text>
+        <text x="580" y="326" text-anchor="middle" fill="#79A08C" font-size="11" font-family="sans-serif">Branching decisions</text>
+
+        <!-- carries-through cards (row 2) -->
+        <rect x="40" y="358" width="200" height="64" rx="10" fill="#FCFCFA" stroke="#E2E8E6" stroke-width="0.5"/>
+        <text x="140" y="384" text-anchor="middle" fill="#1A2828" font-size="13" font-family="sans-serif" font-weight="600">Media + post-quiz</text>
+        <text x="140" y="404" text-anchor="middle" fill="#79A08C" font-size="11" font-family="sans-serif">2–3 videos per unit</text>
+
+        <rect x="260" y="358" width="200" height="64" rx="10" fill="#FCFCFA" stroke="#E2E8E6" stroke-width="0.5"/>
+        <text x="360" y="384" text-anchor="middle" fill="#1A2828" font-size="13" font-family="sans-serif" font-weight="600">Visual map</text>
+        <text x="360" y="404" text-anchor="middle" fill="#79A08C" font-size="11" font-family="sans-serif">Unique per unit</text>
+
+        <rect x="480" y="358" width="200" height="64" rx="10" fill="#FCFCFA" stroke="#E2E8E6" stroke-width="0.5"/>
+        <text x="580" y="384" text-anchor="middle" fill="#1A2828" font-size="13" font-family="sans-serif" font-weight="600">Vocabulary + tricks</text>
+        <text x="580" y="404" text-anchor="middle" fill="#79A08C" font-size="11" font-family="sans-serif">Mnemonics + collocations</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UNIT 3 ============ -->
+<div class="section-divider">
+  <h2>Unit 3 · Money, Banking &amp; Monetary Policy</h2>
+  <span class="badge">7 features · 28 terms</span>
+</div>
+
+<!-- ===== FEATURE 1: MONEY COMPASS ===== -->
+<section class="feature" id="f1">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 3.1</div>
+      <h3>Money Functions Compass</h3>
+      <p class="subtitle">Four equal functions, not a linear chain — exactly how the textbook frames them</p>
+    </div>
+    <span class="feature-tag">Required: Money — Role, Forms, Functions</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">In the textbook (3.4.3) students must identify which function of money applies to each life situation: Jane collecting her salary, Mr. Collins comparing prices, the supermarket accepting dollars. The compass turns the same exercise into a spatial map — students click any sector and immediately see definition + Russian translation + a real example. The 2×2 layout makes the four functions feel parallel, not sequential.</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Interactive · click any sector</div>
+      <div class="compass">
+        <div class="compass-cell">
+          <div class="compass-cell-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3 21 7 17 11"/><path d="M21 7H7"/><path d="M7 21 3 17 7 13"/><path d="M3 17h14"/></svg>
+            <h4>Means of exchange</h4>
+          </div>
+          <p class="ru">средство обмена</p>
+          <p class="desc">Money you use to trade for goods and services instead of barter.</p>
+          <p class="example">Jane pays $50 for groceries.</p>
+        </div>
+        <div class="compass-cell">
+          <div class="compass-cell-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <h4>Store of value</h4>
+          </div>
+          <p class="ru">средство сбережения</p>
+          <p class="desc">Money keeps its worth over time — you can save it for the future.</p>
+          <p class="example">Jane puts $15 into her savings account.</p>
+        </div>
+        <div class="compass-cell">
+          <div class="compass-cell-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 6h-7.46a2 2 0 0 0-1.94 1.5L9.5 15"/><path d="M17 22a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/><path d="M17 17v-3l-2 1"/><circle cx="6" cy="9" r="3"/></svg>
+            <h4>Standard of value</h4>
+          </div>
+          <p class="ru">мера стоимости</p>
+          <p class="desc">Money lets you compare prices of completely different things.</p>
+          <p class="example">A car costs 50× more than a phone.</p>
+        </div>
+        <div class="compass-cell">
+          <div class="compass-cell-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><line x1="3" y1="3" x2="6" y2="6"/><line x1="21" y1="3" x2="18" y2="6"/><line x1="3" y1="21" x2="6" y2="18"/><line x1="21" y1="21" x2="18" y2="18"/></svg>
+            <h4>Near money</h4>
+          </div>
+          <p class="ru">квазиденьги</p>
+          <p class="desc">Things that act like money but aren't cash — savings, bonds, credit cards.</p>
+          <p class="example">A demand deposit you can withdraw any day.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-preview">
+      <div class="sb-preview-label">Sentence Builder · preview</div>
+      <div class="sb-tiles">
+        <span class="sb-tile">Money</span>
+        <span class="sb-tile">serves</span>
+        <span class="sb-tile">as</span>
+        <span class="sb-tile">a</span>
+        <span class="sb-tile gap">store of value</span>
+        <span class="sb-tile">when</span>
+        <span class="sb-tile">you</span>
+        <span class="sb-tile">save</span>
+        <span class="sb-tile">it.</span>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>Why it beats 3.4.3 in the book:</strong> the textbook asks students to label each scenario from memory. The compass shows definitions next to each other — students <em>compare</em> the 4 functions instead of recalling them. A spatial 2×2 reads cleaner on mobile than a linear list and trains exam-grade discrimination between <code>store of value</code> vs <code>standard of value</code>.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 2: FORMS OF MONEY SPECTRUM ===== -->
+<section class="feature" id="f2">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17 12 22 22 17"/><path d="M2 12 12 17 22 12"/><polygon points="12 2 2 7 12 12 22 7 12 2"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 3.2</div>
+      <h3>Forms of Money Spectrum</h3>
+      <p class="subtitle">Beads → coins → fiat → digital — timeline of what money has been</p>
+    </div>
+    <span class="feature-tag">Required: Forms of money</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">The textbook (page 168) lists historical forms in dense prose: <em>"beads, shells, dog's teeth, cattle, stones, tobacco, fishhooks, slaves, gold, silver…"</em> — students gloss over it. The spectrum turns the same list into a clickable timeline. Students see what each era used + why it failed → why we ended up with <code>fiat money</code>. This sets up the key textbook distinction between <code>fiat money</code> (state-backed) and <code>near money</code> (substitutes).</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Interactive timeline · click any era</div>
+      <div class="spectrum">
+        <div class="spectrum-item">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l4 8-8 10L4 12Z"/></svg></div>
+          <div class="label">Barter</div>
+          <div class="era">pre-3000 BC</div>
+        </div>
+        <div class="spectrum-item">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div>
+          <div class="label">Commodity</div>
+          <div class="era">cattle, shells</div>
+        </div>
+        <div class="spectrum-item active">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9h6M9 15h6"/></svg></div>
+          <div class="label">Metal coins</div>
+          <div class="era">gold &amp; silver</div>
+        </div>
+        <div class="spectrum-item">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+          <div class="label">Paper notes</div>
+          <div class="era">17th c. →</div>
+        </div>
+        <div class="spectrum-item">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 2v20M8 8h8M8 16h8"/></svg></div>
+          <div class="label">Fiat money</div>
+          <div class="era">1971 →</div>
+        </div>
+        <div class="spectrum-item">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><circle cx="12" cy="16" r="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+          <div class="label">Digital</div>
+          <div class="era">cards, apps</div>
+        </div>
+        <div class="spectrum-item">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 19 7 19 17 12 22 5 17 5 7 12 2"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="7" x2="19" y2="17"/><line x1="19" y1="7" x2="5" y2="17"/></svg></div>
+          <div class="label">Crypto</div>
+          <div class="era">2009 →</div>
+        </div>
+      </div>
+
+      <div class="spectrum-detail">
+        <h5>Metal coins · gold &amp; silver</h5>
+        <p>The textbook calls these "a favorite form of money" because precious metals had value of their own. But they were heavy, hard to transport, and limited by mining. This is the bridge to <code>fiat money</code> — money whose value comes from government decree, not the material itself.</p>
+        <div class="vocab-row">
+          <span class="vocab-pill">currency</span>
+          <span class="vocab-pill">legal tender</span>
+          <span class="vocab-pill">monetary value</span>
+          <span class="vocab-pill">means of exchange</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>Why this is better than a paragraph:</strong> the textbook lists 8 historical forms in one sentence, then moves on. The spectrum dwells on each — students click, read, link to the relevant vocabulary. This addresses comprehension question 3.4.1 #7 (<em>"In what forms does money come?"</em>) without forcing students to re-read the dense paragraph.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 3: £ vs $ COMPARATOR ===== -->
+<section class="feature" id="f3">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><circle cx="15" cy="15" r="7"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 3.3</div>
+      <h3>British £ vs American $ Comparator</h3>
+      <p class="subtitle">Coin-by-coin, note-by-note — including slang (quid, tenner, nickel, dime)</p>
+    </div>
+    <span class="feature-tag">Required: British vs USA money</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">Sections 3.5.1 of the textbook spend 4 pages on this comparison. Students get exercises like "write down £4.75 in words" and "what is a quid?" but the layout is two long paragraphs. The comparator puts everything side-by-side: every coin, every note, every nickname, every denomination — so students see the systems differ in detail but share the same logic (decimal currency, similar denominations, special slang).</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Tap any coin or note</div>
+      <div class="compare-grid">
+        <div class="compare-col uk">
+          <h4><span class="flag uk"></span>British money</h4>
+          <div class="currency-name">Pound sterling · £ · 100 pence = £1</div>
+          <div class="coin-row">
+            <div class="coin copper">½p</div>
+            <div class="coin-info"><div class="val">halfpenny</div><div class="nick">withdrawn 1984</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin copper">1p</div>
+            <div class="coin-info"><div class="val">one penny</div><div class="nick">copper</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin copper">2p</div>
+            <div class="coin-info"><div class="val">twopence</div><div class="nick">copper</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin silver">5p</div>
+            <div class="coin-info"><div class="val">five pence</div><div class="nick">cupro-nickel</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin silver">10p</div>
+            <div class="coin-info"><div class="val">ten pence</div><div class="nick">"a tenner" = £10</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin silver">20p</div>
+            <div class="coin-info"><div class="val">twenty pence</div><div class="nick">silver</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin silver">50p</div>
+            <div class="coin-info"><div class="val">fifty pence</div><div class="nick">silver</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin gold">£1</div>
+            <div class="coin-info"><div class="val">one pound</div><div class="nick">"quid"</div></div>
+          </div>
+          <div class="notes-row">
+            <span class="note">£5</span>
+            <span class="note">£10</span>
+            <span class="note">£20</span>
+            <span class="note">£50</span>
+            <span class="note">£100</span>
+          </div>
+          <div class="compare-fact">
+            <strong>Slang to know:</strong> a quid = £1, a tenner = £10. "It cost me eight fifty" = £8.50.
+          </div>
+        </div>
+        <div class="compare-col us">
+          <h4><span class="flag us"></span>American money</h4>
+          <div class="currency-name">US dollar · $ · 100 cents = $1</div>
+          <div class="coin-row">
+            <div class="coin copper">1¢</div>
+            <div class="coin-info"><div class="val">one cent</div><div class="nick">"a penny"</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin silver">5¢</div>
+            <div class="coin-info"><div class="val">five cents</div><div class="nick">"a nickel"</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin silver">10¢</div>
+            <div class="coin-info"><div class="val">ten cents</div><div class="nick">"a dime"</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin silver">25¢</div>
+            <div class="coin-info"><div class="val">twenty-five cents</div><div class="nick">"a quarter"</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin silver">50¢</div>
+            <div class="coin-info"><div class="val">fifty cents</div><div class="nick">"half-dollar"</div></div>
+          </div>
+          <div class="coin-row">
+            <div class="coin gold">$1</div>
+            <div class="coin-info"><div class="val">one dollar</div><div class="nick">coin or note</div></div>
+          </div>
+          <div class="notes-row">
+            <span class="note">$1</span>
+            <span class="note">$2</span>
+            <span class="note">$5</span>
+            <span class="note">$10</span>
+            <span class="note">$20</span>
+            <span class="note">$50</span>
+            <span class="note">$100</span>
+          </div>
+          <div class="compare-fact">
+            <strong>Slang to know:</strong> penny = 1¢, nickel = 5¢, dime = 10¢, quarter = 25¢. "$1.85" = "a dollar eighty-five" or "one eighty-five".
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-preview">
+      <div class="sb-preview-label">Pronunciation drill · "Saying numbers: money"</div>
+      <div class="sb-tiles">
+        <span class="sb-tile">£4.75</span>
+        <span class="sb-tile">→</span>
+        <span class="sb-tile gap">four</span>
+        <span class="sb-tile gap">pounds</span>
+        <span class="sb-tile gap">seventy-five</span>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>What the book misses:</strong> the textbook teaches £/$ as two separate prose blocks. Students rarely cross-reference. The comparator forces visual parallelism — same row, same denomination = same logic, different name. Exam questions like <em>"what is the symbol of a pound vs a dollar"</em> become trivial.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 4: CENTRAL BANK WHEEL ===== -->
+<section class="feature" id="f4">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 3.4</div>
+      <h3>Central Bank Functions Wheel</h3>
+      <p class="subtitle">All six functions in one grid — covers exercise 3.5.3 completely</p>
+    </div>
+    <span class="feature-tag">Required: Central bank functions</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">Exercise 3.5.3 in the textbook is a gap-fill paragraph about central banks where students must drop in 12 words from a box. The result: students complete the gap but don't remember the six functions afterward. The wheel shows all six as parallel cards — students can study, compare, and reference them at any time. The bottom row reinforces the four banks the textbook names: Bank of England, Federal Reserve, Bundesbank, Bank of Russia.</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Six functions of a central bank</div>
+      <div class="cb-wheel">
+        <div class="cb-func">
+          <div class="cb-func-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+          <h5>Issue currency</h5>
+          <p class="ru">эмитировать деньги</p>
+          <p class="desc">Print banknotes and mint coins — the country's legal tender.</p>
+        </div>
+        <div class="cb-func">
+          <div class="cb-func-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <h5>Control money supply</h5>
+          <p class="ru">контролировать денежную массу</p>
+          <p class="desc">Increase or decrease the amount of money in circulation.</p>
+        </div>
+        <div class="cb-func">
+          <div class="cb-func-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <h5>Implement monetary policy</h5>
+          <p class="ru">проводить денежно-кредитную политику</p>
+          <p class="desc">Set interest rates to influence demand, output, and inflation.</p>
+        </div>
+        <div class="cb-func">
+          <div class="cb-func-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.91 8.84 8.56 21.16a4.5 4.5 0 0 1-6.36-6.36l12.32-12.35a3 3 0 0 1 4.24 4.24L6.41 18.85a1.5 1.5 0 0 1-2.12-2.12L16.5 4.5"/></svg></div>
+          <h5>Lender of last resort</h5>
+          <p class="ru">кредитор последней инстанции</p>
+          <p class="desc">Lend money to commercial banks in liquidity crises.</p>
+        </div>
+        <div class="cb-func">
+          <div class="cb-func-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <h5>Supervise banking system</h5>
+          <p class="ru">надзор за банками</p>
+          <p class="desc">Make sure commercial banks operate safely and legally.</p>
+        </div>
+        <div class="cb-func">
+          <div class="cb-func-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h5>Impose reserve requirements</h5>
+          <p class="ru">резервные требования</p>
+          <p class="desc">Force commercial banks to keep a % of deposits as reserves.</p>
+        </div>
+      </div>
+      <div class="banks-row">
+        <span class="label">The textbook names these central banks:</span>
+        <span class="bank-pill">🇬🇧 Bank of England</span>
+        <span class="bank-pill">🇺🇸 Federal Reserve (Fed)</span>
+        <span class="bank-pill">🇩🇪 Bundesbank</span>
+        <span class="bank-pill">🇷🇺 Bank of Russia</span>
+      </div>
+    </div>
+
+    <div class="sb-preview">
+      <div class="sb-preview-label">Sentence Builder · central bank</div>
+      <div class="sb-tiles">
+        <span class="sb-tile">By</span>
+        <span class="sb-tile">decreasing</span>
+        <span class="sb-tile gap">the money supply,</span>
+        <span class="sb-tile">the</span>
+        <span class="sb-tile">central bank</span>
+        <span class="sb-tile">makes</span>
+        <span class="sb-tile">money</span>
+        <span class="sb-tile gap">tight.</span>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>What this fixes:</strong> exercise 3.5.3 in the textbook is a 12-blank gap-fill where students search for the right word. The wheel inverts this — students see the answers first, structured. Gap-fill becomes review, not discovery. On the exam, the question "name 3 functions of a central bank" gets answered with confidence because students remember the <em>grid position</em>, not just the word.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 5: BANK ACCOUNT PICKER ===== -->
+<section class="feature" id="f5">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 3.5</div>
+      <h3>Bank Account Picker</h3>
+      <p class="subtitle">Filter by need → see which account fits — covers 3.6 dialogue completely</p>
+    </div>
+    <span class="feature-tag">Required: Types of bank accounts</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">In dialogue 3.6 the textbook lists 6 client situations (a teen inheriting $15k, an elderly couple with $400, a student getting a research grant…) and asks <em>"what kind of bank account would each open?"</em>. The picker turns this into a filter UI: students click a need (long-term saving / daily spending / first account / earning interest) and see which account types match — exactly the decision flow the textbook tests.</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Filter accounts by your need</div>
+      <div class="acc-filters">
+        <span class="filter-pill active">All accounts</span>
+        <span class="filter-pill">Daily spending</span>
+        <span class="filter-pill">Saving long-term</span>
+        <span class="filter-pill">Earning interest</span>
+        <span class="filter-pill">First account</span>
+      </div>
+
+      <div class="acc-grid">
+        <div class="acc-card">
+          <div class="acc-card-head">
+            <h5>Current account</h5>
+            <span class="acc-region">UK</span>
+          </div>
+          <p class="acc-desc">For day-to-day finances. You get a cheque book, can pay bills, withdraw money anytime, and even overdraw your account.</p>
+          <div class="acc-stats">
+            <span class="acc-stat"><strong>Interest:</strong> usually 0%</span>
+            <span class="acc-stat"><strong>Access:</strong> immediate</span>
+            <span class="acc-stat"><strong>Overdraft:</strong> yes</span>
+          </div>
+        </div>
+        <div class="acc-card">
+          <div class="acc-card-head">
+            <h5>Checking account</h5>
+            <span class="acc-region">USA</span>
+          </div>
+          <p class="acc-desc">USA equivalent of the UK current account. Used for everyday transactions, paying bills, drawing cheques. No interest.</p>
+          <div class="acc-stats">
+            <span class="acc-stat"><strong>Interest:</strong> 0%</span>
+            <span class="acc-stat"><strong>Access:</strong> immediate</span>
+            <span class="acc-stat"><strong>Overdraft:</strong> yes</span>
+          </div>
+        </div>
+        <div class="acc-card">
+          <div class="acc-card-head">
+            <h5>Deposit account</h5>
+            <span class="acc-region">UK</span>
+          </div>
+          <p class="acc-desc">Designed for short-term savings. Earns a small amount of interest. No cheque book. Need to give a week's notice to withdraw money.</p>
+          <div class="acc-stats">
+            <span class="acc-stat"><strong>Interest:</strong> small</span>
+            <span class="acc-stat"><strong>Access:</strong> 1 week notice</span>
+            <span class="acc-stat"><strong>Cheque book:</strong> no</span>
+          </div>
+        </div>
+        <div class="acc-card">
+          <div class="acc-card-head">
+            <h5>Savings account</h5>
+            <span class="acc-region">UK / US</span>
+          </div>
+          <p class="acc-desc">For larger, long-term savings. Pays higher interest than a deposit account. Money is paid in regularly.</p>
+          <div class="acc-stats">
+            <span class="acc-stat"><strong>Interest:</strong> higher</span>
+            <span class="acc-stat"><strong>Access:</strong> flexible</span>
+            <span class="acc-stat"><strong>Best for:</strong> long-term</span>
+          </div>
+        </div>
+        <div class="acc-card">
+          <div class="acc-card-head">
+            <h5>Time deposit</h5>
+            <span class="acc-region">USA</span>
+          </div>
+          <p class="acc-desc">Money locked in for a fixed term (e.g. 3–5 years). Cannot withdraw early without losing interest. Highest interest rate.</p>
+          <div class="acc-stats">
+            <span class="acc-stat"><strong>Interest:</strong> highest</span>
+            <span class="acc-stat"><strong>Access:</strong> fixed term</span>
+            <span class="acc-stat"><strong>Penalty:</strong> for early</span>
+          </div>
+        </div>
+        <div class="acc-card">
+          <div class="acc-card-head">
+            <h5>Demand deposit</h5>
+            <span class="acc-region">USA</span>
+          </div>
+          <p class="acc-desc">Can withdraw money "on demand" — any time, no notice required. Used to count as part of the money supply.</p>
+          <div class="acc-stats">
+            <span class="acc-stat"><strong>Interest:</strong> small / 0%</span>
+            <span class="acc-stat"><strong>Access:</strong> immediate</span>
+            <span class="acc-stat"><strong>Liquidity:</strong> high</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>Why this works for the dialogue task:</strong> when a student sees "the teen inherits $15k and can't touch it until 18" they should pick <code>time deposit</code> (locked term, highest interest). The picker makes this matching visible — students learn to read needs ↔ account features as a real decision, not a memorized pair. This is exactly the skill the textbook is trying to build through 3.6f.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 6: WORLD MAP ===== -->
+<section class="feature" id="f6">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 3.6</div>
+      <h3>World Banking Systems Map</h3>
+      <p class="subtitle">7 countries · click to compare banking culture and structure</p>
+    </div>
+    <span class="feature-tag">Required: USA, Russia, Canada, UK, France, Germany, Japan</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">Section 3.7 "Reading for Cross-cultural Associations" gives prose passages about British and Canadian banking. The map extends this to the 7 countries on your required list. Each country has the same data structure — central bank, currency, dominant account types, banking culture — so students can compare across cultures. This is the spiritual successor to the <code>EconomicWorld</code> page in Unit 2, but for Unit 3's banking domain.</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Click any country marker</div>
+      <div class="world-map">
+        <svg viewBox="0 0 800 360" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <!-- Simplified continents -->
+          <rect width="800" height="360" fill="#FCFCFA"/>
+          <!-- North America -->
+          <path d="M50,80 Q80,60 150,70 Q220,60 270,90 L290,130 L260,180 L200,210 L150,200 L100,170 L70,130 Z" fill="#E5F0EC" stroke="#79A08C" stroke-width="0.8"/>
+          <!-- South America -->
+          <path d="M210,220 L260,210 L270,250 L260,300 L230,330 L210,310 L195,260 Z" fill="#E5F0EC" stroke="#79A08C" stroke-width="0.8"/>
+          <!-- Europe -->
+          <path d="M370,80 L450,70 L470,90 L460,130 L420,150 L380,140 L360,110 Z" fill="#E5F0EC" stroke="#79A08C" stroke-width="0.8"/>
+          <!-- Africa -->
+          <path d="M390,150 L460,140 L480,200 L460,280 L420,310 L390,280 L380,210 Z" fill="#E5F0EC" stroke="#79A08C" stroke-width="0.8"/>
+          <!-- Asia -->
+          <path d="M460,70 L650,60 L720,90 L740,140 L680,180 L600,170 L520,150 L480,120 Z" fill="#E5F0EC" stroke="#79A08C" stroke-width="0.8"/>
+          <!-- Australia -->
+          <path d="M660,250 L740,240 L750,280 L710,300 L670,290 Z" fill="#E5F0EC" stroke="#79A08C" stroke-width="0.8"/>
+          <!-- Russia (big) -->
+          <path d="M470,70 L700,60 L720,100 L630,110 L520,105 L470,90 Z" fill="#5E9E89" opacity="0.2" stroke="#5E9E89" stroke-width="0.8"/>
+
+          <!-- Country markers -->
+          <g class="country-dot" data-country="us">
+            <circle cx="155" cy="140" r="9" fill="#5E9E89" stroke="#FFF" stroke-width="2"/>
+            <text x="155" y="145" text-anchor="middle" font-size="11" fill="#FFF" font-weight="600">US</text>
+          </g>
+          <g class="country-dot" data-country="ca">
+            <circle cx="155" cy="105" r="9" fill="#5E9E89" stroke="#FFF" stroke-width="2"/>
+            <text x="155" y="110" text-anchor="middle" font-size="10" fill="#FFF" font-weight="600">CA</text>
+          </g>
+          <g class="country-dot" data-country="uk">
+            <circle cx="392" cy="105" r="9" fill="#C9955A" stroke="#FFF" stroke-width="2"/>
+            <text x="392" y="110" text-anchor="middle" font-size="10" fill="#FFF" font-weight="600">UK</text>
+          </g>
+          <g class="country-dot" data-country="fr">
+            <circle cx="412" cy="125" r="9" fill="#5E9E89" stroke="#FFF" stroke-width="2"/>
+            <text x="412" y="130" text-anchor="middle" font-size="10" fill="#FFF" font-weight="600">FR</text>
+          </g>
+          <g class="country-dot" data-country="de">
+            <circle cx="432" cy="115" r="9" fill="#5E9E89" stroke="#FFF" stroke-width="2"/>
+            <text x="432" y="120" text-anchor="middle" font-size="10" fill="#FFF" font-weight="600">DE</text>
+          </g>
+          <g class="country-dot" data-country="ru">
+            <circle cx="580" cy="95" r="11" fill="#C9955A" stroke="#FFF" stroke-width="2"/>
+            <text x="580" y="100" text-anchor="middle" font-size="10" fill="#FFF" font-weight="600">RU</text>
+          </g>
+          <g class="country-dot" data-country="jp">
+            <circle cx="700" cy="135" r="9" fill="#5E9E89" stroke="#FFF" stroke-width="2"/>
+            <text x="700" y="140" text-anchor="middle" font-size="10" fill="#FFF" font-weight="600">JP</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="country-detail show" id="country-detail-default">
+        <h5>🇬🇧 United Kingdom — selected</h5>
+        <p style="font-size: 12px; color: var(--muted); margin: 0;">Click another marker to compare</p>
+        <div class="stats-grid">
+          <div class="stat-block">
+            <div class="k">Central bank</div>
+            <div class="v">Bank of England</div>
+          </div>
+          <div class="stat-block">
+            <div class="k">Currency</div>
+            <div class="v">Pound sterling (£)</div>
+          </div>
+          <div class="stat-block">
+            <div class="k">Main accounts</div>
+            <div class="v">Current, deposit, savings</div>
+          </div>
+        </div>
+        <p class="narrative">90% of British adults have a bank account. The British financial system is driven by ordinary citizens who save about 15% of their income. About 20% of the population own shares. The Post Office banking is widespread thanks to branches in nearly every town and village. The system is described as "stable, extensive and complex."</p>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>Cross-cultural reading without the friction:</strong> the textbook gives 2-page prose passages about each country. Students skim. The map forces structured comparison: same 3 stat blocks for every country = direct compare. This works on mobile (most of your students), it's bookmarkable, and it ports straight to the existing <code>EconomicWorld</code> component pattern you already built for Unit 2.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 7: LOAN SIMULATOR ===== -->
+<section class="feature" id="f7">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="18" x2="12" y2="6"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 3.7</div>
+      <h3>Loan Simulator — Arthur's Car</h3>
+      <p class="subtitle">The textbook's Case Study, but you can actually play with the numbers</p>
+    </div>
+    <span class="feature-tag">Required: Loans, borrowing money</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">Section 3.8 Case Study tells the story of Arthur, a student who wants to buy a car and visits a bank loan officer. The textbook explains two options — overdraft vs personal loan — in prose. The simulator lets students actually try Arthur's choices: change the loan amount, interest rate, repayment period — watch the monthly payment update live. Vocabulary lights up in context (principal, interest, instalment, overdraft).</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Adjust Arthur's loan parameters</div>
+      <div class="loan-sim">
+        <div class="loan-controls">
+          <div class="loan-control">
+            <label>Loan amount (the principal)</label>
+            <div class="val">$15,000</div>
+            <input type="range" min="5000" max="30000" value="15000" step="500" oninput="updateLoan(this, 'amount')">
+          </div>
+          <div class="loan-control">
+            <label>Interest rate · annual</label>
+            <div class="val">8.5%</div>
+            <input type="range" min="3" max="20" value="8.5" step="0.5" oninput="updateLoan(this, 'rate')">
+          </div>
+          <div class="loan-control">
+            <label>Repayment period · years</label>
+            <div class="val">5</div>
+            <input type="range" min="1" max="10" value="5" step="1" oninput="updateLoan(this, 'years')">
+          </div>
+        </div>
+        <div class="loan-out">
+          <div class="loan-out-cell">
+            <div class="k">Monthly instalment</div>
+            <div class="v" id="loan-monthly">$307</div>
+          </div>
+          <div class="loan-out-cell">
+            <div class="k">Total interest paid</div>
+            <div class="v" id="loan-interest">$3,452</div>
+          </div>
+          <div class="loan-out-cell">
+            <div class="k">Total to repay</div>
+            <div class="v" id="loan-total">$18,452</div>
+          </div>
+        </div>
+        <div class="loan-narrative">
+          <strong>The bank officer says:</strong> "You're applying for a <em>personal loan</em> of $15,000. The <em>principal</em> is the amount you borrow. The <em>interest rate</em> is fixed at 8.5% per year. You'll repay in 60 equal monthly <em>instalments</em> over 5 years. If you choose an <em>overdraft</em> instead, the rate is 10–12% over base rate — better for small short-term borrowing only."
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-preview">
+      <div class="sb-preview-label">Sentence Builder · loans</div>
+      <div class="sb-tiles">
+        <span class="sb-tile">Arthur</span>
+        <span class="sb-tile">would</span>
+        <span class="sb-tile gap">like to apply</span>
+        <span class="sb-tile">for</span>
+        <span class="sb-tile">a</span>
+        <span class="sb-tile gap">personal loan</span>
+        <span class="sb-tile">to</span>
+        <span class="sb-tile">finance</span>
+        <span class="sb-tile">a</span>
+        <span class="sb-tile">car.</span>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>What this fixes in the case study:</strong> Arthur's case ends with role-play and analysis questions, but students never <em>feel</em> what a 5-year loan at 8.5% means. The simulator turns abstract numbers into instinct — increase the rate → see total interest jump. This is the "ага"-моment that turns vocab (<code>principal</code>, <code>instalment</code>, <code>repay</code>) into knowledge.
+    </div>
+  </div>
+</section>
+
+<!-- ============ UNIT 4 ============ -->
+<div class="section-divider">
+  <h2>Unit 4 · Measuring the Economy &amp; Performance</h2>
+  <span class="badge">5 features · 26 terms</span>
+</div>
+
+<!-- ===== FEATURE 8: GDP CALCULATOR ===== -->
+<section class="feature" id="f8">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 4.1</div>
+      <h3>GDP Calculator · Two Approaches</h3>
+      <p class="subtitle">Earnings-and-cost vs flow-of-product — same number, two ways</p>
+    </div>
+    <span class="feature-tag">Required by textbook 4.5</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">The textbook explains both approaches in two prose paragraphs (page 270). Most students understand each separately but don't see <strong>why they give the same total</strong>. The calculator forces the realisation: every dollar of income (wages + rent + interest + profit) = every dollar of spending (households + investment + government + net exports). Change one column, the other updates. The verdict bar confirms when they match.</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Edit any input · totals update live</div>
+      <div class="gdp-calc">
+        <div class="gdp-col earnings">
+          <h5>Earnings-and-cost approach</h5>
+          <div class="method-ru">Метод суммирования доходов</div>
+          <div class="gdp-line"><span>Wages</span><input type="number" value="450" oninput="updateGDP()" id="g-wages"></div>
+          <div class="gdp-line"><span>Rent</span><input type="number" value="80" oninput="updateGDP()" id="g-rent"></div>
+          <div class="gdp-line"><span>Interest</span><input type="number" value="60" oninput="updateGDP()" id="g-interest"></div>
+          <div class="gdp-line"><span>Profit</span><input type="number" value="110" oninput="updateGDP()" id="g-profit"></div>
+          <div class="gdp-total"><span>Total GDP</span><span class="num" id="g-total-earnings">$700</span></div>
+        </div>
+        <div class="gdp-col product">
+          <h5>Flow-of-product approach</h5>
+          <div class="method-ru">Метод суммирования продукта</div>
+          <div class="gdp-line"><span>Household spending</span><input type="number" value="420" oninput="updateGDP()" id="g-house"></div>
+          <div class="gdp-line"><span>Investment</span><input type="number" value="140" oninput="updateGDP()" id="g-invest"></div>
+          <div class="gdp-line"><span>Government</span><input type="number" value="100" oninput="updateGDP()" id="g-gov"></div>
+          <div class="gdp-line"><span>Net exports</span><input type="number" value="40" oninput="updateGDP()" id="g-net"></div>
+          <div class="gdp-total"><span>Total GDP</span><span class="num" id="g-total-product">$700</span></div>
+        </div>
+      </div>
+      <div class="gdp-verdict match" id="gdp-verdict">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Both approaches match. Every dollar of income equals a dollar of spending — that's the circular flow of the economy.</span>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>What the textbook can't do:</strong> it states the equivalence as a fact. Students take it on faith. The calculator <em>proves</em> it by letting students try and fail — change one input, totals diverge, verdict bar turns red. This is the single highest-impact feature in Unit 4, because the "two approaches give one answer" idea is the most-tested and most-misunderstood concept on the exam.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 9: INDICATORS DASHBOARD ===== -->
+<section class="feature" id="f9">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 4.2</div>
+      <h3>Economic Indicators Dashboard</h3>
+      <p class="subtitle">Drag each indicator into leading / coincident / lagging</p>
+    </div>
+    <span class="feature-tag">Required by textbook 4.5.2</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">Exercise 4.5.2 asks students to fill prepositions into a paragraph about <em>"workers employed, construction activity, formation of new businesses"</em> as leading indicators. The drag-and-drop dashboard makes the categorisation itself the exercise — students sort 6+ real indicators into the 3 boxes and get instant feedback on why each belongs where it does.</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Drag the indicators into the right column</div>
+      <div class="indic-pool">
+        <div class="indic-pool-title">Indicators to sort</div>
+        <div class="indic-list">
+          <span class="indic-chip">CPI inflation</span>
+          <span class="indic-chip">corporate profits</span>
+          <span class="indic-chip">durable goods orders</span>
+        </div>
+      </div>
+      <div class="indic-cols">
+        <div class="indic-col leading">
+          <div class="indic-col-head">
+            <span class="indic-dot"></span>
+            <h5>Leading</h5>
+          </div>
+          <p class="col-desc">Predict the future of the economy</p>
+          <div class="indic-placed">
+            <div class="indic-placed-chip">✓ building permits</div>
+            <div class="indic-placed-chip">✓ stock prices</div>
+            <div class="indic-placed-chip">✓ new business formation</div>
+          </div>
+        </div>
+        <div class="indic-col coincident">
+          <div class="indic-col-head">
+            <span class="indic-dot"></span>
+            <h5>Coincident</h5>
+          </div>
+          <p class="col-desc">Show what's happening now</p>
+          <div class="indic-placed">
+            <div class="indic-placed-chip">✓ retail sales</div>
+            <div class="indic-placed-chip">✓ industrial production</div>
+            <div class="indic-placed-chip">✓ workers employed</div>
+          </div>
+        </div>
+        <div class="indic-col lagging">
+          <div class="indic-col-head">
+            <span class="indic-dot"></span>
+            <h5>Lagging</h5>
+          </div>
+          <p class="col-desc">Confirm trends after they happen</p>
+          <div class="indic-placed">
+            <div class="indic-placed-chip">✓ unemployment rate</div>
+            <div class="indic-placed-chip">✓ average duration of unemployment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>Why this beats prepositions:</strong> 4.5.2 trains a tangential skill (preposition use) while the actual concept (which category each indicator belongs to) is hidden in the gaps. The dashboard puts the conceptual sorting front-and-center. After 10 minutes here, the student can categorize any new indicator on the exam.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 10: BUSINESS CYCLE ===== -->
+<section class="feature" id="f10">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 18 0"/><polyline points="21 7 21 12 16 12"/><path d="M21 12a9 9 0 0 1-18 0"/><polyline points="3 17 3 12 8 12"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 4.3</div>
+      <h3>Business Cycle Stage Switcher</h3>
+      <p class="subtitle">Expansion → Peak → Contraction → Trough · see which metrics move which way</p>
+    </div>
+    <span class="feature-tag">Bonus: ties contraction lexis to context</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">The textbook uses <code>contract (v)</code> and <code>contraction (n)</code> as terms but doesn't visually anchor them. The stage switcher puts the four phases in tabs — students see which metrics rise / fall / flatten in each phase. Suddenly <code>contraction</code> isn't just "shrinking economy", it's "GDP↓, household consumption↓, unemployment↑" — concrete, exam-ready knowledge.</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Click any phase</div>
+      <div class="cycle-vis">
+        <div class="cycle-stage-tabs">
+          <button class="cycle-tab">Expansion</button>
+          <button class="cycle-tab active">Peak</button>
+          <button class="cycle-tab">Contraction</button>
+          <button class="cycle-tab">Trough</button>
+        </div>
+        <svg class="cycle-svg" viewBox="0 0 600 140" preserveAspectRatio="none">
+          <line x1="0" y1="100" x2="600" y2="100" stroke="#E2E8E6" stroke-width="1"/>
+          <path d="M0 100 Q 100 60 200 30 T 400 100 T 600 30" fill="none" stroke="#5E9E89" stroke-width="2.5"/>
+          <circle cx="200" cy="30" r="6" fill="#C9955A"/>
+          <text x="200" y="18" text-anchor="middle" font-size="11" fill="#1A2828" font-weight="600">Peak ←</text>
+          <text x="80" y="65" font-size="10" fill="#79A08C">Expansion</text>
+          <text x="270" y="65" font-size="10" fill="#79A08C">Contraction</text>
+          <text x="380" y="115" text-anchor="middle" font-size="10" fill="#79A08C">Trough</text>
+          <text x="480" y="65" font-size="10" fill="#79A08C">Recovery</text>
+        </svg>
+        <div class="cycle-detail-grid">
+          <div class="cycle-metric">
+            <div class="k">GDP</div>
+            <div class="arrow flat">≈</div>
+            <div class="v">Highest, levelling off</div>
+          </div>
+          <div class="cycle-metric">
+            <div class="k">Employment</div>
+            <div class="arrow flat">≈</div>
+            <div class="v">Near full</div>
+          </div>
+          <div class="cycle-metric">
+            <div class="k">Household consumption</div>
+            <div class="arrow up">↑</div>
+            <div class="v">Strong, starts to cool</div>
+          </div>
+          <div class="cycle-metric">
+            <div class="k">Inflation</div>
+            <div class="arrow up">↑</div>
+            <div class="v">Often rising</div>
+          </div>
+          <div class="cycle-metric">
+            <div class="k">Leading indicators</div>
+            <div class="arrow down">↓</div>
+            <div class="v">Already pointing down</div>
+          </div>
+          <div class="cycle-metric">
+            <div class="k">Performance</div>
+            <div class="arrow flat">≈</div>
+            <div class="v">Maximum output</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>What this builds:</strong> exam-ready phrases. "During a <code>contraction</code>, GDP <code>declines</code> and unemployment <code>rises</code>." The student doesn't memorize this — they <em>read it off the dashboard</em>. Pattern-matching beats rote learning every time.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 11: BALANCE SHEET ===== -->
+<section class="feature" id="f11">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 4.4</div>
+      <h3>Balance Sheet Builder</h3>
+      <p class="subtitle">Assets = Liabilities + Equity — the equation that must always balance</p>
+    </div>
+    <span class="feature-tag">Required: assets, equity, liability</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">The textbook lists <code>asset</code>, <code>liability</code>, <code>equity</code> as vocab without anchoring them to the accounting equation. The builder makes the equation tangible — students enter numbers, the equation checks itself live. When it doesn't balance, an explanation appears. This is the foundation for the Annual Report feature that comes next.</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Build a simple company balance sheet</div>
+      <div class="bs-grid">
+        <div class="bs-col assets">
+          <h5>Assets · what the company owns</h5>
+          <div class="bs-item"><span>Cash</span><span>$ 120,000</span></div>
+          <div class="bs-item"><span>Inventory</span><span>$ 85,000</span></div>
+          <div class="bs-item"><span>Equipment</span><span>$ 220,000</span></div>
+          <div class="bs-item"><span>Buildings</span><span>$ 450,000</span></div>
+          <div class="bs-total"><span>Total assets</span><span>$ 875,000</span></div>
+        </div>
+        <div class="bs-col liabs">
+          <h5>Liabilities + Equity · what the company owes</h5>
+          <div class="bs-item"><span>Bank loan</span><span>$ 300,000</span></div>
+          <div class="bs-item"><span>Accounts payable</span><span>$ 75,000</span></div>
+          <div class="bs-item"><span>Total liabilities</span><span>$ 375,000</span></div>
+          <div class="bs-item" style="border-top: 1px dashed var(--border); padding-top: 9px; margin-top: 4px;"><span>Owner's equity</span><span>$ 500,000</span></div>
+          <div class="bs-total"><span>Total</span><span>$ 875,000</span></div>
+        </div>
+      </div>
+      <div class="bs-status balanced">
+        ✓ The sheet balances. <span class="equation">Assets ($875K) = Liabilities ($375K) + Equity ($500K)</span>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>Why mechanical:</strong> students can't fake understanding when the equation has to balance. A wrong entry is visibly red. This is the single fastest way to make <code>asset</code>, <code>liability</code>, <code>equity</code> click — and it sets up the Annual Report feature, where students apply the same logic to a real company.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 12: ANNUAL REPORT READER ===== -->
+<section class="feature" id="f12">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Feature 4.5</div>
+      <h3>Annual Report Reader</h3>
+      <p class="subtitle">Real company report · highlights, vocabulary in context, case-study questions</p>
+    </div>
+    <span class="feature-tag">Required: Case study — Annual Report</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">The Case_RP file in your project gives a static annual-report assessment. The reader turns this into an interactive document: highlights at the top (revenue, net profit, growth), the financial-letter passage with key vocabulary auto-highlighted, vocabulary panel at the bottom. Students switch tabs to see the same data through different lenses — exactly how an executive reads a real report.</p>
+
+    <div class="mockup">
+      <div class="mockup-label">Sample company · simulated annual report</div>
+      <div class="ar-reader">
+        <div class="ar-tabs">
+          <button class="ar-tab active">Highlights</button>
+          <button class="ar-tab">Letter to shareholders</button>
+          <button class="ar-tab">Balance sheet</button>
+          <button class="ar-tab">Vocabulary</button>
+        </div>
+        <div class="ar-content">
+          <div class="ar-highlights">
+            <div class="ar-stat">
+              <div class="k">Revenue</div>
+              <div class="v">$ 2.4B</div>
+              <div class="change up">↑ 12% YoY</div>
+            </div>
+            <div class="ar-stat">
+              <div class="k">Net profit</div>
+              <div class="v">$ 340M</div>
+              <div class="change up">↑ 8% YoY</div>
+            </div>
+            <div class="ar-stat">
+              <div class="k">Total assets</div>
+              <div class="v">$ 5.1B</div>
+              <div class="change up">↑ 4% YoY</div>
+            </div>
+          </div>
+          <p class="ar-passage">
+            "Our company delivered strong <mark>performance</mark> across all business segments this year. <mark>Net</mark> revenue grew by 12%, driven by record <mark>household</mark> demand. We continued to invest in capital <mark>assets</mark>, particularly new equipment, despite the rising <mark>depreciation</mark> charges these generate. Our <mark>equity</mark> position strengthened as retained earnings grew, while total <mark>liabilities</mark> remained stable. We <mark>measure</mark> success not only by <mark>profit</mark> but by the consistency of our <mark>performance</mark> through the economic cycle."
+          </p>
+          <div class="ar-vocab">
+            <strong>Lit-up vocabulary in this passage:</strong> performance · net · household · assets · depreciation · equity · liabilities · measure · profit
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-preview">
+      <div class="sb-preview-label">Sentence Builder · annual report (harder · 2 sentences for Unit 4)</div>
+      <div class="sb-tiles">
+        <span class="sb-tile">The company's</span>
+        <span class="sb-tile gap">net profit</span>
+        <span class="sb-tile">grew</span>
+        <span class="sb-tile gap">despite</span>
+        <span class="sb-tile">rising</span>
+        <span class="sb-tile gap">depreciation</span>
+        <span class="sb-tile">charges.</span>
+      </div>
+    </div>
+
+    <div class="why-better">
+      <strong>Why this is the right finale:</strong> the Case Study in the textbook gives a PDF assessment. The reader makes that PDF interactive — students see vocabulary in real context, switch between summary views, answer questions linked to specific sections. This is the bridge from <em>"I know what depreciation means"</em> to <em>"I can read a real annual report"</em>. Exam-ready and resume-ready.
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAPSTONE ============ -->
+<div class="section-divider">
+  <h2>Wrap-up</h2>
+  <span class="badge">Final project</span>
+</div>
+
+<section class="capstone" id="capstone">
+  <p class="capstone-label">Capstone Project · end of course</p>
+  <h3>Analyse a real Russian company</h3>
+  <p>The final project ties the whole course together. Students pick a real Russian company — Sber, Yandex, X5, Norilsk Nickel — download a public annual report, fill in a structured template (assets, liabilities, equity, leading indicators, where the company is in the business cycle), and write a 200-word executive summary in English. Submission goes through the existing teacher dashboard.</p>
+  <div class="capstone-steps">
+    <div class="cap-step">
+      <div class="step-num">1</div>
+      <h6>Pick a company</h6>
+      <p>From a curated list of 8 Russian public companies. Each has an English annual report.</p>
+    </div>
+    <div class="cap-step">
+      <div class="step-num">2</div>
+      <h6>Fill the template</h6>
+      <p>Assets, liabilities, equity, revenue, recent performance. Uses Unit 3 + 4 vocabulary directly.</p>
+    </div>
+    <div class="cap-step">
+      <div class="step-num">3</div>
+      <h6>Diagnose the cycle</h6>
+      <p>Identify which business cycle phase the company is in, using indicators.</p>
+    </div>
+    <div class="cap-step">
+      <div class="step-num">4</div>
+      <h6>Write 200-word summary</h6>
+      <p>Executive-style English summary. Auto-checked for required vocabulary use.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<div class="section-divider" id="why">
+  <h2>Why this beats the textbook</h2>
+  <span class="badge">Concrete comparison</span>
+</div>
+
+<div class="compare-table">
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 28%;">Concept</th>
+        <th style="width: 36%;">Textbook approach</th>
+        <th style="width: 36%;" class="col-ours">Adaptation approach</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Functions of money</strong></td>
+        <td>Dense paragraph, 4 functions listed in one sentence. Comprehension Q in section 3.4.</td>
+        <td class="col-ours">2×2 compass · click each sector · definition + RU + example in one view.</td>
+      </tr>
+      <tr>
+        <td><strong>British vs USA money</strong></td>
+        <td>4 pages of prose. Coins and notes described separately for each country.</td>
+        <td class="col-ours">Side-by-side card grid · coin colours and nicknames visible · same row = same denomination.</td>
+      </tr>
+      <tr>
+        <td><strong>Central bank functions</strong></td>
+        <td>12-blank gap-fill in 3.5.3 (a–l). Students extract from text.</td>
+        <td class="col-ours">6 function cards laid out as a grid · structured first, gap-fill becomes review.</td>
+      </tr>
+      <tr>
+        <td><strong>Account types</strong></td>
+        <td>Long prose blocks for each type. Matching task in dialogue 3.6f.</td>
+        <td class="col-ours">Filter UI · pick a need → see matching accounts · models the real decision.</td>
+      </tr>
+      <tr>
+        <td><strong>Cross-cultural banking</strong></td>
+        <td>3 prose blocks: UK, Canada, USA. Russia mentioned only for comparison.</td>
+        <td class="col-ours">7-country map with identical stat blocks · direct comparison · includes Russia, France, Germany, Japan.</td>
+      </tr>
+      <tr>
+        <td><strong>Loans</strong></td>
+        <td>Arthur's case study with role-play and step-by-step analysis.</td>
+        <td class="col-ours">Live loan calculator · adjust principal/rate/term · numbers update · feel the impact of each parameter.</td>
+      </tr>
+      <tr>
+        <td><strong>GDP two approaches</strong></td>
+        <td>Two paragraphs explaining each. Equivalence stated as a fact.</td>
+        <td class="col-ours">Side-by-side calculator · both totals update live · verdict bar proves the equivalence.</td>
+      </tr>
+      <tr>
+        <td><strong>Economic indicators</strong></td>
+        <td>Gap-fill exercise about prepositions in 4.5.2.</td>
+        <td class="col-ours">Drag-and-drop dashboard · 6+ indicators · 3 categories · feedback on each placement.</td>
+      </tr>
+      <tr>
+        <td><strong>Annual report</strong></td>
+        <td>Case_RP PDF · static assessment.</td>
+        <td class="col-ours">Interactive reader · highlights, vocabulary in context, switchable views.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ ROADMAP ============ -->
+<div class="section-divider" id="roadmap">
+  <h2>Implementation roadmap</h2>
+  <span class="badge">~6 weeks total</span>
+</div>
+
+<section class="roadmap">
+  <div class="roadmap-item">
+    <div class="roadmap-priority priority-1">1</div>
+    <div class="roadmap-content">
+      <h5>Money Functions Compass · GDP Calculator</h5>
+      <p>Highest ROI features. Cover the two highest-stakes concepts (4 functions, GDP approaches). Reuse <code>keyIdeas</code> data structure you already have.</p>
+    </div>
+    <div class="roadmap-time">Week 1–2</div>
+  </div>
+  <div class="roadmap-item">
+    <div class="roadmap-priority priority-1">2</div>
+    <div class="roadmap-content">
+      <h5>£ vs $ Comparator · Bank Account Picker · Central Bank Wheel</h5>
+      <p>Visual, low-state-management features. Cover 3 of the 6 required Unit 3 topics. Static data, no Supabase calls.</p>
+    </div>
+    <div class="roadmap-time">Week 2–3</div>
+  </div>
+  <div class="roadmap-item">
+    <div class="roadmap-priority priority-2">3</div>
+    <div class="roadmap-content">
+      <h5>World Banking Map · Loan Simulator · Balance Sheet Builder</h5>
+      <p>Interactive features needing more state. Map reuses the <code>EconomicWorld</code> pattern. Loan Simulator needs the monthly-payment formula. Balance Sheet uses controlled inputs with live equation check.</p>
+    </div>
+    <div class="roadmap-time">Week 3–4</div>
+  </div>
+  <div class="roadmap-item">
+    <div class="roadmap-priority priority-2">4</div>
+    <div class="roadmap-content">
+      <h5>Forms of Money Spectrum · Indicators Dashboard · Business Cycle</h5>
+      <p>Supplementary features. Spectrum is largely static. Dashboard needs drag-and-drop (use <code>@dnd-kit/core</code>). Business Cycle is tab-switching + static data.</p>
+    </div>
+    <div class="roadmap-time">Week 4–5</div>
+  </div>
+  <div class="roadmap-item">
+    <div class="roadmap-priority priority-3">5</div>
+    <div class="roadmap-content">
+      <h5>Annual Report Reader · Capstone Project</h5>
+      <p>The Reader needs tabbed content and the highlighting parser. The Capstone needs a submission flow in the teacher dashboard. Both depend on the rest being stable.</p>
+    </div>
+    <div class="roadmap-time">Week 5–6</div>
+  </div>
+</section>
+
+<!-- ============ CONCEPT ITERATIONS ============ -->
+<div class="section-divider" id="iterations">
+  <h2>Concept iterations · before final</h2>
+  <span class="badge">Design exploration</span>
+</div>
+
+<section class="feature">
+  <div class="feature-head">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    </div>
+    <div class="feature-head-text">
+      <div class="feature-num">Reference</div>
+      <h3>Earlier mockups · cleaner Anthropic-style sketches</h3>
+      <p class="subtitle">First pass at the same three features — kept here as a design contrast</p>
+    </div>
+    <span class="feature-tag">Design history</span>
+  </div>
+  <div class="feature-body">
+    <p class="intro-text">These were the first sketches of three highest-impact features (Money Compass, GDP Calculator, Indicators Dashboard) made in a more minimal, monochrome style — closer to an Anthropic doc than to the Adaptation app. Kept here as a useful reference: same data structure, different visual language. The features above are the refined production-ready versions in the full Adaptation palette.</p>
+
+    <!-- ITERATION 1: Money Compass (clean) -->
+    <div style="margin-top: 28px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <h4 style="font-size: 14px; color: var(--heading); font-weight: 600;">Iteration #1 · Money Functions Compass</h4>
+        <span style="font-size: 11px; color: var(--muted); font-style: italic;">v0 — clean style</span>
+      </div>
+      <div style="padding: 1.5rem; background: #FCFCFA; border: 1px solid #E2E8E6; border-radius: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
+          <div style="width: 36px; height: 36px; border-radius: 8px; background: #E5F0EC; display: flex; align-items: center; justify-content: center;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5E9E89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          </div>
+          <div>
+            <p style="font-size: 16px; font-weight: 500; color: #1A2828; margin: 0;">Money Functions Compass</p>
+            <p style="font-size: 13px; color: #79A08C; margin: 0;">Click any sector to explore</p>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid #5E9E89; border-radius: 12px; overflow: hidden;">
+          <div style="padding: 1.25rem; border-right: 0.5px solid #E2E8E6; border-bottom: 0.5px solid #E2E8E6; background: #E5F0EC;">
+            <p style="font-size: 14px; font-weight: 500; color: #1A2828; margin: 0 0 4px;">Means of exchange</p>
+            <p style="font-size: 11px; color: #79A08C; margin: 0 0 8px; font-style: italic;">Средство обмена</p>
+            <p style="font-size: 13px; color: #3A4A48; line-height: 1.5; margin: 0 0 8px;">Money you use to buy goods and pay for services.</p>
+            <p style="font-size: 12px; color: #5E9E89; font-style: italic; margin: 0;">Example: paying for coffee with a card.</p>
+          </div>
+          <div style="padding: 1.25rem; border-bottom: 0.5px solid #E2E8E6; background: #FCFCFA;">
+            <p style="font-size: 14px; font-weight: 500; color: #1A2828; margin: 0 0 4px;">Store of value</p>
+            <p style="font-size: 11px; color: #79A08C; margin: 0 0 8px; font-style: italic;">Средство сбережения</p>
+            <p style="font-size: 13px; color: #3A4A48; line-height: 1.5; margin: 0 0 8px;">Money you keep today to spend later — savings hold their worth.</p>
+            <p style="font-size: 12px; color: #5E9E89; font-style: italic; margin: 0;">Example: a time deposit for 5 years.</p>
+          </div>
+          <div style="padding: 1.25rem; border-right: 0.5px solid #E2E8E6; background: #FCFCFA;">
+            <p style="font-size: 14px; font-weight: 500; color: #1A2828; margin: 0 0 4px;">Standard of value</p>
+            <p style="font-size: 11px; color: #79A08C; margin: 0 0 8px; font-style: italic;">Мера стоимости</p>
+            <p style="font-size: 13px; color: #3A4A48; line-height: 1.5; margin: 0 0 8px;">Money lets you compare prices of different things.</p>
+            <p style="font-size: 12px; color: #5E9E89; font-style: italic; margin: 0;">Example: a car costs 50× more than a phone.</p>
+          </div>
+          <div style="padding: 1.25rem; background: #E5F0EC;">
+            <p style="font-size: 14px; font-weight: 500; color: #1A2828; margin: 0 0 4px;">Near money</p>
+            <p style="font-size: 11px; color: #79A08C; margin: 0 0 8px; font-style: italic;">Квазиденьги</p>
+            <p style="font-size: 13px; color: #3A4A48; line-height: 1.5; margin: 0 0 8px;">Not cash, but easy to convert — savings accounts, bonds.</p>
+            <p style="font-size: 12px; color: #5E9E89; font-style: italic; margin: 0;">Example: a demand deposit you can withdraw any day.</p>
+          </div>
+        </div>
+        <div style="margin-top: 1rem; padding: 0.875rem 1rem; background: #F4F5F3; border-radius: 8px; border-left: 3px solid #C9955A;">
+          <p style="font-size: 11px; color: #79A08C; margin: 0 0 4px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase;">Sentence Builder (preview)</p>
+          <p style="font-size: 13px; color: #3A4A48; line-height: 1.6; margin: 0;">[ Money ] [ serves ] [ as ] [ a ] [ store of value ] [ when ] [ you ] [ save ] [ it. ]</p>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: var(--muted); font-style: italic; margin-top: 8px;">→ Refined into Feature 3.1 above with custom icons and tighter rhythm</p>
+    </div>
+
+    <!-- ITERATION 2: GDP Calculator (clean) -->
+    <div style="margin-top: 32px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <h4 style="font-size: 14px; color: var(--heading); font-weight: 600;">Iteration #2 · GDP Two Approaches</h4>
+        <span style="font-size: 11px; color: var(--muted); font-style: italic;">v0 — static numbers</span>
+      </div>
+      <div style="padding: 1.5rem; background: #FCFCFA; border: 1px solid #E2E8E6; border-radius: 12px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 1rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: #E5F0EC; display: flex; align-items: center; justify-content: center;">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5E9E89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+            </div>
+            <div>
+              <p style="font-size: 16px; font-weight: 500; color: #1A2828; margin: 0;">GDP: two approaches, one number</p>
+              <p style="font-size: 13px; color: #79A08C; margin: 0;">Adjust the economy and watch both methods match</p>
+            </div>
+          </div>
+          <div style="background: #E5F0EC; padding: 6px 12px; border-radius: 999px;">
+            <span style="font-size: 11px; color: #1A2828; font-weight: 500;">UNIT 4 · KEY CONCEPT</span>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem;">
+          <div style="background: white; border: 0.5px solid #E2E8E6; border-radius: 8px; padding: 1rem;">
+            <p style="font-size: 13px; font-weight: 500; color: #1A2828; margin: 0 0 4px;">Earnings-and-cost approach</p>
+            <p style="font-size: 11px; color: #79A08C; margin: 0 0 10px;">Sum of incomes earned in the economy</p>
+            <div style="font-size: 13px; color: #3A4A48;">
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid #F4F5F3;"><span>Wages</span><span style="font-variant-numeric: tabular-nums;">$ 450</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid #F4F5F3;"><span>Rent</span><span style="font-variant-numeric: tabular-nums;">$ 80</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid #F4F5F3;"><span>Interest</span><span style="font-variant-numeric: tabular-nums;">$ 60</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid #F4F5F3;"><span>Profit</span><span style="font-variant-numeric: tabular-nums;">$ 110</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 10px 0 4px; margin-top: 4px; border-top: 1px solid #5E9E89;"><span style="font-weight: 500; color: #1A2828;">Total GDP</span><span style="font-weight: 500; color: #5E9E89; font-variant-numeric: tabular-nums;">$ 700</span></div>
+            </div>
+          </div>
+          <div style="background: white; border: 0.5px solid #E2E8E6; border-radius: 8px; padding: 1rem;">
+            <p style="font-size: 13px; font-weight: 500; color: #1A2828; margin: 0 0 4px;">Flow-of-product approach</p>
+            <p style="font-size: 11px; color: #79A08C; margin: 0 0 10px;">Sum of final goods and services sold</p>
+            <div style="font-size: 13px; color: #3A4A48;">
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid #F4F5F3;"><span>Households</span><span style="font-variant-numeric: tabular-nums;">$ 420</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid #F4F5F3;"><span>Investment</span><span style="font-variant-numeric: tabular-nums;">$ 140</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid #F4F5F3;"><span>Government</span><span style="font-variant-numeric: tabular-nums;">$ 100</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid #F4F5F3;"><span>Net exports</span><span style="font-variant-numeric: tabular-nums;">$ 40</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 10px 0 4px; margin-top: 4px; border-top: 1px solid #C9955A;"><span style="font-weight: 500; color: #1A2828;">Total GDP</span><span style="font-weight: 500; color: #C9955A; font-variant-numeric: tabular-nums;">$ 700</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="background: #E5F0EC; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 10px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5E9E89" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <p style="font-size: 13px; color: #1A2828; margin: 0; line-height: 1.5;"><span style="font-weight: 500;">Both approaches give $700.</span> Every dollar of income paid out becomes a dollar of spending — that's the circular flow.</p>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: var(--muted); font-style: italic; margin-top: 8px;">→ Refined into Feature 4.1 above with live editable inputs and verdict bar</p>
+    </div>
+
+    <!-- ITERATION 3: Indicators Dashboard (clean) -->
+    <div style="margin-top: 32px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <h4 style="font-size: 14px; color: var(--heading); font-weight: 600;">Iteration #3 · Indicators Dashboard</h4>
+        <span style="font-size: 11px; color: var(--muted); font-style: italic;">v0 — 3-column dropzone</span>
+      </div>
+      <div style="padding: 1.5rem; background: #FCFCFA; border: 1px solid #E2E8E6; border-radius: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
+          <div style="width: 36px; height: 36px; border-radius: 8px; background: #E5F0EC; display: flex; align-items: center; justify-content: center;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5E9E89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          </div>
+          <div>
+            <p style="font-size: 16px; font-weight: 500; color: #1A2828; margin: 0;">Economic Indicators Dashboard</p>
+            <p style="font-size: 13px; color: #79A08C; margin: 0;">Drag each indicator into the right column</p>
+          </div>
+        </div>
+        <div style="background: white; border: 0.5px solid #E2E8E6; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+          <p style="font-size: 11px; color: #79A08C; font-weight: 500; margin: 0 0 8px; letter-spacing: 0.5px; text-transform: uppercase;">Indicators to sort</p>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <span style="font-size: 12px; padding: 6px 12px; background: #F4F5F3; border: 0.5px solid #E2E8E6; border-radius: 6px; color: #1A2828;">unemployment rate</span>
+            <span style="font-size: 12px; padding: 6px 12px; background: #F4F5F3; border: 0.5px solid #E2E8E6; border-radius: 6px; color: #1A2828;">building permits</span>
+            <span style="font-size: 12px; padding: 6px 12px; background: #F4F5F3; border: 0.5px solid #E2E8E6; border-radius: 6px; color: #1A2828;">retail sales</span>
+            <span style="font-size: 12px; padding: 6px 12px; background: #F4F5F3; border: 0.5px solid #E2E8E6; border-radius: 6px; color: #1A2828;">CPI inflation</span>
+            <span style="font-size: 12px; padding: 6px 12px; background: #F4F5F3; border: 0.5px solid #E2E8E6; border-radius: 6px; color: #1A2828;">stock prices</span>
+            <span style="font-size: 12px; padding: 6px 12px; background: #F4F5F3; border: 0.5px solid #E2E8E6; border-radius: 6px; color: #1A2828;">corporate profits</span>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+          <div style="background: white; border: 1px dashed #5E9E89; border-radius: 8px; padding: 12px; min-height: 180px;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;"><div style="width: 8px; height: 8px; border-radius: 50%; background: #5E9E89;"></div><p style="font-size: 13px; font-weight: 500; color: #1A2828; margin: 0;">Leading</p></div>
+            <p style="font-size: 10px; color: #79A08C; margin: 0 0 12px;">Predict the future of the economy</p>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="font-size: 12px; padding: 6px 10px; background: #E5F0EC; border-radius: 6px; color: #1A2828;">✓ building permits</div>
+              <div style="font-size: 12px; padding: 6px 10px; background: #E5F0EC; border-radius: 6px; color: #1A2828;">✓ stock prices</div>
+            </div>
+          </div>
+          <div style="background: white; border: 1px dashed #C9955A; border-radius: 8px; padding: 12px; min-height: 180px;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;"><div style="width: 8px; height: 8px; border-radius: 50%; background: #C9955A;"></div><p style="font-size: 13px; font-weight: 500; color: #1A2828; margin: 0;">Coincident</p></div>
+            <p style="font-size: 10px; color: #79A08C; margin: 0 0 12px;">Show what's happening now</p>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="font-size: 12px; padding: 6px 10px; background: #FAEEDA; border-radius: 6px; color: #633806;">✓ retail sales</div>
+            </div>
+          </div>
+          <div style="background: white; border: 1px dashed #79A08C; border-radius: 8px; padding: 12px; min-height: 180px;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;"><div style="width: 8px; height: 8px; border-radius: 50%; background: #79A08C;"></div><p style="font-size: 13px; font-weight: 500; color: #1A2828; margin: 0;">Lagging</p></div>
+            <p style="font-size: 10px; color: #79A08C; margin: 0 0 12px;">Confirm a trend after it happens</p>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="font-size: 12px; padding: 6px 10px; background: #F4F5F3; border-radius: 6px; color: #1A2828;">✓ unemployment rate</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; background: #E5F0EC; border-radius: 8px; padding: 10px 14px; display: flex; align-items: flex-start; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#5E9E89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 2px; flex-shrink: 0;"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+          <p style="font-size: 12px; color: #1A2828; margin: 0; line-height: 1.5;"><span style="font-weight: 500;">Why leading?</span> Building permits are filed before construction begins. Stock prices reflect expectations about the next 6–9 months.</p>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: var(--muted); font-style: italic; margin-top: 8px;">→ Refined into Feature 4.2 above with the same logic and 6+ chips</p>
+    </div>
+
+    <div class="why-better" style="margin-top: 32px;">
+      <strong>What changed between v0 and final:</strong> the early iterations were clean but neutral — could be any product. The final versions use Adaptation's amber-to-green palette consistently, the sidebar navigation, the section dividers with badges, and the explanatory "why it beats the textbook" panels. Same logic, but it now <em>feels</em> like part of the same app as Units 1–2, not a separate document.
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+// === Loan Simulator ===
+function updateLoan(el, type) {
+  const amt = +document.querySelector('#f7 input[oninput*="amount"]').value;
+  const rate = +document.querySelector('#f7 input[oninput*="rate"]').value;
+  const yrs = +document.querySelector('#f7 input[oninput*="years"]').value;
+
+  const labels = document.querySelectorAll('#f7 .loan-control .val');
+  labels[0].textContent = '$' + amt.toLocaleString();
+  labels[1].textContent = rate.toFixed(1) + '%';
+  labels[2].textContent = yrs;
+
+  const r = rate / 100 / 12;
+  const n = yrs * 12;
+  const monthly = (amt * r) / (1 - Math.pow(1 + r, -n));
+  const total = monthly * n;
+  const interest = total - amt;
+
+  document.getElementById('loan-monthly').textContent = '$' + Math.round(monthly).toLocaleString();
+  document.getElementById('loan-interest').textContent = '$' + Math.round(interest).toLocaleString();
+  document.getElementById('loan-total').textContent = '$' + Math.round(total).toLocaleString();
+}
+
+// === GDP Calculator ===
+function updateGDP() {
+  const wages = +document.getElementById('g-wages').value || 0;
+  const rent = +document.getElementById('g-rent').value || 0;
+  const interest = +document.getElementById('g-interest').value || 0;
+  const profit = +document.getElementById('g-profit').value || 0;
+  const totalE = wages + rent + interest + profit;
+
+  const house = +document.getElementById('g-house').value || 0;
+  const invest = +document.getElementById('g-invest').value || 0;
+  const gov = +document.getElementById('g-gov').value || 0;
+  const net = +document.getElementById('g-net').value || 0;
+  const totalP = house + invest + gov + net;
+
+  document.getElementById('g-total-earnings').textContent = '$' + totalE.toLocaleString();
+  document.getElementById('g-total-product').textContent = '$' + totalP.toLocaleString();
+
+  const verdict = document.getElementById('gdp-verdict');
+  if (totalE === totalP) {
+    verdict.className = 'gdp-verdict match';
+    verdict.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Both approaches match. Every dollar of income equals a dollar of spending — that\'s the circular flow of the economy.</span>';
+  } else {
+    verdict.className = 'gdp-verdict mismatch';
+    const diff = Math.abs(totalE - totalP);
+    verdict.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Difference: $' + diff.toLocaleString() + '. In a closed economy these must equal. Check your inputs.</span>';
+  }
+}
+
+// === Sidebar active link on scroll ===
+const links = document.querySelectorAll('.sidebar-link');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function updateActiveLink() {
+  let active = sections[0];
+  for (const s of sections) {
+    if (s.getBoundingClientRect().top < 120) active = s;
+  }
+  links.forEach(l => l.classList.remove('active'));
+  const activeLink = document.querySelector('.sidebar-link[href="#' + active.id + '"]');
+  if (activeLink) activeLink.classList.add('active');
+}
+window.addEventListener('scroll', updateActiveLink);
+updateActiveLink();
+
+// === Country dot interactions ===
+const countryData = {
+  us: { flag: '🇺🇸', name: 'United States', bank: 'Federal Reserve (Fed)', currency: 'US Dollar ($)', accounts: 'Checking, savings, time deposit', narrative: 'Three basic account types: checking (everyday), savings (long-term), time deposit (fixed term). Most people use debit and credit cards. The Federal Reserve is independent and sets monetary policy via interest rates.' },
+  ca: { flag: '🇨🇦', name: 'Canada', bank: 'Bank of Canada', currency: 'Canadian Dollar (C$)', accounts: '100+ account packages', narrative: 'Over 99% of adult Canadians have a bank account. The textbook describes it as "one of the most accessible banking systems in the world." 70% pay credit card balance in full each month. Major employers, low-cost accounts available for students and seniors.' },
+  uk: { flag: '🇬🇧', name: 'United Kingdom', bank: 'Bank of England', currency: 'Pound sterling (£)', accounts: 'Current, deposit, savings', narrative: '90% of British adults have a bank account. The system is "stable, extensive and complex" — driven by ordinary citizens saving ~15% of their income. About 20% of the population own shares.' },
+  fr: { flag: '🇫🇷', name: 'France', bank: 'Banque de France (within ECB)', currency: 'Euro (€)', accounts: 'Compte courant, Livret A', narrative: 'France joined the euro in 1999. The Banque de France is part of the European Central Bank system. Livret A is a tax-free savings account every French citizen can open — uniquely French.' },
+  de: { flag: '🇩🇪', name: 'Germany', bank: 'Deutsche Bundesbank (within ECB)', currency: 'Euro (€)', accounts: 'Girokonto, Tagesgeld, Festgeld', narrative: 'The textbook explicitly names the Bundesbank as one of the great central banks. Germany has a three-pillar banking system: private banks, public savings banks (Sparkassen), and cooperative banks.' },
+  ru: { flag: '🇷🇺', name: 'Russia', bank: 'Bank of Russia (CBR)', currency: 'Russian Ruble (₽)', accounts: 'Текущий, накопительный, депозит', narrative: 'The CBR is named in the textbook as one of the major central banks. It issues the ruble, sets interest rates, and supervises the banking system. Russia uses zero-interest reserve requirements (since 2008).' },
+  jp: { flag: '🇯🇵', name: 'Japan', bank: 'Bank of Japan (BOJ)', currency: 'Japanese Yen (¥)', accounts: '普通預金 (ordinary), 定期預金 (time)', narrative: 'Japan has one of the highest household savings rates in the world. The Bank of Japan has pursued near-zero interest rates for decades. Cash is still preferred for everyday transactions, despite the country\'s tech reputation.' }
+};
+
+document.querySelectorAll('.country-dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    const c = dot.getAttribute('data-country');
+    const d = countryData[c];
+    if (!d) return;
+    const panel = document.getElementById('country-detail-default');
+    panel.innerHTML = '<h5>' + d.flag + ' ' + d.name + '</h5><p style="font-size: 12px; color: var(--muted); margin: 0;">Click another marker to compare</p><div class="stats-grid"><div class="stat-block"><div class="k">Central bank</div><div class="v">' + d.bank + '</div></div><div class="stat-block"><div class="k">Currency</div><div class="v">' + d.currency + '</div></div><div class="stat-block"><div class="k">Main accounts</div><div class="v">' + d.accounts + '</div></div></div><p class="narrative">' + d.narrative + '</p>';
+  });
+});
+</script>
+</body>
+</html>

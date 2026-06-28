@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Ship, ArrowRight, CheckCircle, RotateCcw, ChevronRight, TrendingUp, TrendingDown, Minus, Package, Globe } from 'lucide-react';
+
+import { Ship, ArrowRight, CheckCircle, RotateCcw, ChevronRight, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Repeat2, Wheat, Coins, Banknote, Landmark, CreditCard, Bitcoin,
-  ChevronDown, CheckCircle,
+  CheckCircle,
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 

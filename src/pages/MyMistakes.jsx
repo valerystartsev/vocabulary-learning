@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useProgress } from '../context/ProgressContext';
 import { getAllVocabulary, units } from '../data/courseData';
-import { XCircle, AlertTriangle, BarChart3 } from 'lucide-react';
+import { XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function MyMistakes() {

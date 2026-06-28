@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useProgress } from '../context/ProgressContext';
 import { getAllVocabulary } from '../data/courseData';
-import { X, CheckCircle, AlertTriangle, ArrowRight, RotateCcw } from 'lucide-react';
+import { X, CheckCircle, AlertTriangle, RotateCcw } from 'lucide-react';
 
 // Pick up to 5 oldest stale weak words
 function buildTasks(words, allVocab) {

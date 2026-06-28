@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
+
 import { Link } from 'react-router-dom';
-import { units, getAllVocabulary } from '../data/courseData';
+import { units } from '../data/courseData';
 import { useProgress } from '../context/ProgressContext';
 import {
-  Volume2, VolumeX, CheckCircle, XCircle, Lock, Unlock,
-  ChevronRight, ChevronLeft, RotateCcw, Headphones, BookOpen, ArrowLeft, Play
+  Volume2, CheckCircle, XCircle, Lock, 
+  ChevronRight, RotateCcw, Headphones, BookOpen, ArrowLeft, Play
 } from 'lucide-react';
 
 // ── Helpers ────────────────────────────────────────────────────────────────

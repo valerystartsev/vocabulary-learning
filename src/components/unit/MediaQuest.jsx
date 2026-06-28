@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useProgress } from '../../context/ProgressContext';
 import {
-  Zap, CheckCircle, XCircle, RotateCcw, ChevronDown, ChevronUp,
+  Zap, CheckCircle, XCircle, ChevronDown, ChevronUp,
   Star, AlertTriangle, Target, Headphones, Video, FileText
 } from 'lucide-react';
 

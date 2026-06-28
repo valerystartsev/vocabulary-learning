@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { units, getAllVocabulary } from '../../data/courseData';
 import { useProgress } from '../../context/ProgressContext';
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
-import { TrendingUp, Target, Zap, BookOpen } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
 function MiniStat({ label, value, color }) {
   return (

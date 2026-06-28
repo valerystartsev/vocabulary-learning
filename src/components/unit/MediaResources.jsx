@@ -3,7 +3,7 @@ import { useProgress } from '../../context/ProgressContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Video, Headphones, FileText, CheckCircle, ExternalLink } from 'lucide-react';
+import { Video, Headphones, FileText, CheckCircle } from 'lucide-react';
 
 const typeIcons = { video: Video, podcast: Headphones, article: FileText };
 

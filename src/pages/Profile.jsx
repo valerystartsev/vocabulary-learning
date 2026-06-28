@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../lib/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {
-  User, Save, CheckCircle, GraduationCap, Info, Lock,
+  User, Save, CheckCircle, GraduationCap, Lock,
   ArrowLeft, Sun, Moon, TrendingUp,
   Shield, Eye, EyeOff, AlertCircle, Loader2, KeyRound,
   Mail, Send, MailCheck, Pencil, X,

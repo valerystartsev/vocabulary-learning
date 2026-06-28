@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { BookOpen, Info, CheckCircle, XCircle, Eye, EyeOff, Settings } from 'lucide-react';
+import { BookOpen, Info, CheckCircle, Eye, EyeOff, Settings } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 
 function RenderParagraph({ text, glossary, supportMode }) {

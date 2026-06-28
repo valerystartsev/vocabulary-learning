@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useProgress } from '../../context/ProgressContext';
-import { Zap, ChevronRight, RotateCcw, Trophy, AlertCircle } from 'lucide-react';
+import { Zap, RotateCcw, Trophy } from 'lucide-react';
 
 export default function ScenarioLoop({ scenario, unitId }) {
   const { saveScenarioScore, markSectionComplete, progress } = useProgress();

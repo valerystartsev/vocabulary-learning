@@ -6,8 +6,8 @@ import LearningAnalytics from '../components/progress/LearningAnalytics';
 import ReviewSchedule from '../components/progress/ReviewSchedule';
 import { useProgress, computeUnitProgress } from '../context/ProgressContext';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { BarChart3, Brain, AlertTriangle, Trophy, BookOpen, RotateCcw, Trash2, Video, Zap, BookText, CheckCircle } from 'lucide-react';
+
+import { BarChart3, Brain, AlertTriangle, Trophy, BookOpen, RotateCcw, Trash2, Video, BookText } from 'lucide-react';
 
 const SECTION_LABELS = {
   header: 'Header', keyideas: 'Key Ideas', dictionary: 'Dictionary',

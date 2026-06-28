@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   motion, useScroll, useTransform, useInView,
-  useMotionValue, useSpring, AnimatePresence,
+  useSpring, AnimatePresence,
 } from 'framer-motion';
 import {
   BookOpen, Brain, Headphones, FileText, CheckCircle,

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useProgress } from '../context/ProgressContext';
 import { getAllVocabulary } from '../data/courseData';
 import { getDueWords } from '../utils/spacedRepetition';
-import { RotateCcw, CheckCircle, ArrowRight, Calendar, TrendingUp } from 'lucide-react';
+import { RotateCcw, CheckCircle, Calendar, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const RATINGS = [

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const STEPS = [
   { title: 'Welcome to Adaptation', body: 'This is your Business English course dashboard. Here you track your progress, vocabulary, and test scores.', target: 'header' },

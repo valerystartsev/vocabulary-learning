@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
 import { getAllVocabulary, units } from '../data/courseData';
 import PronounceButton from '../components/PronounceButton';
 import DifficultWordsTab from '../components/DifficultWordsTab';
@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import WordMorphologyBlock from '../components/unit/WordMorphologyBlock';
 import { wordMorphology } from '../data/wordMorphology';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, BookText, CheckCircle, AlertTriangle, ChevronDown, ChevronUp, Zap, RotateCcw, X, ArrowRight, BookOpen } from 'lucide-react';
+import { Search, BookText, CheckCircle, AlertTriangle, ChevronDown, ChevronUp, Zap, RotateCcw, X, BookOpen } from 'lucide-react';
 
 /* ── Flash card ── */
 function FlashCard({ word, onKnow, onStillWeak }) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp, ArrowDown, Minus, CheckCircle, RotateCcw } from 'lucide-react';
+import { ArrowUp, ArrowDown, Minus, CheckCircle } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 
 const DONE_THRESHOLD = 3; // visited 3 of 4 phases

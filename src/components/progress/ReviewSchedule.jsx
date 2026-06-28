@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useProgress } from '../../context/ProgressContext';
 import { getAllVocabulary } from '../../data/courseData';
-import { getDefaultCard } from '../../utils/spacedRepetition';
+
 import { Calendar, RotateCcw, CheckCircle, Clock, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

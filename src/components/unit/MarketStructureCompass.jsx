@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Users, Layers, Users2, Crown, ChevronDown, CheckCircle,
-  Store, ShieldAlert, DoorOpen,
+  Store, DoorOpen,
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 

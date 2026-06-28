@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useMode } from '../context/ModeContext';
-import { Home, BookOpen, LayoutDashboard, BookText, BarChart3, Menu, X, GraduationCap, Eye, Globe, LogOut, User, Lock, Settings, Headphones, Ship, RotateCcw, XCircle, Sun, Moon, TrendingUp, FlaskConical } from 'lucide-react';
+import { Home, BookOpen, LayoutDashboard, BookText, BarChart3, Menu, X, GraduationCap, Eye, LogOut, User, Lock, Settings, Headphones, RotateCcw, XCircle, Sun, Moon, TrendingUp, FlaskConical } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Switch } from '@/components/ui/switch';
 import TeacherPinModal from './TeacherPinModal';

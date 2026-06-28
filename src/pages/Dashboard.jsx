@@ -5,7 +5,7 @@ import { units, getAllVocabulary } from '../data/courseData';
 import { useProgress, computeUnitProgress } from '../context/ProgressContext';
 import { useMode } from '../context/ModeContext';
 import { useAuth } from '../lib/AuthContext';
-import { BookOpen, ArrowRight, Brain, AlertTriangle, Trophy, BarChart3, BookText, RotateCcw, Eye, Play, FlaskConical, ChevronRight } from 'lucide-react';
+import { BookOpen, Brain, AlertTriangle, Trophy, BarChart3, BookText, RotateCcw, Eye, Play, FlaskConical, ChevronRight } from 'lucide-react';
 import WeakWordsRescue from '../components/WeakWordsRescue';
 import OnboardingTour, { shouldShowTour } from '../components/OnboardingTour';
 import { getDueWords } from '../utils/spacedRepetition';

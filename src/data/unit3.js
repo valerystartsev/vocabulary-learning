@@ -647,6 +647,49 @@ export const unit3 = {
         text: "Understanding banking helps you make better decisions. Knowing the difference between a **demand deposit** and a **time deposit** tells you when you can access your money. Understanding **compound interest** shows you why repaying debt quickly saves you money. And knowing about **currency** and the **monetary value** of assets helps you understand how the whole economy connects.",
         glossary: { "monetary value": "денежная стоимость", "currency": "валюта", "assets": "активы" }
       }
+    ],
+    postReadingTasks: [
+      {
+        type: 'trueFalse',
+        q: 'Before money, people used barter to exchange goods directly.',
+        answer: true,
+        explanation: 'Yes — barter was the system of direct exchange before money became common.'
+      },
+      {
+        type: 'trueFalse',
+        q: 'Fiat money has value because it is made of gold or silver.',
+        answer: false,
+        explanation: 'False — fiat money has value because the government declares it legal tender, not because of precious metals.'
+      },
+      {
+        type: 'choice',
+        q: 'What is the main function of money as a "store of value"?',
+        options: [
+          'To buy things immediately',
+          'To save today and spend in the future',
+          'To compare prices of different items',
+          'To pay taxes to the government'
+        ],
+        answer: 'To save today and spend in the future',
+        explanation: 'Money as a store of value lets you save now and use it later when needed.'
+      },
+      {
+        type: 'choice',
+        q: 'What happens when you borrow from a bank and use compound interest?',
+        options: [
+          'You only pay interest on the original amount',
+          'Interest is added to both the original sum and previously paid interest',
+          'You never have to repay the loan',
+          'The bank pays you interest'
+        ],
+        answer: 'Interest is added to both the original sum and previously paid interest',
+        explanation: 'Compound interest means interest grows on top of interest, making debt increase faster.'
+      },
+      {
+        type: 'open',
+        q: 'Why might a time deposit require advance notice if you need your money early?',
+        model: 'A time deposit must stay in the bank for a fixed period. If you withdraw early, you may lose some interest and need to notify the bank in advance.'
+      }
     ]
   },
 

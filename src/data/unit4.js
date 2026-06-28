@@ -578,6 +578,49 @@ export const unit4 = {
         text: "National governments shape the economy through monetary and fiscal **policy**. Monetary **policy** controls the money supply and interest rates — the central bank's tool. Fiscal **policy** uses taxes and government spending. Different countries follow different **approaches**. Germany and the Netherlands traditionally focus on stability and balanced budgets. France takes a more interventionist approach, with a large public sector. Russia's economy is heavily influenced by natural resources and state-owned enterprises. China combines central planning with market reforms — a system often called 'state capitalism'. Understanding these national strategies is essential in international business.",
         glossary: { "policy": "политика", "approach": "подход" }
       }
+    ],
+    postReadingTasks: [
+      {
+        type: 'trueFalse',
+        q: 'GDP counts the value of intermediate goods like steel and fabric used in production.',
+        answer: false,
+        explanation: 'False — GDP only counts final goods to avoid double-counting the same value.'
+      },
+      {
+        type: 'trueFalse',
+        q: 'Leading economic indicators change before the economy does.',
+        answer: true,
+        explanation: 'Yes — leading indicators like stock prices help predict future economic trends.'
+      },
+      {
+        type: 'choice',
+        q: 'What is the earnings-and-cost approach to calculating GDP based on?',
+        options: [
+          'All the spending on final goods and services',
+          'All the income earned in the economy',
+          'The government\'s tax revenue',
+          'Foreign trade only'
+        ],
+        answer: 'All the income earned in the economy',
+        explanation: 'The earnings-and-cost approach adds up wages, rent, interest, and profit.'
+      },
+      {
+        type: 'choice',
+        q: 'What is depreciation in business terms?',
+        options: [
+          'A sudden increase in asset value',
+          'The decrease in value of assets over time',
+          'A type of loan',
+          'The cost of raw materials'
+        ],
+        answer: 'The decrease in value of assets over time',
+        explanation: 'Depreciation is the gradual loss of value due to wear, age, or obsolescence.'
+      },
+      {
+        type: 'open',
+        q: 'Why is it important for companies to report financial highlights honestly?',
+        model: 'Honest reporting builds trust with investors. Every claim must be backed by evidence, and accurate numbers help stakeholders make informed decisions about the company\'s performance.'
+      }
     ]
   },
 

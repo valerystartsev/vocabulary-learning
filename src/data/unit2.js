@@ -749,6 +749,49 @@ export const unit2 = {
         text: "**Capital accumulation** — buying more machines, building more factories — is one way to grow. But it costs money. The **rental** of equipment or factory space is one overhead cost. Companies must decide how much to **save** and how much to invest. The goal is to find a balance between growth and quality of life.",
         glossary: { "capital accumulation": "накопление капитала", "rental": "аренда", "save": "экономить, копить" }
       }
+    ],
+    postReadingTasks: [
+      {
+        type: 'trueFalse',
+        q: 'Economic growth always improves the standard of living for everyone.',
+        answer: false,
+        explanation: 'False — while growth creates benefits, it also has costs like pollution and job displacement.'
+      },
+      {
+        type: 'trueFalse',
+        q: 'Opportunity cost is what you lose when you choose one option over another.',
+        answer: true,
+        explanation: 'Yes — opportunity cost represents the next best alternative you give up.'
+      },
+      {
+        type: 'choice',
+        q: 'What is one of the main social costs of economic growth mentioned in the text?',
+        options: [
+          'Higher wages for all workers',
+          'Increased leisure time',
+          'Pollution and resource depletion',
+          'More government spending'
+        ],
+        answer: 'Pollution and resource depletion',
+        explanation: 'Factories create pollution and use natural resources, which are limited and can disappear.'
+      },
+      {
+        type: 'choice',
+        q: 'What do lagging economic indicators do?',
+        options: [
+          'Predict future economic changes',
+          'Change at the same time as the economy',
+          'Change after the economy has already changed',
+          'Control the money supply'
+        ],
+        answer: 'Change after the economy has already changed',
+        explanation: 'Lagging indicators like unemployment rate and inflation confirm trends after they occur.'
+      },
+      {
+        type: 'open',
+        q: 'Why might workers need to retrain when technological advances occur?',
+        model: 'Technology can replace workers with machines. When this happens, workers need to learn new skills to qualify for different jobs in the changing economy.'
+      }
     ]
   },
   comprehension: [

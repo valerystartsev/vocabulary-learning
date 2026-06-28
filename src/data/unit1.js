@@ -859,6 +859,49 @@ export const unit1 = {
         text: "Customers have important rights. If a product is **damaged**, a customer can **complain** and request a **refund**. The business must **communicate** clearly about the **procedure** for returning goods. Many businesses have a complaints **deal**ing process. Customers are **entitled** to a refund under certain **circumstances**.",
         glossary: { "damaged": "повреждённый", "complain": "жаловаться", "refund": "возврат денег", "communicate": "сообщать", "entitled": "имеющий право" }
       }
+    ],
+    postReadingTasks: [
+      {
+        type: 'trueFalse',
+        q: 'Competition is good for customers because it keeps prices low.',
+        answer: true,
+        explanation: 'Yes — when companies compete, they offer lower prices and better products.'
+      },
+      {
+        type: 'trueFalse',
+        q: 'A monopoly exists when one company controls the whole market.',
+        answer: true,
+        explanation: 'Correct — a monopoly means one company dominates with no competition.'
+      },
+      {
+        type: 'choice',
+        q: 'What gives a company a legal monopoly for 20 years?',
+        options: [
+          'A patent',
+          'A natural resource',
+          'Government ownership',
+          'High market share'
+        ],
+        answer: 'A patent',
+        explanation: 'A patent grants exclusive rights to an invention for 20 years.'
+      },
+      {
+        type: 'choice',
+        q: 'What is the break-even point?',
+        options: [
+          'When a company makes its first sale',
+          'When income covers all costs with no profit or loss',
+          'When a company becomes a monopoly',
+          'When prices fluctuate'
+        ],
+        answer: 'When income covers all costs with no profit or loss',
+        explanation: 'The break-even point is reached when total income equals total costs.'
+      },
+      {
+        type: 'open',
+        q: 'Why do governments restrict monopolies?',
+        model: 'Governments restrict monopolies to protect customers from high prices and to help small businesses compete fairly. They set rules to ensure fair competition.'
+      }
     ]
   },
   comprehension: [

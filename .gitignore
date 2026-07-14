@@ -6,3 +6,10 @@ dist-ssr
 .env.local
 *.local
 .vite
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

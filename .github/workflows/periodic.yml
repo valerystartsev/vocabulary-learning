@@ -9,6 +9,12 @@ jobs:
   run-task:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        base_url:
+          - https://vocabulary-learning-sigma.vercel.app
+          - https://adaptation-lac.vercel.app
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,6 +27,9 @@ jobs:
 
       - name: Запустить задачу
         run: npx playwright test
+        env:
+          BASE_URL: ${{ matrix.base_url }}
+        
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
